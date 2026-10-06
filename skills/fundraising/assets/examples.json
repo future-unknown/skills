@@ -1,0 +1,96 @@
+{
+  "round.schema.json": [
+    {
+      "id": "seed-2026",
+      "name": "Seed 2026",
+      "status": "planning",
+      "raising_entity": "Example Company Inc.",
+      "instrument": null,
+      "target": 3000000,
+      "currency": "USD",
+      "minimum_check": null,
+      "ideal_check": null,
+      "target_close": null,
+      "purpose": "Fund the next company proof state.",
+      "owners": [
+        "founder-1"
+      ],
+      "legal_status": "not-reviewed",
+      "source_paths": [
+        "company.objectives"
+      ],
+      "page": "[[capital.rounds.seed-2026]]"
+    }
+  ],
+  "prospect.schema.json": [
+    {
+      "id": "seed-2026:example-ventures",
+      "round_id": "seed-2026",
+      "organization_name": "Example Ventures",
+      "organization_id": null,
+      "contact_name": null,
+      "contact_id": null,
+      "stage": "research",
+      "fit": "unknown",
+      "evidence_quality": "unverified",
+      "check_claim": null,
+      "assessment": "Public mandate requires verification.",
+      "last_touch": null,
+      "next_action": "Verify stage and check range from a first-party source.",
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "capital.research"
+      ],
+      "page": null
+    }
+  ],
+  "material.schema.json": [
+    {
+      "id": "seed-2026:memo",
+      "round_id": "seed-2026",
+      "name": "Seed memo",
+      "kind": "memo",
+      "status": "draft",
+      "revision": null,
+      "owners": [
+        "founder-1"
+      ],
+      "reviewers": [
+        "founder-2"
+      ],
+      "approval_requirements": [
+        "Both founders approve circulation."
+      ],
+      "circulation_boundary": "Internal until approved.",
+      "source_paths": [
+        "capital.memo"
+      ],
+      "page": "[[capital.materials.seed-memo]]"
+    }
+  ],
+  "route.schema.json": [
+    {
+      "id": "seed-2026:example-ventures:direct",
+      "round_id": "seed-2026",
+      "prospect_id": "seed-2026:example-ventures",
+      "organization_name": "Example Ventures",
+      "organization_id": null,
+      "contact_name": null,
+      "contact_id": null,
+      "connector_id": null,
+      "kind": "direct",
+      "status": "identified",
+      "last_update_at": null,
+      "next_action": "Identify the appropriate investor only after fit is verified.",
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "capital.prospects"
+      ],
+      "page": null
+    }
+  ]
+}

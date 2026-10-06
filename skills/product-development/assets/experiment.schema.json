@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product experiment",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "status",
+    "hypothesis",
+    "method",
+    "success_threshold",
+    "owners",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "designed",
+        "running",
+        "completed",
+        "stopped",
+        "invalid"
+      ]
+    },
+    "initiative_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "hypothesis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "type": "string",
+      "minLength": 1
+    },
+    "success_threshold": {
+      "type": "string",
+      "minLength": 1
+    },
+    "result": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "conclusion": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "supports",
+        "weakens",
+        "rejects",
+        "inconclusive"
+      ]
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

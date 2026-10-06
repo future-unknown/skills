@@ -1,0 +1,56 @@
+{
+  "profile.schema.json": [
+    {
+      "id": "company",
+      "name": "Example Company",
+      "legal_name": null,
+      "jurisdiction": null,
+      "purpose": "Make operational knowledge usable.",
+      "stage": "pre-product",
+      "founded_on": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [],
+      "page": "[[company]]"
+    }
+  ],
+  "objective.schema.json": [
+    {
+      "id": "prove-first-workflow",
+      "title": "Prove one recurring customer workflow",
+      "status": "active",
+      "horizon": "next 90 days",
+      "target_date": null,
+      "owners": [
+        "founder-1"
+      ],
+      "success_measures": [
+        "One customer uses the workflow weekly for four weeks."
+      ],
+      "notes": null,
+      "source_paths": [
+        "company.strategy"
+      ],
+      "page": null
+    }
+  ],
+  "fact.schema.json": [
+    {
+      "id": "initial-team-size",
+      "statement": "The initial team is two founders.",
+      "kind": "declared",
+      "status": "current",
+      "valid_from": "2026-01-01",
+      "review_at": null,
+      "owners": [
+        "founder-1"
+      ],
+      "superseded_by_id": null,
+      "source_paths": [
+        "company.team"
+      ],
+      "page": null
+    }
+  ]
+}

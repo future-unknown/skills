@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Financial assumption",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "status",
+    "value",
+    "unit",
+    "currency",
+    "confidence",
+    "owners",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "active",
+        "invalidated",
+        "replaced"
+      ]
+    },
+    "value": {
+      "anyOf": [
+        { "type": "number" },
+        { "type": "string" },
+        { "type": "boolean" },
+        { "type": "null" }
+      ]
+    },
+    "unit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "rationale": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "review_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "replaced_by_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

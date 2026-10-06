@@ -1,0 +1,26 @@
+{
+  "name": "@future-unknown/skills",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Harness-readable skills for building common business ontologies in Known",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "agent-skills",
+    "known",
+    "ontology",
+    "business-operations"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ]
+  },
+  "scripts": {
+    "test": "node scripts/validate.mjs"
+  },
+  "devDependencies": {
+    "ajv": "^8.18.0",
+    "ajv-formats": "3.0.1"
+  }
+}

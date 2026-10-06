@@ -1,0 +1,89 @@
+{
+  "role.schema.json": [
+    {
+      "id": "senior-engineer-1",
+      "title": "Senior engineer",
+      "status": "draft",
+      "purpose": "Own one core product area.",
+      "level": "senior",
+      "location": "distributed",
+      "employment_type": "employee",
+      "compensation_min": 150000,
+      "compensation_max": 180000,
+      "compensation_currency": "USD",
+      "compensation_period": "annual",
+      "target_start": null,
+      "headcount": 1,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "company.objectives"
+      ],
+      "page": "[[hiring.roles.senior-engineer-1]]"
+    }
+  ],
+  "candidate.schema.json": [
+    {
+      "id": "candidate-example",
+      "name": "Casey Example",
+      "role_id": "senior-engineer-1",
+      "contact_id": null,
+      "stage": "sourced",
+      "source_claim": "Synthetic example referral.",
+      "consent_to_process": null,
+      "last_touch": null,
+      "next_action": "Confirm whether outreach is appropriate.",
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [],
+      "page": null
+    }
+  ],
+  "interview.schema.json": [
+    {
+      "id": "interview:candidate-example:technical-1",
+      "candidate_id": "candidate-example",
+      "role_id": "senior-engineer-1",
+      "status": "scheduled",
+      "scheduled_at": "2026-02-01T10:00:00Z",
+      "interviewers": [
+        "founder-2"
+      ],
+      "criteria": [
+        {
+          "criterion": "Systems reasoning",
+          "evidence": null,
+          "rating": "not-assessed"
+        }
+      ],
+      "recommendation": null,
+      "notes": null,
+      "source_paths": [],
+      "page": null
+    }
+  ],
+  "decision.schema.json": [
+    {
+      "id": "decision:candidate-example:screen",
+      "candidate_id": "candidate-example",
+      "role_id": "senior-engineer-1",
+      "outcome": "advance",
+      "decided_at": "2026-02-02T10:00:00Z",
+      "approvers": [
+        "founder-1",
+        "founder-2"
+      ],
+      "rationale": "Synthetic evidence met the screen criteria.",
+      "evidence_ids": [
+        "interview:candidate-example:technical-1"
+      ],
+      "conditions": [],
+      "source_paths": [
+        "hiring.interviews"
+      ],
+      "page": null
+    }
+  ]
+}

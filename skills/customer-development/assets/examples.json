@@ -1,0 +1,89 @@
+{
+  "hypothesis.schema.json": [
+    {
+      "id": "ops-leads-need-shared-context",
+      "statement": "Operations leads need one source-backed view of recurring decisions.",
+      "segment": "Small software companies",
+      "workflow": "Weekly operating review",
+      "status": "testing",
+      "owners": [
+        "founder-1"
+      ],
+      "evidence_for": [],
+      "evidence_against": [],
+      "next_test": "Interview three operations leads.",
+      "source_paths": [],
+      "page": null
+    }
+  ],
+  "opportunity.schema.json": [
+    {
+      "id": "example-studio:weekly-review",
+      "organization_name": "Example Studio",
+      "organization_id": null,
+      "contact_name": "Alex Example",
+      "contact_id": null,
+      "stage": "discovery",
+      "problem": "Decisions are scattered across tools.",
+      "workflow": "Weekly operating review",
+      "buyer": null,
+      "urgency": null,
+      "next_action": "Run first discovery interview.",
+      "next_action_due": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [],
+      "page": "[[customers.opportunities.example-studio-weekly-review]]"
+    }
+  ],
+  "discovery.schema.json": [
+    {
+      "id": "discovery:example-studio:2026-01-22",
+      "occurred_at": "2026-01-22T13:00:00Z",
+      "method": "interview",
+      "opportunity_id": "example-studio:weekly-review",
+      "organization_name": "Example Studio",
+      "organization_id": null,
+      "contact_name": "Alex Example",
+      "contact_id": null,
+      "summary": "Reviewed the current weekly decision workflow.",
+      "explicit_signals": [
+        "Current process requires manual reconciliation."
+      ],
+      "explicit_non_signals": [
+        "No purchase intent stated."
+      ],
+      "hypothesis_impact": "supports",
+      "follow_up": "Document the bounded workflow.",
+      "source_paths": [],
+      "page": null
+    }
+  ],
+  "pilot.schema.json": [
+    {
+      "id": "pilot:example-studio:weekly-review",
+      "opportunity_id": "example-studio:weekly-review",
+      "organization_name": "Example Studio",
+      "organization_id": null,
+      "status": "proposed",
+      "workflow": "Weekly operating review",
+      "business_owner": null,
+      "start_date": null,
+      "end_date": null,
+      "success_criteria": [
+        "Reduce manual reconciliation time."
+      ],
+      "access_plan": null,
+      "approval_plan": null,
+      "commercial_form": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "customers.discovery"
+      ],
+      "page": null
+    }
+  ]
+}

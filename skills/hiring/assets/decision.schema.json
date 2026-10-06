@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Hiring decision",
+  "type": "object",
+  "required": [
+    "id",
+    "candidate_id",
+    "role_id",
+    "outcome",
+    "decided_at",
+    "approvers",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "advance",
+        "hold",
+        "reject",
+        "offer",
+        "hire",
+        "withdraw"
+      ]
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "approvers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "rationale": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidence_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

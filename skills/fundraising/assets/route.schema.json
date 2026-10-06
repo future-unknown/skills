@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Investor route",
+  "type": "object",
+  "required": [
+    "id",
+    "round_id",
+    "organization_name",
+    "kind",
+    "status",
+    "owners",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "round_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "prospect_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "organization_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "organization_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contact_name": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contact_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "connector_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "introduction",
+        "event",
+        "inbound"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "identified",
+        "requested",
+        "accepted",
+        "sent",
+        "meeting-scheduled",
+        "completed",
+        "declined",
+        "closed"
+      ]
+    },
+    "last_update_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "next_action": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

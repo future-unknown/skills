@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product feedback",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "status",
+    "reported_at",
+    "observed_behavior",
+    "hypotheses",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "problem",
+        "request",
+        "observation",
+        "praise",
+        "question"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "reviewed",
+        "linked",
+        "dismissed",
+        "resolved"
+      ]
+    },
+    "reported_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reporter_claim": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "customer_opportunity_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "observed_behavior": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requested_outcome": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "linked_initiative_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

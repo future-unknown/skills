@@ -1,0 +1,69 @@
+{
+  "budget.schema.json": [
+    {
+      "id": "budget:base:2026",
+      "name": "Base operating plan",
+      "status": "draft",
+      "period_start": "2026-01-01",
+      "period_end": "2026-12-31",
+      "currency": "USD",
+      "total": 120000,
+      "scenario": "base",
+      "categories": [
+        {
+          "name": "People",
+          "amount": 90000,
+          "note": null
+        },
+        {
+          "name": "Infrastructure",
+          "amount": 30000,
+          "note": null
+        }
+      ],
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [],
+      "page": "[[finance.budgets.base-2026]]"
+    }
+  ],
+  "snapshot.schema.json": [
+    {
+      "id": "snapshot:2026-01-31",
+      "as_of": "2026-01-31",
+      "currency": "USD",
+      "cash": 100000,
+      "expected_inflows": 0,
+      "known_liabilities": 5000,
+      "monthly_cash_burn": 10000,
+      "monthly_economic_cost": 15000,
+      "runway_months": 9.5,
+      "burn_basis": "Cash less known liabilities divided by monthly cash burn.",
+      "notes": null,
+      "source_paths": [
+        "finance.source-system"
+      ],
+      "page": null
+    }
+  ],
+  "assumption.schema.json": [
+    {
+      "id": "assumption:senior-engineer-cost",
+      "name": "Loaded annual senior engineer cost",
+      "status": "active",
+      "value": 180000,
+      "unit": "annual cost per role",
+      "currency": "USD",
+      "confidence": "medium",
+      "rationale": "Planning assumption pending actual hiring evidence.",
+      "review_at": null,
+      "replaced_by_id": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [],
+      "page": null
+    }
+  ]
+}

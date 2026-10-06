@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product initiative",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "status",
+    "problem",
+    "intended_outcome",
+    "owners",
+    "success_measures",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "idea",
+        "discovery",
+        "planned",
+        "active",
+        "paused",
+        "shipped",
+        "cancelled"
+      ]
+    },
+    "problem": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intended_outcome": {
+      "type": "string",
+      "minLength": 1
+    },
+    "work_initiative_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "success_measures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "feedback_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

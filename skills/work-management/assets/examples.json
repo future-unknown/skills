@@ -1,0 +1,77 @@
+{
+  "initiative.schema.json": [
+    {
+      "id": "launch-private-beta",
+      "title": "Launch private beta",
+      "status": "planned",
+      "outcome": "Five companies complete one live workflow.",
+      "objective_id": null,
+      "start_date": null,
+      "target_date": null,
+      "owners": [
+        "founder-1"
+      ],
+      "success_measures": [
+        "Five activated companies."
+      ],
+      "source_paths": [
+        "company.objectives"
+      ],
+      "page": "[[work.initiatives.launch-private-beta]]"
+    }
+  ],
+  "task.schema.json": [
+    {
+      "id": "draft-onboarding-checklist",
+      "title": "Draft onboarding checklist",
+      "status": "ready",
+      "initiative_id": "launch-private-beta",
+      "due_at": null,
+      "owners": [
+        "founder-1"
+      ],
+      "blocked_by": [],
+      "blocks": [],
+      "definition_of_done": "Checklist covers access, first workflow, verification, and owner sign-off.",
+      "source_paths": [],
+      "page": null
+    }
+  ],
+  "decision.schema.json": [
+    {
+      "id": "start-with-founder-led-onboarding",
+      "title": "Use founder-led onboarding first",
+      "status": "decided",
+      "decision": "Founders own onboarding for the first five companies.",
+      "rationale": "Learn before automating.",
+      "decided_at": "2026-01-15T10:00:00Z",
+      "owners": [
+        "founder-1"
+      ],
+      "supersedes_id": null,
+      "source_paths": [
+        "work.initiatives.launch-private-beta"
+      ],
+      "page": "[[work.decisions.start-with-founder-led-onboarding]]"
+    }
+  ],
+  "risk.schema.json": [
+    {
+      "id": "onboarding-does-not-repeat",
+      "title": "Onboarding does not repeat without founders",
+      "status": "monitoring",
+      "probability": "medium",
+      "impact": "high",
+      "current_signal": null,
+      "response": "Document each onboarding and compare failure points.",
+      "review_at": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "work.initiatives.launch-private-beta"
+      ],
+      "page": null
+    }
+  ]
+}

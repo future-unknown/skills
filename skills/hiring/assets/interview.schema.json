@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Hiring interview",
+  "type": "object",
+  "required": [
+    "id",
+    "candidate_id",
+    "role_id",
+    "status",
+    "scheduled_at",
+    "interviewers",
+    "criteria",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "candidate_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "completed",
+        "cancelled",
+        "no-show"
+      ]
+    },
+    "scheduled_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "interviewers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "criterion",
+          "evidence",
+          "rating"
+        ],
+        "properties": {
+          "criterion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "rating": {
+            "type": "string",
+            "enum": [
+              "not-assessed",
+              "weak",
+              "mixed",
+              "strong"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "uniqueItems": true
+    },
+    "recommendation": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "advance",
+        "hold",
+        "reject"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

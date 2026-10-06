@@ -1,0 +1,65 @@
+{
+  "feedback.schema.json": [
+    {
+      "id": "feedback:example:001",
+      "kind": "problem",
+      "status": "new",
+      "reported_at": "2026-01-22T13:00:00Z",
+      "reporter_claim": "Example Studio",
+      "customer_opportunity_id": null,
+      "observed_behavior": "The weekly review requires copying decisions from several tools.",
+      "requested_outcome": "See decisions and sources together.",
+      "hypotheses": [
+        "A source-backed decision view may reduce reconciliation."
+      ],
+      "linked_initiative_ids": [],
+      "source_paths": [
+        "customers.discovery"
+      ],
+      "page": null
+    }
+  ],
+  "initiative.schema.json": [
+    {
+      "id": "source-backed-decision-view",
+      "title": "Source-backed decision view",
+      "status": "discovery",
+      "problem": "Teams manually reconcile decisions across tools.",
+      "intended_outcome": "A user can review current decisions with provenance in one place.",
+      "work_initiative_id": null,
+      "owners": [
+        "founder-1"
+      ],
+      "success_measures": [
+        "A user completes a weekly review without a manual copy step."
+      ],
+      "feedback_ids": [
+        "feedback:example:001"
+      ],
+      "source_paths": [
+        "product.feedback"
+      ],
+      "page": "[[product.initiatives.source-backed-decision-view]]"
+    }
+  ],
+  "experiment.schema.json": [
+    {
+      "id": "experiment:decision-view-prototype",
+      "title": "Test decision-view prototype",
+      "status": "designed",
+      "initiative_id": "source-backed-decision-view",
+      "hypothesis": "A consolidated view cuts weekly preparation time.",
+      "method": "Observe three users completing the same review with and without the prototype.",
+      "success_threshold": "Median preparation time falls by at least 30%.",
+      "result": null,
+      "conclusion": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "product.initiatives.source-backed-decision-view"
+      ],
+      "page": null
+    }
+  ]
+}

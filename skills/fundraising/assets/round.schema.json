@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Financing round",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "status",
+    "raising_entity",
+    "instrument",
+    "target",
+    "currency",
+    "owners",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planning",
+        "preparing",
+        "open",
+        "closing",
+        "closed",
+        "paused"
+      ]
+    },
+    "raising_entity": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instrument": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "minimum_check": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "ideal_check": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "target_close": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "purpose": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "legal_status": {
+      "type": "string",
+      "enum": [
+        "not-reviewed",
+        "needs-counsel",
+        "counsel-reviewed",
+        "complete"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

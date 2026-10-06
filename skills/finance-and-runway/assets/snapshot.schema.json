@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Financial snapshot",
+  "type": "object",
+  "required": [
+    "id",
+    "as_of",
+    "currency",
+    "cash",
+    "expected_inflows",
+    "known_liabilities",
+    "monthly_cash_burn",
+    "monthly_economic_cost",
+    "runway_months",
+    "source_paths",
+    "page"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+    },
+    "as_of": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "cash": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "expected_inflows": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "known_liabilities": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "monthly_cash_burn": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "monthly_economic_cost": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "runway_months": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "burn_basis": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

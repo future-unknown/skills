@@ -1,0 +1,45 @@
+[
+  {
+    "schema": "skills/company-foundation/assets/objective.schema.json",
+    "reason": "unknown workflow status",
+    "record": {
+      "id": "bad-objective",
+      "title": "Bad objective",
+      "status": "probably-done",
+      "owners": [],
+      "success_measures": [],
+      "source_paths": [],
+      "page": null
+    }
+  },
+  {
+    "schema": "skills/finance-and-runway/assets/budget.schema.json",
+    "reason": "currency is not ISO 4217-shaped",
+    "record": {
+      "id": "bad-budget",
+      "name": "Bad budget",
+      "status": "draft",
+      "period_start": "2026-01-01",
+      "period_end": "2026-12-31",
+      "currency": "$",
+      "total": 100,
+      "categories": [],
+      "owners": [],
+      "source_paths": [],
+      "page": null
+    }
+  },
+  {
+    "schema": "skills/relationship-management/assets/introduction.schema.json",
+    "reason": "an introduction request cannot use an invented completed status",
+    "record": {
+      "id": "bad-introduction",
+      "status": "introduced-maybe",
+      "requester_id": "founder-1",
+      "target_contact_id": "example-contact",
+      "owners": [],
+      "source_paths": [],
+      "page": null
+    }
+  }
+]

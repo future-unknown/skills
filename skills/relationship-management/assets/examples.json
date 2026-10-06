@@ -1,0 +1,83 @@
+{
+  "organization.schema.json": [
+    {
+      "id": "example-studio",
+      "name": "Example Studio",
+      "types": [
+        "customer"
+      ],
+      "status": "unverified",
+      "website": null,
+      "location": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "relationships.research"
+      ],
+      "page": null
+    }
+  ],
+  "contact.schema.json": [
+    {
+      "id": "alex-example",
+      "name": "Alex Example",
+      "organization_id": "example-studio",
+      "role": "Founder",
+      "relationship_types": [
+        "customer"
+      ],
+      "engagement_status": "contacted",
+      "last_touch": "2026-01-20",
+      "next_action": "Confirm whether a discovery call is useful.",
+      "next_action_due": null,
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "relationships.interactions"
+      ],
+      "page": "[[relationships.contacts.alex-example]]"
+    }
+  ],
+  "interaction.schema.json": [
+    {
+      "id": "alex-example:2026-01-20:email",
+      "occurred_at": "2026-01-20T09:00:00Z",
+      "direction": "outbound",
+      "channel": "email",
+      "participants": [
+        "alex-example",
+        "founder-1"
+      ],
+      "summary": "Asked whether a short discovery call would be useful.",
+      "explicit_signals": [],
+      "explicit_non_signals": [
+        "No response recorded."
+      ],
+      "follow_up": "Wait for a reply.",
+      "source_paths": [],
+      "page": null
+    }
+  ],
+  "introduction.schema.json": [
+    {
+      "id": "intro:founder-1:alex-example",
+      "status": "requested",
+      "requester_id": "founder-1",
+      "connector_id": "connector-example",
+      "target_contact_id": "alex-example",
+      "target_organization_id": "example-studio",
+      "requested_at": "2026-01-20T09:00:00Z",
+      "last_update_at": "2026-01-20T09:00:00Z",
+      "context": "Requested an introduction for a discovery conversation.",
+      "owners": [
+        "founder-1"
+      ],
+      "source_paths": [
+        "relationships.interactions"
+      ],
+      "page": null
+    }
+  ]
+}
