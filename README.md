@@ -51,7 +51,11 @@ Other Agent Skills-compatible harnesses can load a skill directory directly.
 
 ## Composition rules
 
-- Structured records own current state; pages own context, evidence, explanations, and communication history.
+- Schema-backed keyed records own the current state of the business.
+- Prior values are preserved through Known history rather than duplicate records, history arrays, or manually maintained Markdown tables.
+- Operationally meaningful events can be immutable structured records; they are not copies of obsolete state.
+- Indexes and directories are schema-backed collections or declared derived projections, not Markdown lists.
+- Markdown is for narrative, rationale, evidence synthesis, process guidance, and navigation where authored meaning matters.
 - Source claims, assessments, workflow state, and canonical relationships stay separate.
 - Unknown facts remain `null` or absent. A skill never invents intent, status, identity, affiliation, or commitment.
 - Skills inspect and reuse before creating. They do not establish a competing canonical collection without approval.
@@ -59,12 +63,12 @@ Other Agent Skills-compatible harnesses can load a skill directory directly.
 - Each monetary amount carries an explicit ISO 4217 currency.
 - Sensitive personal, legal, health, credential, and payment data stays out of public or broadly visible wikis.
 
-See [`references/ontology-principles.md`](references/ontology-principles.md) and [`references/composition.md`](references/composition.md).
+See [`references/data-modeling.md`](references/data-modeling.md), [`references/ontology-principles.md`](references/ontology-principles.md), and [`references/composition.md`](references/composition.md).
 
 ## Repository layout
 
 ```text
-references/                 shared CLI, ontology, and composition guidance
+references/                 shared CLI, data-modeling, ontology, and composition guidance
 skills/<name>/SKILL.md      harness instructions
 skills/<name>/references/   domain model and boundaries
 skills/<name>/assets/       JSON Schemas and synthetic examples

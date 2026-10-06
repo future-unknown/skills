@@ -16,14 +16,18 @@ Every skill must:
 
 1. use a directory name matching the `name` in `SKILL.md` frontmatter;
 2. explain when to use and when not to use it;
-3. read the shared CLI and ontology references;
+3. read the shared CLI, data-modeling, ontology, and composition references;
 4. inspect before proposing and propose before writing;
-5. define canonical records, evidence, workflow projections, and prohibited inferences;
-6. attach schemas before inserting records;
-7. use conditional page and record writes for updates;
-8. include valid synthetic examples;
-9. explain how it composes with existing skills without requiring them;
-10. include verification and privacy checks.
+5. define canonical current-state records, meaningful event records, evidence, workflow projections, and prohibited inferences;
+6. prefer schema-backed records over Markdown for queryable or actionable business state;
+7. rely on Known history for prior values instead of duplicating obsolete state;
+8. use schema-backed collections or derived projections for indexes rather than Markdown lists;
+9. explain where Markdown is appropriate and ensure it does not shadow structured fields;
+10. attach schemas before inserting records;
+11. use conditional page and record writes for updates;
+12. include valid synthetic examples;
+13. explain how it composes with existing skills without requiring them;
+14. include verification and privacy checks.
 
 ## Schema changes
 
