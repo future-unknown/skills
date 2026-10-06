@@ -7,6 +7,8 @@ Every skill works independently. Composition strengthens references; it does not
 - IDs are strings and unique within their collection.
 - Cross-skill references are optional and nullable.
 - A record preserves its human-readable source claim even after a canonical ID is linked.
+- Current state is updated in its existing canonical keyed record; composition must not create historical copies.
+- Historical events remain separate immutable records only when the event itself is a durable business fact.
 - `source_paths` records evidence locations, not foreign-key ownership.
 - `page` links to optional narrative detail using `[[path]]` syntax.
 - Owners are stable IDs where available; otherwise use explicit names without pretending they are resolved identities.
@@ -34,8 +36,9 @@ When adding a skill to an existing model:
 3. Keep the existing canonical owner unless the user approves a migration.
 4. Add nullable canonical IDs to new records when matches are verified.
 5. Preserve original names or source claims for auditability.
-6. Add backlinks or navigation pages only after canonical ownership is clear.
-7. Validate every affected record against its existing schema.
+6. Add backlinks or concise navigation pages only after canonical ownership is clear; do not copy record rows into Markdown indexes.
+7. Use a schema-backed derived collection if cross-domain lookup genuinely requires an index.
+8. Validate every affected record against its existing schema.
 
 ## No hidden dependency installation
 

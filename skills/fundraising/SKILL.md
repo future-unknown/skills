@@ -4,7 +4,7 @@ description: Create or improve a source-backed fundraising workflow in Known for
 license: MIT
 compatibility: Requires the Known CLI and permission to read and write an appropriately visible wiki.
 metadata:
-  version: "0.1.0"
+  version: "0.2.0"
   category: business-ontology
 ---
 
@@ -17,10 +17,11 @@ Build a credible financing workflow without turning research, attendance, introd
 Read:
 
 1. `../../references/known-cli.md`
-2. `../../references/ontology-principles.md`
-3. `../../references/composition.md`
-4. `../../references/skill-run.md`
-5. `references/model.md`
+2. `../../references/data-modeling.md`
+3. `../../references/ontology-principles.md`
+4. `../../references/composition.md`
+5. `../../references/skill-run.md`
+6. `references/model.md`
 
 ## Default model
 

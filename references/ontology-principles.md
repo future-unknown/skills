@@ -4,12 +4,14 @@ These rules apply to every Known business skill.
 
 ## Separate kinds of truth
 
-1. **Current state** belongs in keyed structured records.
-2. **Context and meaning** belong in authored pages.
-3. **Evidence and communication history** remain attributable and dated.
-4. **Source claims** stay distinct from internal assessments.
-5. **Workflow state** is not evidence of real-world intent or commitment.
-6. **Derived projections** point back to canonical records rather than replacing them.
+1. **Current business state** belongs in schema-backed keyed records.
+2. **Prior versions of current state** belong to Known history, not duplicate records, status-history arrays, or Markdown tables.
+3. **Events that happened** may be structured immutable records when they remain operationally meaningful.
+4. **Context and meaning** belong in authored pages.
+5. **Evidence and communication history** remain attributable and dated.
+6. **Source claims** stay distinct from internal assessments.
+7. **Workflow state** is not evidence of real-world intent or commitment.
+8. **Derived projections** point back to canonical records rather than replacing them.
 
 ## Model conservatively
 
@@ -21,17 +23,20 @@ These rules apply to every Known business skill.
 - Avoid global master abstractions until identity, permissions, merges, and migration semantics work end to end.
 - Store sensitive originals in purpose-built secure systems; Known stores safe metadata and references.
 
-## Pages and records
+## Data first, Markdown deliberately
 
 A useful domain usually has:
 
-- a root page explaining purpose, boundaries, and navigation;
-- one collection page per canonical record type;
-- a JSON Schema and stable key on each collection;
-- optional detail pages for records requiring narrative or evidence;
-- a process page explaining transitions and non-inferences.
+- schema-backed keyed collections for canonical current state;
+- concise contextual Markdown explaining purpose, boundaries, process, and navigation;
+- optional detail pages only for records requiring substantial narrative or evidence;
+- derived views that clearly point back to canonical collections.
 
-Do not create detail pages mechanically for every record. Create them when context, evidence, or collaboration needs authored space.
+Prefer schemas when information must be queried, filtered, validated, related, or acted on. Do not maintain indexes or current-state tables manually in Markdown. When lookup needs an index, use a keyed schema-backed collection or a declared derived projection.
+
+Do not create detail pages mechanically for every record. Create them when context, evidence, rationale, or collaboration would make a schema brittle or unreadable. Markdown supplements structured state; it does not redefine it.
+
+Read `data-modeling.md` for the full representation and history rules.
 
 ## Safe adaptation
 
