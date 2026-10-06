@@ -51,7 +51,7 @@ for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
   }
 
   const text = fs.readFileSync(skillFile, 'utf8')
-  for (const required of ['../../references/known-cli.md', '../../references/ontology-principles.md', '../../references/composition.md', '../../references/skill-run.md']) {
+  for (const required of ['../../references/known-cli.md', '../../references/data-modeling.md', '../../references/ontology-principles.md', '../../references/composition.md', '../../references/skill-run.md']) {
     if (!text.includes(required)) errors.push(`skills/${entry.name}/SKILL.md: must reference ${required}`)
   }
 
