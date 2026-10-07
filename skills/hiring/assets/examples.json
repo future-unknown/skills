@@ -20,7 +20,7 @@
       "source_paths": [
         "company.objectives"
       ],
-      "page": "[[hiring.roles.senior-engineer-1]]"
+      "content": "## Senior engineer\n\nSynthetic example context kept with the record."
     }
   ],
   "candidate.schema.json": [
@@ -37,8 +37,7 @@
       "owners": [
         "founder-1"
       ],
-      "source_paths": [],
-      "page": null
+      "source_paths": []
     }
   ],
   "interview.schema.json": [
@@ -60,8 +59,7 @@
       ],
       "recommendation": null,
       "notes": null,
-      "source_paths": [],
-      "page": null
+      "source_paths": []
     }
   ],
   "decision.schema.json": [
@@ -82,8 +80,7 @@
       "conditions": [],
       "source_paths": [
         "hiring.interviews"
-      ],
-      "page": null
+      ]
     }
   ]
 }

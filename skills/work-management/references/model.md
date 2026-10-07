@@ -20,7 +20,7 @@ Statuses: `backlog`, `ready`, `in-progress`, `blocked`, `in-review`, `done`, `ca
 
 Statuses: `proposed`, `decided`, `superseded`, `reversed`.
 
-A decided record needs `decision`, `decided_at`, and at least one owner. Rationale and alternatives can live on its detail page. `supersedes_id` points backward; do not rewrite the old decision as though it never existed.
+A decided record needs `decision`, `decided_at`, and at least one owner. Rationale and alternatives normally live in the record's Markdown `content`; reserve a separate page for a genuinely long or cross-record decision document. `supersedes_id` points backward; do not rewrite the old decision as though it never existed.
 
 ## Risks
 

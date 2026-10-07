@@ -4,7 +4,7 @@ description: Create or improve a privacy-conscious hiring workflow in Known for 
 license: MIT
 compatibility: Requires the Known CLI and permission to use a restricted wiki appropriate for candidate data.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   category: business-ontology
 ---
 

@@ -4,7 +4,7 @@
 
 One or more company/legal-unit profiles. For a single company, use a stable ID such as `company`; never derive it from a mutable display name.
 
-Current state includes name, purpose, stage, optional legal identity, jurisdiction, founding date, owners, sources, and an optional detail page. Unknown legal fields remain null.
+Current state includes name, purpose, stage, optional legal identity, jurisdiction, founding date, owners, and sources. Focused context can live in the record's Markdown `content`; use a separate page only for an independently meaningful long-form company document. Unknown legal fields remain null.
 
 ## Objectives
 

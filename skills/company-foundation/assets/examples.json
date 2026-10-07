@@ -12,7 +12,7 @@
         "founder-1"
       ],
       "source_paths": [],
-      "page": "[[company]]"
+      "content": "## Example Company\n\nSynthetic example context kept with the record."
     }
   ],
   "objective.schema.json": [
@@ -31,8 +31,7 @@
       "notes": null,
       "source_paths": [
         "company.strategy"
-      ],
-      "page": null
+      ]
     }
   ],
   "fact.schema.json": [
@@ -49,8 +48,7 @@
       "superseded_by_id": null,
       "source_paths": [
         "company.team"
-      ],
-      "page": null
+      ]
     }
   ]
 }

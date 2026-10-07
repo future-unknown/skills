@@ -52,10 +52,12 @@ Other Agent Skills-compatible harnesses can load a skill directory directly.
 ## Composition rules
 
 - Schema-backed keyed records own the current state of the business.
-- Prior values are preserved through Known history rather than duplicate records, history arrays, or manually maintained Markdown tables.
+- Every keyed-record update creates record history; inspect it with record history/diff or historical table reads instead of duplicating old state.
 - Operationally meaningful events can be immutable structured records; they are not copies of obsolete state.
-- Indexes and directories are schema-backed collections or declared derived projections, not Markdown lists.
-- Markdown is for narrative, rationale, evidence synthesis, process guidance, and navigation where authored meaning matters.
+- Current table records appear in search, so the canonical collection is normally its own directory.
+- Specialized indexes are schema-backed derived projections, never Markdown lists.
+- A record's `content` can carry focused Markdown and render as its page; do not create a separate detail page by default.
+- Separate Markdown pages remain right for long-form or cross-record narrative, strategy, process, evidence synthesis, and navigation.
 - Source claims, assessments, workflow state, and canonical relationships stay separate.
 - Unknown facts remain `null` or absent. A skill never invents intent, status, identity, affiliation, or commitment.
 - Skills inspect and reuse before creating. They do not establish a competing canonical collection without approval.

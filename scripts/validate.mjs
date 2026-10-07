@@ -66,6 +66,11 @@ for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
     const schema = readJson(file)
     if (!schema) continue
     try {
+      if (schema.required?.includes('page')) errors.push(`${path.relative(root, file)}: page must not be required now that records can carry Markdown content`)
+      const content = schema.properties?.content
+      if (!content || !Array.isArray(content.type) || !content.type.includes('string') || !content.type.includes('null')) {
+        errors.push(`${path.relative(root, file)}: must allow nullable Markdown content on the record`)
+      }
       const validate = ajv.compile(schema)
       schemas.set(path.relative(root, file), validate)
       if (!Array.isArray(examples[name]) || examples[name].length === 0) {

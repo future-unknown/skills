@@ -4,7 +4,7 @@ description: Create or improve a lightweight finance workflow in Known for budge
 license: MIT
 compatibility: Requires the Known CLI and permission to read and write an appropriately restricted wiki.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   category: business-ontology
 ---
 

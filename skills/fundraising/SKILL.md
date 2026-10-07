@@ -4,7 +4,7 @@ description: Create or improve a source-backed fundraising workflow in Known for
 license: MIT
 compatibility: Requires the Known CLI and permission to read and write an appropriately visible wiki.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   category: business-ontology
 ---
 
@@ -38,7 +38,7 @@ Use bundled schemas. Search for existing fundraising, investor, CRM, legal, task
 
 - Round records own approved current economics and process state.
 - Prospects own fit and pipeline assessment, not canonical people or organizations.
-- Materials own document readiness and circulation approval, not document content when that content has its own page.
+- Materials own document readiness and circulation approval. Concise material context can live in record `content`; a long memo, deck narrative, or financial model remains a separate document linked from the record.
 - Routes own a specific introduction/outreach path and precise state.
 - Investor claims and check ranges remain attributed and unverified until confirmed.
 - Never infer qualification, interest, commitment, or partner authority from attendance, role, introduction, friendship, or an inbound message.

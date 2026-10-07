@@ -4,7 +4,7 @@ description: Create or improve a minimal company foundation in Known: company pr
 license: MIT
 compatibility: Requires the Known CLI and permission to read and write the selected wiki.
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
   category: business-ontology
 ---
 

@@ -25,7 +25,7 @@
         "founder-1"
       ],
       "source_paths": [],
-      "page": "[[finance.budgets.base-2026]]"
+      "content": "## Base operating plan\n\nSynthetic example context kept with the record."
     }
   ],
   "snapshot.schema.json": [
@@ -43,8 +43,7 @@
       "notes": null,
       "source_paths": [
         "finance.source-system"
-      ],
-      "page": null
+      ]
     }
   ],
   "assumption.schema.json": [
@@ -62,8 +61,7 @@
       "owners": [
         "founder-1"
       ],
-      "source_paths": [],
-      "page": null
+      "source_paths": []
     }
   ]
 }

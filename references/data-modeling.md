@@ -17,7 +17,7 @@ Use a schema-backed keyed collection for:
 
 Update the existing keyed record with a version precondition. Do not append another record merely to preserve the old status, and do not maintain `status_history`, `previous_values`, or similar arrays unless the domain itself requires a legally meaningful ledger.
 
-Known's version and page history preserve how current state changed. History is not duplicated into current records or hand-maintained Markdown tables.
+Every update to a keyed record creates a retained record version. Read it with `wiki history <table>/<key>` and compare it with `wiki diff <table>/<key>`. Use `wiki data <table> --at <iso>` when the question is what the table looked like at a moment. History is not duplicated into current records or hand-maintained Markdown tables. Keep full version history by default. If privacy or storage policy requires a bound, declare `metadata.retain.versions` deliberately, document what older state becomes unknowable, and never invent an application-level history field.
 
 ## Historical events versus old state
 
@@ -31,57 +31,63 @@ Use this test:
 
 Do not edit an event's substantive historical facts to match current understanding. Add corrections, source context, or a superseding record with provenance.
 
-## Indexes
+## Search and indexes
 
-Do not maintain canonical indexes as Markdown lists or tables.
+Current table records now appear directly in `wiki search`, including text carried in their fields and Markdown `content`. Search returns the record address, key, and heading. Use that before building an index.
 
-When a concept needs lookup, filtering, or a directory:
+Do not maintain canonical indexes as Markdown lists or tables. The collection and its schema are the normal index: keep current searchable fields on each record and let interfaces or agents derive views from them.
 
-1. create or reuse a keyed collection;
-2. define its JSON Schema;
-3. keep each record's current indexable fields there;
-4. let interfaces or agents derive views from those records.
+A specialized resolver or index collection is justified only when ordinary record search cannot support a deterministic lookup or projection. It must have its own schema, stable key, declared source collection, and regeneration rule. It is a derived projection, never a second owner of the underlying state.
 
-A specialized resolver or index collection is justified only when it has its own schema, deterministic key, declared source collection, and regeneration rule. It is a derived projection, never a second owner of the underlying state.
+Navigation pages may link to collections and explain how to use them. They should not copy collection rows into manually maintained Markdown.
 
-Navigation pages may link to collections and explain how to use them. They should not copy the collection's rows into manually maintained Markdown.
+## Markdown on records and pages
 
-## When Markdown is right
+A table record may carry a `content` string containing Markdown. Reading surfaces render the record as a document, headed by its `title`, then `name`, then key. The writing is searched, linked, versioned, and diffed with the rest of the record.
 
-Use Markdown for material whose value is primarily authored meaning:
+Use record `content` for authored meaning about one structured thing:
 
-- purpose, scope, and ontology boundaries;
+- a contact's context and relationship notes;
+- a task or initiative description;
+- decision rationale and alternatives;
+- a risk response narrative;
+- concise evidence synthesis tied to one record.
+
+Prefer this over creating both a record and a detail page. Record content is limited to 16 KB, so keep it focused on that one thing.
+
+Use a separate Markdown page when the document is independently meaningful, substantially longer, composed across many records, or needs its own page-level collaboration and navigation:
+
 - strategy and narrative documents;
-- rationale, alternatives, and decision context;
-- process guidance and non-inference rules;
-- evidence synthesis and communication history;
 - long-form plans, memos, research, and retrospectives;
-- navigation between canonical collections.
+- process guidance and ontology boundaries;
+- dashboards and synthesis spanning several collections;
+- long correspondence or source documents with appropriate visibility.
 
-Markdown can cite records and sources. It must not silently redefine schema-owned current state.
-
-Do not create a detail page for every record by default. Create one when the record needs substantial narrative, evidence, discussion, or collaboration that would make its schema brittle or unreadable.
+A page can cite or embed records and collections. It must not silently redefine schema-owned current state. Keep an optional `page` field only when the separate document truly exists; it is no longer required merely to make a record readable.
 
 ## Decision rubric
 
 | Need | Default representation |
 |---|---|
 | Current status, owner, date, amount, enum, or reference | Schema-backed keyed record |
-| Searchable directory or index | Schema-backed collection or derived schema-backed projection |
+| Searchable directory | Search the schema-backed keyed collection directly |
+| Specialized deterministic index | Derived schema-backed projection with a regeneration rule |
 | Dated event that remains operationally meaningful | Structured event/observation record |
-| Prior value of current state | Known history |
-| Rationale, narrative, strategy, or synthesis | Markdown page |
-| Long correspondence or source document | Markdown/evidence reference with appropriate visibility |
+| Prior value of current state | Record history/diff or `data --at`; page history for pages |
+| Narrative about one record | Markdown in the record's `content` field |
+| Strategy or synthesis across records | Separate Markdown page |
+| Long correspondence or source document | Separate Markdown/evidence reference with appropriate visibility |
 | Generated dashboard or table | Derived view; canonical records remain authoritative |
 
 ## Applying a skill
 
 A proposal must state, for every planned path:
 
-- whether it is a canonical collection, derived projection, or contextual Markdown page;
+- whether it is a canonical collection, derived projection, record with Markdown content, or independent Markdown page;
 - the collection key and schema when structured;
 - what owns current state;
-- how history is preserved;
+- how record/page history answers prior-state questions;
+- why any separate page cannot live as record content;
 - whether any Markdown duplicates structured fields.
 
-Reject or revise a proposal that uses Markdown because schema design is inconvenient. Also reject a proposal that forces nuanced narrative into dozens of weakly typed fields merely to avoid Markdown.
+Reject or revise a proposal that uses an independent Markdown page because schema design is inconvenient. Also reject a proposal that forces nuanced narrative into dozens of weakly typed fields: put focused writing in record `content`, and reserve a separate page for a genuinely independent document.
