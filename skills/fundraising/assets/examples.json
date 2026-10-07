@@ -19,7 +19,7 @@
       "source_paths": [
         "company.objectives"
       ],
-      "page": "[[capital.rounds.seed-2026]]"
+      "content": "## Seed 2026\n\nSynthetic example context kept with the record."
     }
   ],
   "prospect.schema.json": [
@@ -42,8 +42,7 @@
       ],
       "source_paths": [
         "capital.research"
-      ],
-      "page": null
+      ]
     }
   ],
   "material.schema.json": [
@@ -67,7 +66,7 @@
       "source_paths": [
         "capital.memo"
       ],
-      "page": "[[capital.materials.seed-memo]]"
+      "content": "## Seed memo\n\nSynthetic example context kept with the record."
     }
   ],
   "route.schema.json": [
@@ -89,8 +88,7 @@
       ],
       "source_paths": [
         "capital.prospects"
-      ],
-      "page": null
+      ]
     }
   ]
 }

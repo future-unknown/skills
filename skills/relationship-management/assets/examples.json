@@ -14,8 +14,7 @@
       ],
       "source_paths": [
         "relationships.research"
-      ],
-      "page": null
+      ]
     }
   ],
   "contact.schema.json": [
@@ -37,7 +36,7 @@
       "source_paths": [
         "relationships.interactions"
       ],
-      "page": "[[relationships.contacts.alex-example]]"
+      "content": "## Alex Example\n\nSynthetic example context kept with the record."
     }
   ],
   "interaction.schema.json": [
@@ -56,8 +55,7 @@
         "No response recorded."
       ],
       "follow_up": "Wait for a reply.",
-      "source_paths": [],
-      "page": null
+      "source_paths": []
     }
   ],
   "introduction.schema.json": [
@@ -76,8 +74,7 @@
       ],
       "source_paths": [
         "relationships.interactions"
-      ],
-      "page": null
+      ]
     }
   ]
 }

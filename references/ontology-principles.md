@@ -28,13 +28,13 @@ These rules apply to every Known business skill.
 A useful domain usually has:
 
 - schema-backed keyed collections for canonical current state;
-- concise contextual Markdown explaining purpose, boundaries, process, and navigation;
-- optional detail pages only for records requiring substantial narrative or evidence;
+- optional Markdown `content` on records when one structured thing needs authored context;
+- concise independent pages for purpose, boundaries, cross-record synthesis, process, and navigation;
 - derived views that clearly point back to canonical collections.
 
-Prefer schemas when information must be queried, filtered, validated, related, or acted on. Do not maintain indexes or current-state tables manually in Markdown. When lookup needs an index, use a keyed schema-backed collection or a declared derived projection.
+Prefer schemas when information must be queried, filtered, validated, related, or acted on. Table records are searchable, so search the canonical collection before inventing an index. Do not maintain indexes or current-state tables manually in Markdown; a specialized index is a declared schema-backed derived projection.
 
-Do not create detail pages mechanically for every record. Create them when context, evidence, rationale, or collaboration would make a schema brittle or unreadable. Markdown supplements structured state; it does not redefine it.
+Prefer Markdown in a record's `content` field over a page per row. Create a separate page only when the document is independently meaningful, cross-record, long-form, or larger than the record's 16 KB writing limit. Markdown supplements structured state; it does not redefine it.
 
 Read `data-modeling.md` for the full representation and history rules.
 
