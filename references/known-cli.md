@@ -13,7 +13,7 @@ known help
 
 If `known help` is unavailable, try the bare `known` command. Do not inspect CLI implementation code to infer behavior.
 
-Confirm that the installed CLI exposes organization-scoped wiki operations. Required capabilities are page reads/writes, tree/search, metadata/schema updates, keyed record reads/writes, and wiki discovery. If a required capability is missing, stop and explain which capability is unavailable.
+Confirm that the installed CLI exposes organization-scoped wiki operations. Required capabilities are page reads/writes, tree/search, metadata/schema updates, keyed record reads/writes, record history/diff/links, historical table reads, and wiki discovery. If a required capability is missing, stop and explain which capability is unavailable.
 
 ## 2. Install when absent
 
@@ -95,7 +95,14 @@ known <session> wiki tree <path> --depth 2 --json
 known <session> wiki search "<concept>" <path> --json
 known <session> wiki get <path> --json
 known <session> wiki data <path> --limit 20 --json
+known <session> wiki history <table>/<key> --limit 10 --json
+known <session> wiki diff <table>/<key> --json
+known <session> wiki links <table>/<key> --json
 ```
+
+Search now returns both pages and current table records. A record hit has `kind: "record"`, its key, heading, and address; logs are not searched. Use record search instead of loading all rows merely to find a name or phrase.
+
+A keyed table record has its own retained versions. Address it as `<table>/<key>` for `history`, `diff`, and `links`. Use `wiki data <table> --at <iso>` to read the table as it stood at a moment. An `unknown` key in a historical read means an older version was not retained; it does not prove the record was absent.
 
 Do not load an entire large wiki when a targeted read answers the question. Reuse reads instead of repeatedly fetching the same tree.
 
@@ -105,7 +112,12 @@ Do not load an entire large wiki when a targeted read answers the question. Reus
 - Use `wiki set --if-revision` for existing pages.
 - Inspect existing metadata before changing a key or schema.
 - Attach and validate schemas before inserting records.
+- Let table schemas accept nullable string `content` when a record may need focused Markdown writing.
+- Prefer record `content` over creating a record plus a detail page; record writing is limited to 16 KB.
 - Use stable keyed records and `wiki put --if-version` for updates.
+- Read the resulting record history/diff when verifying a state transition.
+- Search for the record when validating discoverability; do not create a parallel Markdown index by default.
+- Use wikilinks to record addresses and `wiki links` for reverse relationships instead of copying related data.
 - Never treat a refusal as an empty result.
 - Re-read every changed page or record before reporting success.
 

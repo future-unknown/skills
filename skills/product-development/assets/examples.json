@@ -15,8 +15,7 @@
       "linked_initiative_ids": [],
       "source_paths": [
         "customers.discovery"
-      ],
-      "page": null
+      ]
     }
   ],
   "initiative.schema.json": [
@@ -39,7 +38,7 @@
       "source_paths": [
         "product.feedback"
       ],
-      "page": "[[product.initiatives.source-backed-decision-view]]"
+      "content": "## Source-backed decision view\n\nSynthetic example context kept with the record."
     }
   ],
   "experiment.schema.json": [
@@ -58,8 +57,7 @@
       ],
       "source_paths": [
         "product.initiatives.source-backed-decision-view"
-      ],
-      "page": null
+      ]
     }
   ]
 }

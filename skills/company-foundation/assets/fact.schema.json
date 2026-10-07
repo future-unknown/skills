@@ -8,8 +8,7 @@
     "kind",
     "status",
     "owners",
-    "source_paths",
-    "page"
+    "source_paths"
   ],
   "properties": {
     "id": {
@@ -28,7 +27,8 @@
         "string",
         "null"
       ],
-      "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "Optional wikilink to a separate long-form document when record content is not sufficient."
     },
     "statement": {
       "type": "string",
@@ -77,6 +77,13 @@
         "string",
         "null"
       ]
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
     }
   },
   "additionalProperties": false

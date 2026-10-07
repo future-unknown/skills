@@ -17,7 +17,7 @@
       "source_paths": [
         "company.objectives"
       ],
-      "page": "[[work.initiatives.launch-private-beta]]"
+      "content": "## Launch private beta\n\nSynthetic example context kept with the record."
     }
   ],
   "task.schema.json": [
@@ -33,8 +33,7 @@
       "blocked_by": [],
       "blocks": [],
       "definition_of_done": "Checklist covers access, first workflow, verification, and owner sign-off.",
-      "source_paths": [],
-      "page": null
+      "source_paths": []
     }
   ],
   "decision.schema.json": [
@@ -52,7 +51,7 @@
       "source_paths": [
         "work.initiatives.launch-private-beta"
       ],
-      "page": "[[work.decisions.start-with-founder-led-onboarding]]"
+      "content": "## Use founder-led onboarding first\n\nSynthetic example context kept with the record."
     }
   ],
   "risk.schema.json": [
@@ -70,8 +69,7 @@
       ],
       "source_paths": [
         "work.initiatives.launch-private-beta"
-      ],
-      "page": null
+      ]
     }
   ]
 }

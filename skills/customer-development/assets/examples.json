@@ -12,8 +12,7 @@
       "evidence_for": [],
       "evidence_against": [],
       "next_test": "Interview three operations leads.",
-      "source_paths": [],
-      "page": null
+      "source_paths": []
     }
   ],
   "opportunity.schema.json": [
@@ -34,7 +33,7 @@
         "founder-1"
       ],
       "source_paths": [],
-      "page": "[[customers.opportunities.example-studio-weekly-review]]"
+      "content": "## example-studio:weekly-review\n\nSynthetic example context kept with the record."
     }
   ],
   "discovery.schema.json": [
@@ -56,8 +55,7 @@
       ],
       "hypothesis_impact": "supports",
       "follow_up": "Document the bounded workflow.",
-      "source_paths": [],
-      "page": null
+      "source_paths": []
     }
   ],
   "pilot.schema.json": [
@@ -82,8 +80,7 @@
       ],
       "source_paths": [
         "customers.discovery"
-      ],
-      "page": null
+      ]
     }
   ]
 }
