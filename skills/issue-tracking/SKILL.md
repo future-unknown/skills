@@ -49,12 +49,17 @@ Follow the standard skill run, with these specifics.
 - Search for an existing tracker before proposing one, in each wiki the user may mean: `wiki search "issue" <wiki>:`, then `"bug"` and `"task"`, and `wiki tree <wiki>:`. When one exists, ask whether to reuse it or start a new table. A reused table keeps its records and schema; the site maps its fields (see `references/site.md`).
 - Ask for the team's key prefix (`ISS`, `ENG`, `OPS`). Default to `ISS`.
 - Check for a people directory (a contacts or people table). When one exists, assignees and reporters are links to its records; otherwise they are names.
+- Ask how the team works, in one message, each question with its default. Ask only these; anything else does not change the setup.
+  1. **How do you group work?** Projects that have an owner, status and dates of their own (a `projects` table, and a `project` link on each issue); a short fixed list such as teams or areas (an enum field); or nothing beyond labels. Default: labels.
+  2. **Is your workflow different?** Show the default statuses in order and keep them unless the team names other steps.
+  3. **Do you work in cycles or sprints?** Default: no. When yes, a `cycle` field and a view of the current cycle.
 
 ### Propose
 
 Present, and wait for approval:
 
 - the wiki and table path, and whether the table is new or reused;
+- what the answers change: fields and enums added to the schema, any `projects` table (`assets/project.schema.json`), and the site adaptations from `references/site.md`;
 - the schema, with the prefix in the `id` pattern (`^ISS-[0-9]+$`) and in the `id` description's example, the `assignee` and `reporter` descriptions saying "a link to their record in `<people table>`" or "their name", and any statuses, types or labels the team asked for;
 - the rules page text from `assets/issues-page.md`, filled in;
 - the site: its name (default "Issues"), the code tree name (default `<wiki>-issues`), who may use it (every member, or named people and teams), and that its files are public while the data needs a sign-in;
@@ -66,8 +71,9 @@ Add example issues only when the user says yes to that question.
 ### Apply
 
 1. **Table:** fill in `assets/issues-page.md` — `{{PREFIX}}`, `{{TABLE}}` (`<wiki>:issues`), `{{PEOPLE_RULE}}` ("links to their record in `<people table>`" or "written as the person's name"), and `{{SITE_URL}}` as "the issues site" for now — and write the page (`wiki write <wiki>:issues --title "Issues" --file issues.md`), then attach the key and schema (`wiki meta <wiki>:issues --file meta.json`, with `{"key": "id", "schema": …}` — drop `$schema` and `title` from the asset). A reused table keeps its schema unless the user approved a change.
+1a. **Projects (only when the team has them):** create `<wiki>:projects` the same way, keyed by `id`, with `assets/project.schema.json`, before the issues that link to it.
 1b. **Example issues (only on a yes):** adapt `assets/examples.json` to the team's prefix and people rule, keep the `example` label on each, check each key is free with `wiki get`, and `wiki set` them. They link only to each other, both ways.
-2. **Code tree:** `code create <tree> --title "Issues" --description "The issues site for <wiki>:issues"`. Write every file under `assets/site/` to the same path in the tree with `code write <tree>:<path> --file <local file>`, keeping folders (`js/ui/app.js`). Each write reports the tree's problems so far; imports of files not written yet are expected until the last one. Write `site.json` last with the site's name and the real table: `{"title": "<site name>", "table": "<wiki>.issues"}` — a dot, not a colon. Then run `code check <tree>` and stop on any problem it still reports.
+2. **Code tree:** copy `assets/site/` and adapt the copy to the approved answers, following "Adapting the site" in `references/site.md`. Then `code create <tree> --title "Issues" --description "The issues site for <wiki>:issues"` and write every file of the copy to the same path in the tree with `code write <tree>:<path> --file <local file>`, keeping folders (`js/ui/app.js`). Each write reports the tree's problems so far; imports of files not written yet are expected until the last one. Write `site.json` last with the site's name and the real table: `{"title": "<site name>", "table": "<wiki>.issues"}` — a dot, not a colon. Then run `code check <tree>` and stop on any problem it still reports.
 3. **Site:** `sites create "Issues" --source code:<tree>` (add `--user team:<id>` to narrow who may use it), then `sites attach <site> <wiki>`, then `sites publish <site>`. The publish prints the address.
 4. **Address on the page:** replace "the issues site" on the table's page with the published address (`wiki edit <wiki>:issues --old "the issues site" --new "<address>"`), so people and agents reading the page find the site.
 
@@ -77,11 +83,12 @@ Add example issues only when the user says yes to that question.
 - `code check <tree>` reports no problems.
 - `sites get <site>` shows the site live at its address, reading the wiki.
 - The address answers, and its page carries the sign-in settings: `curl -s <address> | grep known-site`.
+- Every adaptation shows where it should: a new filter in the sidebar, a new grouping, a new field on an issue.
 - Ask the user to open the address and sign in. A first visit can take several seconds while the packages are fetched.
 
 ### Report
 
-The table path and schema, the site's address, who can use it, how to change it (below), and the next optional skill. When examples were added, list their keys and how to remove them: filter the site by the `example` label, and `wiki del <wiki>:issues/<key>` for each.
+The table path and schema, the site's address, what was adapted in the site and why, who can use it, how to change it (below), and the next optional skill. When examples were added, list their keys and how to remove them: filter the site by the `example` label, and `wiki del <wiki>:issues/<key>` for each.
 
 ## Changing the site later
 
