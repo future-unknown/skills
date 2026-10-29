@@ -17,7 +17,7 @@ Use a schema-backed keyed collection for:
 
 Update the existing keyed record with a version precondition. Do not append another record merely to preserve the old status, and do not maintain `status_history`, `previous_values`, or similar arrays unless the domain itself requires a legally meaningful ledger.
 
-Every update to a keyed record creates a retained record version. Read it with `wiki history <wiki>:<table>/<key>` and compare it with `wiki diff <wiki>:<table>/<key>`. Use `wiki records <wiki>:<table> --at <iso>` when the question is what the table looked like at a moment. History is not duplicated into current records or hand-maintained Markdown tables. Keep full version history by default. If privacy or storage policy requires a bound, declare `metadata.retain.versions` deliberately, document what older state becomes unknowable, and never invent an application-level history field.
+Every update to a keyed record creates a retained record version. Read it through the record's history, and compare versions to see what changed. Read the table as it stood at a time when the question is what it looked like at a moment. History is not duplicated into current records or hand-maintained Markdown tables. Keep full version history by default. If privacy or storage policy requires a bound, declare `metadata.retain.versions` deliberately, document what older state becomes unknowable, and never invent an application-level history field.
 
 ## Historical events versus old state
 
@@ -33,7 +33,7 @@ Do not edit an event's substantive historical facts to match current understandi
 
 ## Search and indexes
 
-Current table records now appear directly in `wiki search`, including text carried in their fields and Markdown `content`. Search returns the record address, key, and heading. Use that before building an index.
+Current table records appear directly in search, including text carried in their fields and Markdown `content`. Search returns the record address, key, and heading. Use that before building an index.
 
 Do not maintain canonical indexes as Markdown lists or tables. The collection and its schema are the normal index: keep current searchable fields on each record and let interfaces or agents derive views from them.
 
@@ -73,7 +73,7 @@ A page can cite or embed records and collections. It must not silently redefine 
 | Searchable directory | Search the schema-backed keyed collection directly |
 | Specialized deterministic index | Derived schema-backed projection with a regeneration rule |
 | Dated event that remains operationally meaningful | Structured event/observation record |
-| Prior value of current state | Record history/diff or `data --at`; page history for pages |
+| Prior value of current state | Record history and versions, or the table as it stood at a time; page history for pages |
 | Narrative about one record | Markdown in the record's `content` field |
 | Strategy or synthesis across records | Separate Markdown page |
 | Long correspondence or source document | Separate Markdown/evidence reference with appropriate visibility |

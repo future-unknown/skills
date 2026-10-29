@@ -1,12 +1,12 @@
 # Issues
 
-Every bug, feature, improvement and task, one record each, keyed `{{PREFIX}}-` and a number (`{{PREFIX}}-014`). People and agents both file and update issues here; the team works through them at {{SITE_URL}}.
+Every bug, feature, improvement and task, one record each in this table ({{TABLE}}), keyed `{{PREFIX}}-` and a number (`{{PREFIX}}-014`). People and agents both file and update issues here; the team works through them at {{SITE_URL}}.
 
 ## Before you write
 
-- **New issue:** list the keys (`wiki records {{TABLE}} --json`), take the highest number plus one — keys sort as text, so `{{PREFIX}}-1000` comes before `{{PREFIX}}-999` — and `wiki get {{TABLE}}/<key>` to check it is free right before writing. `wiki set` replaces a record with the same key.
-- **Update:** `wiki get` the issue, change only what changed, and write it back whole with `--if-version <_v>`. If refused, someone changed it first: get it again and redo the change.
-- Read this page's schema (`wiki read {{TABLE}} --json`) and set only declared fields.
+- **New issue:** list this table's keys and take the highest number plus one — keys sort as text, so `{{PREFIX}}-1000` comes before `{{PREFIX}}-999` — then read the new key to check it is free right before writing. Writing a record replaces any record with the same key.
+- **Update:** read the issue, change only what changed, and write it back whole with the version you read (`_v`). If refused, someone changed it first: read it again and redo the change.
+- Read this page's schema (in its metadata) and set only declared fields.
 
 ## Workflow
 

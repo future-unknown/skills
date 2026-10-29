@@ -35,12 +35,12 @@ The order of the `status` enum in the schema is the workflow order. The site use
 
 ## Rules agents follow
 
-- **New issue:** list the keys (`wiki records <wiki>:issues --json`) and take the highest number plus one. Keys sort as text (`ISS-1000` comes before `ISS-999`), so compare the numbers, not the order. `wiki get` the new key to check it is free immediately before writing: `wiki set` replaces a record with the same key.
-- **Update:** `wiki get` the issue, change only what changed, write it back whole with `--if-version <_v>`. If refused, someone changed it first: get it again and redo the change.
+- **New issue:** list the table's keys and take the highest number plus one. Keys sort as text (`ISS-1000` comes before `ISS-999`), so compare the numbers, not the order. Read the new key to check it is free immediately before writing: writing a record replaces any record with the same key.
+- **Update:** read the issue, change only what changed, and write it back whole with the version you read (`_v`). If refused, someone changed it first: read it again and redo the change.
 - **Links go both ways:** when ISS-014 is blocked by ISS-009, ISS-009 lists ISS-014 in `blocks`. `related_to` is added on both.
 - **Content starts with the problem.** Don't repeat the fields in it. Keep what was observed apart from guesses and proposals.
 - **Don't infer.** No status from age or silence, no assignee from who wrote last, no priority from tone.
-- **Who did what** is in Known's history (`wiki history <wiki>:issues/<key>`), not in the record.
+- **Who did what** is in the record's history in Known, not in the record.
 
 ## Grouping work
 

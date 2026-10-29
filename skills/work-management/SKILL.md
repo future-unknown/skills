@@ -2,7 +2,7 @@
 name: work-management
 description: Create or improve a practical operating workflow in Known for initiatives, tasks, decisions, and risks. Use when a team needs accountable execution, decision memory, dependencies, or risk tracking without adopting a heavyweight project-management system.
 license: MIT
-compatibility: Requires the Known CLI and permission to read and write the selected wiki.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to read and write the selected wiki.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Create a calm, source-backed operating system for deciding and doing work.
 
 Read, relative to this directory:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`

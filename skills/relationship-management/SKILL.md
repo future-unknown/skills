@@ -2,7 +2,7 @@
 name: relationship-management
 description: Create or improve a source-backed relationship workflow in Known for organizations, contacts, interactions, and introductions. Use for investors, customers, partners, advisors, candidates, connectors, or other relationships where current state must remain separate from correspondence and inference.
 license: MIT
-compatibility: Requires the Known CLI and permission to read and write the selected wiki.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to read and write the selected wiki.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Build one relationship system that can support many relationship types without t
 
 Read:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`

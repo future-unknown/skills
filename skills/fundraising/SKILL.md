@@ -2,7 +2,7 @@
 name: fundraising
 description: Create or improve a source-backed fundraising workflow in Known for financing rounds, investor prospects, materials, and introduction routes. Use when designing or running a raise while keeping investor research, fit assessment, engagement, legal readiness, and commitment state distinct.
 license: MIT
-compatibility: Requires the Known CLI and permission to read and write an appropriately visible wiki.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to read and write an appropriately visible wiki.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Build a credible financing workflow without turning research, attendance, introd
 
 Read:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`

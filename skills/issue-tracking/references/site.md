@@ -64,14 +64,14 @@ Keep each change small and in the code's own style: plain modules, htm markup, t
 | **Other statuses or priorities** | Nothing: the site reads them from the schema. Name unusual closed statuses in `site.json` (`closed`). |
 | **Other field names** (a reused table) | Nothing in the code: map them in `site.json` (`fields`). |
 
-After adapting: run `code check <tree>`, publish, open the site, and look at each change where it should show — the sidebar, the group select, an issue that has the field. Say in the report what was adapted.
+After adapting: check the tree, publish, open the site, and look at each change where it should show — the sidebar, the group select, an issue that has the field. Say in the report what was adapted.
 
 ## When something is wrong
 
 | The site says | Do |
 |---|---|
-| This page is not published from Known yet | Publish with `sites publish <site>`; opening the tree's files elsewhere has no sign-in settings |
-| This site reads no wiki yet | `sites attach <site> <wiki>`, then publish again |
+| This page is not published from Known yet | Publish the site from Known; opening the tree's files elsewhere has no sign-in settings |
+| This site reads no wiki yet | Let the site read the wiki, then publish again |
 | No table at … | Check `table` in `site.json` uses a dot (`product.issues`), and that the page has a key and a schema |
-| … has no schema | Attach the schema with `wiki meta` |
-| The sign-in comes back signed out | The person is not a member of the site's organization, or the site is limited to other people (`sites get <site>`) |
+| … has no schema | Set the schema in the table page's properties |
+| The sign-in comes back signed out | The person is not a member of the site's organization, or the site is limited to other people (the site's details in Known) |

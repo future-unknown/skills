@@ -16,7 +16,7 @@ Every skill must:
 
 1. use a directory name matching the `name` in `SKILL.md` frontmatter;
 2. explain when to use and when not to use it;
-3. read the shared CLI, data-modeling, ontology, and composition references;
+3. read the shared access, data-modeling, ontology, and composition references, and name no tool or command: describe the operation, and let the agent discover it;
 4. inspect before proposing and propose before writing;
 5. define canonical current-state records, meaningful event records, evidence, workflow projections, and prohibited inferences;
 6. prefer schema-backed records over independent Markdown pages for queryable or actionable business state;
