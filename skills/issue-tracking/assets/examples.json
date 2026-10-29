@@ -87,5 +87,25 @@
       "created_at": "2026-10-22T11:45:00Z",
       "content": null
     }
+  ],
+  "project.schema.json": [
+    {
+      "id": "billing-v2",
+      "title": "Billing v2",
+      "status": "active",
+      "owner": "Sam Okafor",
+      "starts_at": "2026-10-01",
+      "due_at": "2026-12-15",
+      "content": "Invoices with mixed tax rates, credit notes, and exports to accounting tools.\n"
+    },
+    {
+      "id": "enterprise-sso",
+      "title": "Enterprise sign-in",
+      "status": "planned",
+      "owner": null,
+      "starts_at": null,
+      "due_at": null,
+      "content": null
+    }
   ]
 }

@@ -50,6 +50,22 @@ The address holds what is shown (`#/open?label=auth&issue=ISS-014`), so any view
 
 All as the signed-in person, within what the site was given: `site.whoami`, the wiki's description (`GET /rpc/<wiki>`), `wiki.records`, `wiki.get`, `wiki.history` and `wiki.links`, and the live stream. When the site's capabilities on the wiki include `set`, it also writes with `wiki.set` and the record's version, and reloads the record when someone changed it first.
 
+## Adapting the site
+
+The site is a working starting point for the default schema, not a product that covers every setup. Adapt a copy to what the team answered before writing it to the code tree; once it is published, the site is the team's.
+
+Keep each change small and in the code's own style: plain modules, htm markup, the same class names and tokens in `style.css`, no new packages unless they are pinned in `imports.json`.
+
+| The team has | Change |
+|---|---|
+| **Projects** (a `projects` table, a `project` link on issues) | `js/model.js`: add `project: ['project']` to `ROLE_GUESSES`. `js/store.js`: in `load`, also read `<wiki>.projects` with `loadRecords` and keep a map of id to title; add `project` to `readRoute`, `routeHash` and `matches` like `label`; count projects in `facets`; add a `project` branch to `keyOf` in `groupsOf`. `js/ui/sidebar.js`: a Projects section like Labels, showing titles. `js/ui/shell.js`: a "By project" option in the group select. `js/ui/issue.js`: a Project row in `Properties` that shows the title and opens the project in Known. |
+| **A fixed list** (`team`, `area`) | The same as projects without the extra table: the values come from the field's enum, in its order. |
+| **Cycles** (`cycle`) | `js/store.js`: a `{ id: 'cycle', label: 'This cycle' }` entry in `VIEWS` and a `case 'cycle'` in `inView` that keeps open issues in the latest cycle. `js/ui/sidebar.js`: its icon and key in `VIEW_ICONS` and `VIEW_KEYS`; `js/ui/shell.js`: the same key in the `g` map; `js/ui/help.js`: the shortcut. |
+| **Other statuses or priorities** | Nothing: the site reads them from the schema. Name unusual closed statuses in `site.json` (`closed`). |
+| **Other field names** (a reused table) | Nothing in the code: map them in `site.json` (`fields`). |
+
+After adapting: run `code check <tree>`, publish, open the site, and look at each change where it should show — the sidebar, the group select, an issue that has the field. Say in the report what was adapted.
+
 ## When something is wrong
 
 | The site says | Do |
