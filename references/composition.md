@@ -27,6 +27,7 @@ Every skill works independently. Composition strengthens references; it does not
 | `finance-and-runway` | Company objectives, customer opportunities, hiring roles |
 | `fundraising` | Relationship contacts/organizations, finance scenarios, work tasks |
 | `hiring` | Company objectives, work initiatives, finance budgets |
+| `issue-tracking` | Relationship contacts/organizations, work tasks |
 
 ## Expansion procedure
 

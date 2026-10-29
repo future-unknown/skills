@@ -16,6 +16,7 @@ Each skill is useful by itself. Install another when the business needs it: exis
 | 6 | [`finance-and-runway`](skills/finance-and-runway/) | Budgets, cash/runway snapshots, and financial assumptions |
 | 7 | [`fundraising`](skills/fundraising/) | Rounds, investor prospects, materials, and introductions |
 | 8 | [`hiring`](skills/hiring/) | Roles, candidates, interviews, and hiring decisions |
+| 9 | [`issue-tracking`](skills/issue-tracking/) | An issues table for people and agents, and a published issues site in Known |
 
 This order is a recommendation, not a dependency graph. Start with any skill. Every cross-skill reference is optional and becomes available only when both concepts exist.
 
@@ -73,7 +74,7 @@ See [`references/data-modeling.md`](references/data-modeling.md), [`references/o
 references/                 shared CLI, data-modeling, ontology, and composition guidance
 skills/<name>/SKILL.md      harness instructions
 skills/<name>/references/   domain model and boundaries
-skills/<name>/assets/       JSON Schemas and synthetic examples
+skills/<name>/assets/       JSON Schemas and synthetic examples (and, for a skill that publishes one, a site's files)
 scripts/validate.mjs        repository validation used by CI
 ```
 
