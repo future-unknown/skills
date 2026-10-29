@@ -10,7 +10,8 @@
       "assignee": "Ana Ruiz",
       "reporter": "Support",
       "labels": [
-        "auth"
+        "auth",
+        "example"
       ],
       "parent": null,
       "related_to": [
@@ -42,7 +43,8 @@
       "assignee": "Jonas Keller",
       "reporter": "Support",
       "labels": [
-        "auth"
+        "auth",
+        "example"
       ],
       "related_to": [
         "[[issues/ISS-014]]"
@@ -59,7 +61,8 @@
       "severity": "major",
       "assignee": "Sam Okafor",
       "labels": [
-        "billing"
+        "billing",
+        "example"
       ],
       "blocked_by": [
         "[[issues/ISS-017]]"
@@ -75,7 +78,8 @@
       "priority": "p1",
       "assignee": "Sam Okafor",
       "labels": [
-        "billing"
+        "billing",
+        "example"
       ],
       "blocks": [
         "[[issues/ISS-016]]"
