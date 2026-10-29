@@ -42,6 +42,16 @@ The order of the `status` enum in the schema is the workflow order. The site use
 - **Don't infer.** No status from age or silence, no assignee from who wrote last, no priority from tone.
 - **Who did what** is in Known's history (`wiki history <wiki>:issues/<key>`), not in the record.
 
+## Grouping work
+
+Teams group issues in one of three ways. Pick the one the team describes; don't add the others.
+
+- **Labels** (the default): short lowercase words on the issue. Enough for most small teams.
+- **A fixed short list** (teams, areas, components): an enum field on the issue, such as `team` with `["web", "mobile", "platform"]`. Adding a value is a schema change.
+- **Projects with their own state**: a `projects` table (`assets/project.schema.json`) with an owner, status and dates, and a `project` link on each issue (`[[projects/billing-v2]]`). The project's own description and decisions live in its record's content.
+
+Cycles or sprints, when a team uses them, are a `cycle` field (`"2026-W44"` or a link to a cycles table); don't add them by default.
+
 ## Links
 
 Issue references are wiki links to the record: `[[issues/ISS-009]]`, or `[[<wiki>:issues/ISS-009]]` from another wiki. A link shows in the target's backlinks and opens it; a bare ID is only text. The schema checks each link field has the `[[…]]` form.
