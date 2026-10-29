@@ -17,7 +17,7 @@ Use a schema-backed keyed collection for:
 
 Update the existing keyed record with a version precondition. Do not append another record merely to preserve the old status, and do not maintain `status_history`, `previous_values`, or similar arrays unless the domain itself requires a legally meaningful ledger.
 
-Every update to a keyed record creates a retained record version. Read it with `wiki history <table>/<key>` and compare it with `wiki diff <table>/<key>`. Use `wiki data <table> --at <iso>` when the question is what the table looked like at a moment. History is not duplicated into current records or hand-maintained Markdown tables. Keep full version history by default. If privacy or storage policy requires a bound, declare `metadata.retain.versions` deliberately, document what older state becomes unknowable, and never invent an application-level history field.
+Every update to a keyed record creates a retained record version. Read it with `wiki history <wiki>:<table>/<key>` and compare it with `wiki diff <wiki>:<table>/<key>`. Use `wiki records <wiki>:<table> --at <iso>` when the question is what the table looked like at a moment. History is not duplicated into current records or hand-maintained Markdown tables. Keep full version history by default. If privacy or storage policy requires a bound, declare `metadata.retain.versions` deliberately, document what older state becomes unknowable, and never invent an application-level history field.
 
 ## Historical events versus old state
 

@@ -91,30 +91,33 @@ Distinguish an absent page from a forbidden wiki, expired session, unsupported c
 Start bounded and targeted:
 
 ```bash
-known <session> wiki tree <path> --depth 2 --json
-known <session> wiki search "<concept>" <path> --json
-known <session> wiki get <path> --json
-known <session> wiki data <path> --limit 20 --json
-known <session> wiki history <table>/<key> --limit 10 --json
-known <session> wiki diff <table>/<key> --json
-known <session> wiki links <table>/<key> --json
+known <session> wiki tree <wiki>:<path> --depth 2
+known <session> wiki search "<concept>" <wiki>:<path> --json
+known <session> wiki read <wiki>:<path> --json
+known <session> wiki records <wiki>:<path> --limit 20 --json
+known <session> wiki get <wiki>:<table>/<key> --json
+known <session> wiki history <wiki>:<table>/<key> --json
+known <session> wiki diff <wiki>:<table>/<key> --json
+known <session> wiki links <wiki>:<table>/<key> --json
 ```
+
+Every path names its wiki: `product:issues` is the page `issues` in the wiki `product`, and `product:issues/ISS-014` is one of its records. `wiki read --json` returns a page's metadata, including its key and schema.
 
 Search now returns both pages and current table records. A record hit has `kind: "record"`, its key, heading, and address; logs are not searched. Use record search instead of loading all rows merely to find a name or phrase.
 
-A keyed table record has its own retained versions. Address it as `<table>/<key>` for `history`, `diff`, and `links`. Use `wiki data <table> --at <iso>` to read the table as it stood at a moment. An `unknown` key in a historical read means an older version was not retained; it does not prove the record was absent.
+A keyed table record has its own retained versions. Address it as `<table>/<key>` for `history`, `diff`, and `links`. Use `wiki records <wiki>:<table> --at <iso>` to read the table as it stood at a moment. An `unknown` key in a historical read means an older version was not retained; it does not prove the record was absent.
 
 Do not load an entire large wiki when a targeted read answers the question. Reuse reads instead of repeatedly fetching the same tree.
 
 ## 6. Write safely
 
 - Read a page before changing it and retain `revisionId`.
-- Use `wiki set --if-revision` for existing pages.
+- Use `wiki write --if-revision` for existing pages.
 - Inspect existing metadata before changing a key or schema.
 - Attach and validate schemas before inserting records.
 - Let table schemas accept nullable string `content` when a record may need focused Markdown writing.
 - Prefer record `content` over creating a record plus a detail page; record writing is limited to 16 KB.
-- Use stable keyed records and `wiki put --if-version` for updates.
+- Use stable keyed records and `wiki set --if-version <_v>` for updates. `wiki set` on a table replaces any record with the same key, so `wiki get` a new key first to check it is free.
 - Read the resulting record history/diff when verifying a state transition.
 - Search for the record when validating discoverability; do not create a parallel Markdown index by default.
 - Use wikilinks to record addresses and `wiki links` for reverse relationships instead of copying related data.
@@ -122,3 +125,13 @@ Do not load an entire large wiki when a targeted read answers the question. Reus
 - Re-read every changed page or record before reporting success.
 
 A skill must propose its exact writes and wait for approval before applying them unless the user explicitly requested immediate application with sufficient scope.
+
+## 7. Sites and code trees
+
+Some skills also publish an interface: a site in Known that signs people in with Known and reads the wikis attached to it. Discover the commands from their menus: `known <session> sites --help` and `known <session> code`.
+
+- A **code tree** holds the site's files with history: `code create <tree>`, `code write <tree>:<path> --file <local>`, `code check <tree>` (files that don't parse, imports that resolve to nothing, packages not pinned).
+- A **site** is registered with `sites create "<name>" --source code:<tree>`, given wikis with `sites attach <site> <wiki>`, and published with `sites publish <site>`. Publishing serves the tree at the site's address and writes its sign-in settings into each page. `sites publish <site> --change <id>` puts an earlier change back.
+- Registering a site, attaching a wiki and publishing change what the organization's members can reach. Propose them like any other write and wait for approval.
+- Site files are public; the data stays behind each person's sign-in and their own access to the wiki.
+

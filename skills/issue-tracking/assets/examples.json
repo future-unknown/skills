@@ -1,0 +1,87 @@
+{
+  "issue.schema.json": [
+    {
+      "id": "ISS-014",
+      "title": "Login loops after password reset on Safari",
+      "type": "bug",
+      "status": "in_progress",
+      "priority": "p0",
+      "severity": "critical",
+      "assignee": "Ana Ruiz",
+      "reporter": "Support",
+      "labels": [
+        "auth"
+      ],
+      "parent": null,
+      "related_to": [
+        "[[issues/ISS-015]]"
+      ],
+      "blocked_by": [],
+      "blocks": [],
+      "links": [
+        {
+          "kind": "pull_request",
+          "url": "https://github.com/example/app/pull/482",
+          "title": "Set Secure on the reset cookie"
+        }
+      ],
+      "due_at": null,
+      "created_at": "2026-10-27T09:14:00Z",
+      "source_paths": [
+        "14 support tickets, 27 Oct"
+      ],
+      "content": "## Problem\n\nAfter resetting a password, Safari users land back on the sign-in page in a loop.\n\n## Acceptance criteria\n\n- [ ] Reset lands on the dashboard in Safari\n- [ ] Regression test for the cookie flags\n"
+    },
+    {
+      "id": "ISS-015",
+      "title": "Password reset email arrives after the link expires",
+      "type": "bug",
+      "status": "done",
+      "priority": "p1",
+      "severity": "major",
+      "assignee": "Jonas Keller",
+      "reporter": "Support",
+      "labels": [
+        "auth"
+      ],
+      "related_to": [
+        "[[issues/ISS-014]]"
+      ],
+      "created_at": "2026-10-20T08:30:00Z",
+      "content": "Links were valid for 10 minutes; some mail providers deliver after 12\u201315. Now valid for 60 minutes.\n"
+    },
+    {
+      "id": "ISS-016",
+      "title": "Invoice totals off by a cent with three tax rates",
+      "type": "bug",
+      "status": "blocked",
+      "priority": "p1",
+      "severity": "major",
+      "assignee": "Sam Okafor",
+      "labels": [
+        "billing"
+      ],
+      "blocked_by": [
+        "[[issues/ISS-017]]"
+      ],
+      "created_at": "2026-10-22T11:40:00Z",
+      "content": "Rounding happens per line, not per invoice. Waiting on the rounding rule in ISS-017.\n"
+    },
+    {
+      "id": "ISS-017",
+      "title": "Confirm the tax rounding rule with finance",
+      "type": "task",
+      "status": "in_progress",
+      "priority": "p1",
+      "assignee": "Sam Okafor",
+      "labels": [
+        "billing"
+      ],
+      "blocks": [
+        "[[issues/ISS-016]]"
+      ],
+      "created_at": "2026-10-22T11:45:00Z",
+      "content": null
+    }
+  ]
+}
