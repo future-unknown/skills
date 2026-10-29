@@ -2,7 +2,7 @@
 name: customer-development
 description: Create or improve a customer-development workflow in Known for customer hypotheses, opportunities, discovery evidence, and pilots. Use when testing who has a problem, qualifying demand, coordinating design partners, or moving from conversations to bounded customer proof.
 license: MIT
-compatibility: Requires the Known CLI and permission to read and write the selected wiki.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to read and write the selected wiki.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Model evidence from problem discovery through a bounded pilot without treating e
 
 Read:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`

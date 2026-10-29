@@ -2,7 +2,7 @@
 name: finance-and-runway
 description: Create or improve a lightweight finance workflow in Known for budgets, cash/runway snapshots, and explicit financial assumptions. Use when a company needs planning visibility without storing bank credentials, transaction ledgers, tax records, or sensitive accounting documents in the wiki.
 license: MIT
-compatibility: Requires the Known CLI and permission to read and write an appropriately restricted wiki.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to read and write an appropriately restricted wiki.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Create decision-useful planning records while keeping accounting systems and sen
 
 Read:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`

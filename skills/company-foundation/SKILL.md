@@ -2,7 +2,7 @@
 name: company-foundation
 description: Create or improve a minimal company foundation in Known: company profile, objectives, and operating facts. Use when starting a company wiki, clarifying what the company is building, or establishing a stable base before adding work, relationships, customers, finance, fundraising, or hiring.
 license: MIT
-compatibility: Requires the Known CLI and permission to read and write the selected wiki.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to read and write the selected wiki.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Build the smallest useful company model. Do not turn this into a generic knowled
 
 Resolve paths relative to this skill directory and read:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`

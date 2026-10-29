@@ -24,15 +24,15 @@ This order is a recommendation, not a dependency graph. Start with any skill. Ev
 
 Point a compatible agent harness at one skill's `SKILL.md`. The skill instructs the harness to:
 
-1. discover or install the Known CLI;
+1. find the agent's way into Known — Known's tools connected to the agent (MCP), or the Known CLI — and discover what it can do;
 2. establish the correct authenticated organization and environment;
 3. inspect the existing wiki and its permissions;
 4. propose an adapted ontology before writing;
 5. wait for approval;
-6. create pages, attach JSON Schemas, and optionally add synthetic bootstrap records through the existing Known CLI;
+6. create pages, attach JSON Schemas, and optionally add synthetic bootstrap records through that way in;
 7. verify and report the resulting model.
 
-The skills do not contain an installer and do not add commands to Known. The harness reasons; the Known CLI reads and writes.
+The skills name no tools or commands and install nothing. The harness reasons; Known's tools, or its CLI, read and write.
 
 ## Install in Pi
 
@@ -71,7 +71,7 @@ See [`references/data-modeling.md`](references/data-modeling.md), [`references/o
 ## Repository layout
 
 ```text
-references/                 shared CLI, data-modeling, ontology, and composition guidance
+references/                 shared access, data-modeling, ontology, and composition guidance
 skills/<name>/SKILL.md      harness instructions
 skills/<name>/references/   domain model and boundaries
 skills/<name>/assets/       JSON Schemas and synthetic examples (and, for a skill that publishes one, a site's files)

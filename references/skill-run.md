@@ -4,7 +4,7 @@ Use this sequence for every ontology skill.
 
 ## 1. Bootstrap
 
-Read `known-cli.md`, discover the installed CLI through public help, establish an explicit session, verify identity and permissions, and discover accessible wikis.
+Read `known-access.md`: find the agent's way into Known (Known's tools connected to the agent, or the CLI), discover the operations it offers for each capability the skill needs, confirm the organization, identity and permissions, and discover accessible wikis.
 
 ## 2. Orient
 
@@ -29,7 +29,7 @@ Wait for approval before writing.
 
 Create only the independent Markdown pages needed for long-form documents, cross-record synthesis, process, or navigation. For every canonical current-state concept, create or reuse a collection page, keep its prose concise, then attach the stable key and schema before inserting any records. Let the schema accept nullable Markdown `content`; prefer that over a separate page for record-specific context. Existing pages use revision preconditions; existing records use version preconditions.
 
-Update keyed records in place for current-state changes and rely on record history, diff, and `data --at` for prior versions. Create separate records only for genuine events, observations, snapshots, or independently meaningful facts. Search current table records directly before proposing an index. Do not create hand-maintained Markdown indexes or current-state tables.
+Update keyed records in place for current-state changes and rely on record history, its versions, and reading the table at a time for prior versions. Create separate records only for genuine events, observations, snapshots, or independently meaningful facts. Search current table records directly before proposing an index. Do not create hand-maintained Markdown indexes or current-state tables.
 
 Synthetic examples are documentation. Do not seed examples unless the user explicitly asks.
 
