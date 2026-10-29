@@ -2,7 +2,7 @@
 name: hiring
 description: Create or improve a privacy-conscious hiring workflow in Known for roles, candidates, interviews, and decisions. Use when planning headcount or running a candidate process while separating sourced evidence, evaluation, workflow state, and sensitive personal information.
 license: MIT
-compatibility: Requires the Known CLI and permission to use a restricted wiki appropriate for candidate data.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to use a restricted wiki appropriate for candidate data.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Build a fair, auditable hiring workflow without turning informal relationships o
 
 Read:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`

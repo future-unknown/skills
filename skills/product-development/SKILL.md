@@ -2,7 +2,7 @@
 name: product-development
 description: Create or improve a product-learning workflow in Known for feedback, product initiatives, and experiments. Use when turning observed user problems into evidence-backed product work while keeping observations, hypotheses, decisions, and implementation separate.
 license: MIT
-compatibility: Requires the Known CLI and permission to read and write the selected wiki.
+compatibility: Requires a way into Known (its tools connected to the agent, or the Known CLI) and permission to read and write the selected wiki.
 metadata:
   version: "0.3.0"
   category: business-ontology
@@ -16,7 +16,7 @@ Build a learning system, not a feature-request inbox that silently becomes a roa
 
 Read:
 
-1. `../../references/known-cli.md`
+1. `../../references/known-access.md`
 2. `../../references/data-modeling.md`
 3. `../../references/ontology-principles.md`
 4. `../../references/composition.md`
