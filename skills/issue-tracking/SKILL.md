@@ -58,14 +58,15 @@ Present, and wait for approval:
 - the schema, with the prefix in the `id` pattern (`^ISS-[0-9]+$`) and in the `id` description's example, the `assignee` and `reporter` descriptions saying "a link to their record in `<people table>`" or "their name", and any statuses, types or labels the team asked for;
 - the rules page text from `assets/issues-page.md`, filled in;
 - the site: its name (default "Issues"), the code tree name (default `<wiki>-issues`), who may use it (every member, or named people and teams), and that its files are public while the data needs a sign-in;
+- whether to add four example issues so the team sees the site working on day one. Ask; the default is no. Examples carry the label `example`, so they are easy to find and remove;
 - every command you will run, in order.
 
-Do not seed example issues unless the user asks; `assets/examples.json` documents the shape.
+Add example issues only when the user says yes to that question.
 
 ### Apply
 
 1. **Table:** fill in `assets/issues-page.md` — `{{PREFIX}}`, `{{TABLE}}` (`<wiki>:issues`), `{{PEOPLE_RULE}}` ("links to their record in `<people table>`" or "written as the person's name"), and `{{SITE_URL}}` as "the issues site" for now — and write the page (`wiki write <wiki>:issues --title "Issues" --file issues.md`), then attach the key and schema (`wiki meta <wiki>:issues --file meta.json`, with `{"key": "id", "schema": …}` — drop `$schema` and `title` from the asset). A reused table keeps its schema unless the user approved a change.
-1b. **Example issues (only when the user asked for them):** adapt `assets/examples.json` to the team's prefix and people rule, check each key is free with `wiki get`, and `wiki set` them. They link only to each other, both ways.
+1b. **Example issues (only on a yes):** adapt `assets/examples.json` to the team's prefix and people rule, keep the `example` label on each, check each key is free with `wiki get`, and `wiki set` them. They link only to each other, both ways.
 2. **Code tree:** `code create <tree> --title "Issues" --description "The issues site for <wiki>:issues"`. Write every file under `assets/site/` to the same path in the tree with `code write <tree>:<path> --file <local file>`, keeping folders (`js/ui/app.js`). Each write reports the tree's problems so far; imports of files not written yet are expected until the last one. Write `site.json` last with the site's name and the real table: `{"title": "<site name>", "table": "<wiki>.issues"}` — a dot, not a colon. Then run `code check <tree>` and stop on any problem it still reports.
 3. **Site:** `sites create "Issues" --source code:<tree>` (add `--user team:<id>` to narrow who may use it), then `sites attach <site> <wiki>`, then `sites publish <site>`. The publish prints the address.
 4. **Address on the page:** replace "the issues site" on the table's page with the published address (`wiki edit <wiki>:issues --old "the issues site" --new "<address>"`), so people and agents reading the page find the site.
@@ -80,7 +81,7 @@ Do not seed example issues unless the user asks; `assets/examples.json` document
 
 ### Report
 
-The table path and schema, the site's address, who can use it, how to change it (below), and the next optional skill.
+The table path and schema, the site's address, who can use it, how to change it (below), and the next optional skill. When examples were added, list their keys and how to remove them: filter the site by the `example` label, and `wiki del <wiki>:issues/<key>` for each.
 
 ## Changing the site later
 
