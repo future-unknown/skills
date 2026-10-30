@@ -11,7 +11,21 @@ An agent reaches Known in one of two ways:
 
 Prefer the tools when you have both; use the CLI when the tools are missing a capability you need.
 
-If you have neither, don't install anything. Tell the user to connect Known to their agent (https://known.info/docs/connect-agent) and continue once they have. Never ask for keys, tokens or passwords, and never read, copy, print or keep session files or tokens.
+If you have neither, don't install anything, and don't send the user away or to a new chat. Known is usually connected to their account but not switched on for this conversation: tell them how to switch it on right here, then continue when they say so.
+
+- **ChatGPT:** start the next message with "Known", or choose Known from the + menu in the message box. ChatGPT uses an app only in the messages it is selected for.
+- **Claude:** + in the message box → Connectors → turn on Known, for this chat.
+- **Cursor, Codex, Claude Code and others:** Known appears among the agent's MCP servers; it may need to be enabled or signed in there.
+
+Only when Known isn't connected to their account at all, walk them through the one-time step in this chat, then continue here once it's done. Known's MCP server is at **https://api.known.info/mcp**; signing in happens in the browser, with no key.
+
+- **ChatGPT:** Settings → Apps → create an app (developer mode) with that URL, then select it for the message.
+- **Claude:** Settings → Connectors → Add custom connector with that URL, then turn it on for the chat.
+- **Coding agents:** add it as a remote (HTTP) MCP server, for example `claude mcp add --transport http known https://api.known.info/mcp` in Claude Code.
+
+Each assistant's exact steps are at https://known.info/docs/connect-agent if theirs differ. Never ask for keys, tokens or passwords, and never read, copy, print or keep session files or tokens.
+
+When the user says Known is connected but you still have no tools from Known, say exactly that and give the steps above for switching it on in this chat; don't repeat a general request to connect it.
 
 ## 2. Discover what you can do
 
