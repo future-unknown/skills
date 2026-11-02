@@ -11,7 +11,15 @@ An agent reaches Known in one of two ways:
 
 Prefer the tools when you have both; use the CLI when the tools are missing a capability you need.
 
-If you have neither, don't install anything. Tell the user to connect Known to their agent (https://known.info/docs/connect-agent) and continue once they have. Never ask for keys, tokens or passwords, and never read, copy, print or keep session files or tokens.
+If you have neither, don't install anything, and don't send the user away or to a new chat. Known is usually connected to their account but not switched on for this conversation: tell them how to switch it on right here, then continue when they say so.
+
+- **ChatGPT:** start the next message with "Known", or choose Known from the + menu in the message box. ChatGPT uses an app only in the messages it is selected for.
+- **Claude:** + in the message box → Connectors → turn on Known, for this chat.
+- **Cursor, Codex, Claude Code and others:** Known appears among the agent's MCP servers; it may need to be enabled or signed in there.
+
+Only when Known isn't connected to their account at all, read https://known.info/setup.md, Known's own setup instructions for agents: its MCP address, and the steps for each assistant (Claude, ChatGPT, Claude Code, Codex, Cursor and others). Walk the user through the steps for theirs in this chat, running any command yourself where you can; signing in always happens in their browser, with no key. Continue here once it's done. Never ask for keys, tokens or passwords, and never read, copy, print or keep session files or tokens.
+
+When the user says Known is connected but you still have no tools from Known, say exactly that and give the steps above for switching it on in this chat; don't repeat a general request to connect it.
 
 ## 2. Discover what you can do
 
