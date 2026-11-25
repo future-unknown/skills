@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Monitoring signal",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "summary",
+    "status",
+    "detected_at",
+    "source_paths"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^S-[0-9]+$",
+      "description": "S- and the next free number, such as S-0042."
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "new-company",
+        "removed-company",
+        "new-round",
+        "exit",
+        "shutdown",
+        "person-joined",
+        "person-left",
+        "title-change",
+        "website-changed",
+        "media-changed",
+        "media-broken",
+        "news",
+        "other"
+      ]
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "[[companies/<id>]] it concerns; null for a company not yet in the table."
+    },
+    "subject": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "The record it would change, when that is not the company ([[people/<id>]], [[media/<id>]])."
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 240,
+      "description": "What was found, in one line."
+    },
+    "proposed": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "The change it proposes: the record to write, as { \"table\": \"rounds\", \"key\": \"…\", \"set\": { …fields… } }.",
+      "properties": {
+        "table": {
+          "type": "string",
+          "enum": [
+            "companies",
+            "rounds",
+            "people",
+            "media",
+            "team",
+            "fund",
+            "updates"
+          ]
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "set": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "table",
+        "key",
+        "set"
+      ],
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "proposed",
+        "accepted",
+        "applied",
+        "rejected",
+        "duplicate"
+      ],
+      "description": "proposed: waiting. accepted: a person said yes; the next run applies it. applied: written. rejected, duplicate: closed."
+    },
+    "detected_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?Z$"
+    },
+    "decided_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decided_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?Z$"
+    },
+    "run": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "[[runs/<id>]] that found it."
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where this came from: the web pages (https://…) or wiki paths it was read from. Evidence, not ownership."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
+    }
+  },
+  "additionalProperties": false
+}

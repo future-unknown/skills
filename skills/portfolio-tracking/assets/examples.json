@@ -1,0 +1,412 @@
+{
+  "fund.schema.json": [
+    {
+      "id": "example-ventures",
+      "name": "Example Ventures",
+      "website": "https://examplevc.example",
+      "one_liner": "A seed fund for software that runs physical operations.",
+      "thesis": "Backs technical founders building software for logistics, energy and manufacturing operators.",
+      "stages": [
+        "pre-seed",
+        "seed"
+      ],
+      "sectors": [
+        "logistics",
+        "energy",
+        "industrial software"
+      ],
+      "geographies": [
+        "Europe",
+        "North America"
+      ],
+      "locations": [
+        "Berlin",
+        "Toronto"
+      ],
+      "check_size": "€250k–€1.5M",
+      "vehicles": [
+        {
+          "name": "Example Ventures I",
+          "vintage": 2021,
+          "size": 40000000,
+          "currency": "EUR"
+        },
+        {
+          "name": "Example Ventures II",
+          "vintage": 2025,
+          "size": null,
+          "currency": null
+        }
+      ],
+      "logo": "[[media/example-ventures-logo]]",
+      "profiles": [
+        {
+          "kind": "linkedin",
+          "url": "https://www.linkedin.com/company/example-ventures-sample"
+        }
+      ],
+      "source_paths": [
+        "https://examplevc.example/",
+        "https://examplevc.example/about"
+      ],
+      "checked_at": "2026-11-25T09:00:00Z",
+      "content": null
+    }
+  ],
+  "team.schema.json": [
+    {
+      "id": "mara-lind",
+      "name": "Mara Lind",
+      "title": "General Partner",
+      "role": "partner",
+      "status": "current",
+      "bio": "Previously ran operations at a freight software company.",
+      "photo": "[[media/team-mara-lind-headshot]]",
+      "profiles": [
+        {
+          "kind": "linkedin",
+          "url": "https://www.linkedin.com/in/mara-lind-sample"
+        }
+      ],
+      "joined_on": null,
+      "left_on": null,
+      "source_paths": [
+        "https://examplevc.example/team"
+      ],
+      "checked_at": "2026-11-25T09:00:00Z",
+      "content": null
+    },
+    {
+      "id": "theo-banerjee",
+      "name": "Theo Banerjee",
+      "title": "Associate",
+      "role": "associate",
+      "status": "current",
+      "bio": null,
+      "photo": null,
+      "profiles": [],
+      "joined_on": null,
+      "left_on": null,
+      "source_paths": [
+        "https://examplevc.example/team"
+      ],
+      "checked_at": "2026-11-25T09:00:00Z",
+      "content": null
+    }
+  ],
+  "company.schema.json": [
+    {
+      "id": "ferncloud",
+      "name": "Ferncloud",
+      "website": "https://ferncloud.example",
+      "domain": "ferncloud.example",
+      "one_liner": "Scheduling software for regional freight depots.",
+      "sectors": [
+        "logistics"
+      ],
+      "stage": "series-a",
+      "status": "active",
+      "hq": "Rotterdam, Netherlands",
+      "founded_year": 2022,
+      "logo": "[[media/ferncloud-logo]]",
+      "profiles": [
+        {
+          "kind": "website",
+          "url": "https://ferncloud.example"
+        }
+      ],
+      "lead_partner": "[[team/mara-lind]]",
+      "board_role": "board",
+      "first_invested_on": "2023-03-14",
+      "ownership_percent": 9.2,
+      "ownership_as_of": "2026-06-30",
+      "reporting_cadence": "monthly",
+      "on_fund_site": true,
+      "exit_note": null,
+      "source_paths": [
+        "https://examplevc.example/portfolio",
+        "https://ferncloud.example/about"
+      ],
+      "checked_at": "2026-11-25T09:00:00Z",
+      "content": "Depot scheduling for mid-size freight operators. The fund led the seed and followed on in the Series A.",
+      "fund_position": "held",
+      "first_invested_year": 2023,
+      "entry_round": "Seed"
+    },
+    {
+      "id": "voltgrid-sample",
+      "name": "Voltgrid Sample",
+      "website": "https://voltgrid.example",
+      "domain": "voltgrid.example",
+      "one_liner": "Battery dispatch for small solar farms.",
+      "sectors": [
+        "energy"
+      ],
+      "stage": "seed",
+      "status": "acquired",
+      "hq": null,
+      "founded_year": null,
+      "logo": null,
+      "profiles": [],
+      "lead_partner": null,
+      "board_role": null,
+      "first_invested_on": null,
+      "ownership_percent": null,
+      "ownership_as_of": null,
+      "reporting_cadence": "none",
+      "on_fund_site": true,
+      "exit_note": "The fund's portfolio page says \"Seed in 2021 Acquired in 2024\"; no acquirer is named.",
+      "source_paths": [
+        "https://examplevc.example/portfolio"
+      ],
+      "checked_at": "2026-11-25T09:00:00Z",
+      "content": null,
+      "fund_position": "exited",
+      "first_invested_year": 2021,
+      "entry_round": "Seed"
+    }
+  ],
+  "round.schema.json": [
+    {
+      "id": "ferncloud-seed",
+      "company": "[[companies/ferncloud]]",
+      "name": "Seed",
+      "stage": "seed",
+      "instrument": "priced-equity",
+      "announced_on": "2023-03-20",
+      "closed_on": "2023-03-14",
+      "amount": 2400000,
+      "currency": "EUR",
+      "pre_money": null,
+      "post_money": null,
+      "valuation_cap": null,
+      "lead_investors": [
+        "Example Ventures"
+      ],
+      "investors": [
+        "Northfield Angels (sample)"
+      ],
+      "fund_participated": true,
+      "fund_amount": 1200000,
+      "basis": "confirmed",
+      "source_paths": [
+        "https://ferncloud.example/news/seed",
+        "portfolio:companies/ferncloud"
+      ],
+      "content": null
+    },
+    {
+      "id": "ferncloud-series-a",
+      "company": "[[companies/ferncloud]]",
+      "name": "Series A",
+      "stage": "series-a",
+      "instrument": null,
+      "announced_on": "2025-09-02",
+      "closed_on": null,
+      "amount": 11000000,
+      "currency": "EUR",
+      "pre_money": null,
+      "post_money": null,
+      "valuation_cap": null,
+      "lead_investors": [
+        "Harbor Growth (sample)"
+      ],
+      "investors": [
+        "Example Ventures"
+      ],
+      "fund_participated": null,
+      "fund_amount": null,
+      "basis": "public",
+      "source_paths": [
+        "https://ferncloud.example/news/series-a"
+      ],
+      "content": null
+    }
+  ],
+  "person.schema.json": [
+    {
+      "id": "ferncloud-ana-ruiz",
+      "name": "Ana Ruiz",
+      "company": "[[companies/ferncloud]]",
+      "title": "Co-founder & CEO",
+      "role": "founder",
+      "status": "current",
+      "bio": "Ran depot operations for eight years before starting Ferncloud.",
+      "photo": "[[media/ferncloud-ana-ruiz-headshot]]",
+      "profiles": [
+        {
+          "kind": "linkedin",
+          "url": "https://www.linkedin.com/in/ana-ruiz-sample"
+        }
+      ],
+      "started_on": null,
+      "ended_on": null,
+      "contact": null,
+      "source_paths": [
+        "https://ferncloud.example/about"
+      ],
+      "checked_at": "2026-11-25T09:00:00Z",
+      "content": null
+    }
+  ],
+  "media.schema.json": [
+    {
+      "id": "ferncloud-logo",
+      "kind": "logo",
+      "subject": "[[companies/ferncloud]]",
+      "url": "https://ferncloud.example/assets/logo.svg",
+      "source_page": "https://ferncloud.example/",
+      "alt": "Ferncloud logo",
+      "mime_type": "image/svg+xml",
+      "width": null,
+      "height": null,
+      "bytes": 3412,
+      "sha256": "5d41402abc4b2a76b9719d911017c5925d41402abc4b2a76b9719d911017c592",
+      "fetched_at": "2026-11-25T09:00:00Z",
+      "status": "current",
+      "usage_note": null,
+      "source_paths": [
+        "https://ferncloud.example/"
+      ],
+      "content": null
+    },
+    {
+      "id": "team-mara-lind-headshot",
+      "kind": "headshot",
+      "subject": "[[team/mara-lind]]",
+      "url": "https://examplevc.example/images/team/mara-lind.jpg",
+      "source_page": "https://examplevc.example/team",
+      "alt": "Mara Lind",
+      "mime_type": "image/jpeg",
+      "width": 800,
+      "height": 800,
+      "bytes": 48211,
+      "sha256": null,
+      "fetched_at": "2026-11-25T09:00:00Z",
+      "status": "current",
+      "usage_note": null,
+      "source_paths": [
+        "https://examplevc.example/team"
+      ],
+      "content": null
+    }
+  ],
+  "update.schema.json": [
+    {
+      "id": "ferncloud-2026-10-update",
+      "company": "[[companies/ferncloud]]",
+      "date": "2026-11-04",
+      "period": "2026-10",
+      "origin": "company-reported",
+      "kind": "investor-update",
+      "title": "October update: two new depot networks",
+      "metrics": {
+        "currency": "EUR",
+        "arr": 3100000,
+        "net_burn": 240000,
+        "cash": 6800000,
+        "runway_months": 28,
+        "headcount": 41,
+        "other": [
+          {
+            "name": "Depots live",
+            "value": 118,
+            "unit": null
+          }
+        ]
+      },
+      "highlights": [
+        "Signed two regional depot networks"
+      ],
+      "lowlights": [
+        "Enterprise security review slipped to December"
+      ],
+      "asks": [
+        "Introductions to cold-chain operators in Germany"
+      ],
+      "author": "Ana Ruiz",
+      "source_paths": [
+        "Email from the CEO, 4 Nov 2026"
+      ],
+      "content": "## Highlights\n\nTwo regional depot networks signed.\n\n## Lowlights\n\nThe enterprise security review slipped to December."
+    },
+    {
+      "id": "ferncloud-2026-11-board",
+      "company": "[[companies/ferncloud]]",
+      "date": "2026-11-18",
+      "period": null,
+      "origin": "fund-note",
+      "kind": "board-meeting",
+      "title": "Q4 board meeting notes",
+      "metrics": {},
+      "highlights": [],
+      "lowlights": [],
+      "asks": [],
+      "author": "Mara Lind",
+      "source_paths": [],
+      "content": "Board approved the 2027 hiring plan. Our view: pricing needs work before the next raise."
+    }
+  ],
+  "task.schema.json": [
+    {
+      "id": "T-001",
+      "title": "Introduce Ferncloud to two cold-chain operators in Germany",
+      "company": "[[companies/ferncloud]]",
+      "status": "open",
+      "kind": "intro",
+      "owner": "[[team/theo-banerjee]]",
+      "due_on": "2026-12-05",
+      "from_update": "[[updates/ferncloud-2026-10-update]]",
+      "created_at": "2026-11-05T10:12:00Z",
+      "content": null
+    }
+  ],
+  "signal.schema.json": [
+    {
+      "id": "S-0001",
+      "kind": "new-round",
+      "company": "[[companies/ferncloud]]",
+      "subject": null,
+      "summary": "Ferncloud's newsroom announces a €4M extension led by Harbor Growth (sample).",
+      "proposed": {
+        "table": "rounds",
+        "key": "ferncloud-series-a-extension",
+        "set": {
+          "company": "[[companies/ferncloud]]",
+          "name": "Series A extension",
+          "amount": 4000000,
+          "currency": "EUR",
+          "lead_investors": [
+            "Harbor Growth (sample)"
+          ],
+          "basis": "public"
+        }
+      },
+      "status": "proposed",
+      "detected_at": "2026-11-25T09:04:00Z",
+      "decided_by": null,
+      "decided_at": null,
+      "run": "[[runs/2026-11-25T0900Z]]",
+      "source_paths": [
+        "https://ferncloud.example/news/series-a-extension"
+      ],
+      "content": null
+    }
+  ],
+  "run.schema.json": [
+    {
+      "id": "2026-11-25T0900Z",
+      "started_at": "2026-11-25T09:00:00Z",
+      "finished_at": "2026-11-25T09:11:00Z",
+      "status": "partial",
+      "agent": "A scheduled agent acting for Mara Lind",
+      "pages_checked": 37,
+      "signals_created": 1,
+      "signals_applied": 0,
+      "problems": [
+        "https://voltgrid.example/ did not answer (timeout)"
+      ],
+      "content": null
+    }
+  ]
+}

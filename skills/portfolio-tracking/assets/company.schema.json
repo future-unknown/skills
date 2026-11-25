@@ -1,0 +1,266 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Portfolio company",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "source_paths"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "A stable slug, usually from the website domain (ferncloud for ferncloud.example)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "website": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^https?://",
+      "description": "The company's own website."
+    },
+    "domain": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z0-9.-]+\\.[a-z]{2,}$",
+      "description": "The website's domain without www, used to match the same company across sources."
+    },
+    "one_liner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "What it does, in one line, from its own site or the fund's."
+    },
+    "sectors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "stage": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "pre-seed",
+        "seed",
+        "series-a",
+        "series-b",
+        "series-c",
+        "series-d-plus",
+        "growth",
+        "public"
+      ],
+      "description": "The latest stage known; null when unknown."
+    },
+    "status": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "active",
+        "acquired",
+        "ipo",
+        "shut-down",
+        "dormant"
+      ],
+      "description": "What is true of the company now, whatever the fund holds. A source must say so for anything but active; null when no source says (\"Exited in 2024\" says nothing about the company)."
+    },
+    "fund_position": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "held",
+        "exited"
+      ],
+      "description": "Whether the fund still holds a stake: held, exited, or null when unknown. Separate from status: a fund can exit a company that stays active."
+    },
+    "hq": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Headquarters city and country, as stated."
+    },
+    "founded_year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1800,
+      "maximum": 2200
+    },
+    "logo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "The chosen logo: a link to its record in media ([[media/<id>]])."
+    },
+    "profiles": {
+      "type": "array",
+      "description": "Public profiles the fund's or company's own pages link to. Never searched for elsewhere.",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "url"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "website",
+              "linkedin",
+              "x",
+              "github",
+              "crunchbase",
+              "angellist",
+              "blog",
+              "other"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "lead_partner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "The fund's partner on this company: [[team/<id>]]."
+    },
+    "board_role": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "board",
+        "observer",
+        "none"
+      ],
+      "description": "The fund's seat, when known."
+    },
+    "first_invested_on": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "When the fund first invested, when the exact date is known."
+    },
+    "first_invested_year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1900,
+      "maximum": 2200,
+      "description": "The year the fund first invested, when only the year is known."
+    },
+    "entry_round": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The round the fund entered in, as the source writes it (\"Seed\", \"Series A\", \"Secondary\")."
+    },
+    "ownership_percent": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 100,
+      "description": "The fund's ownership as last reported, a percentage (8.5 means 8.5%)."
+    },
+    "ownership_as_of": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "When that ownership figure was true."
+    },
+    "reporting_cadence": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "monthly",
+        "quarterly",
+        "none"
+      ],
+      "description": "How often the company is expected to send an update."
+    },
+    "on_fund_site": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the fund's own portfolio page lists it now."
+    },
+    "exit_note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "For an exit or shutdown: what happened, as the source states it."
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where this came from: the web pages (https://…) or wiki paths it was read from. Evidence, not ownership."
+    },
+    "checked_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?Z$",
+      "description": "When the sources were last read for this record, in UTC."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
+    }
+  },
+  "additionalProperties": false
+}

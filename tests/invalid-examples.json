@@ -41,5 +41,52 @@
       "source_paths": [],
       "page": null
     }
+  },
+  {
+    "schema": "skills/portfolio-tracking/assets/round.schema.json",
+    "reason": "a round amount without a currency",
+    "record": {
+      "id": "bad-round",
+      "company": "[[companies/ferncloud]]",
+      "name": "Seed",
+      "amount": 2000000,
+      "currency": null,
+      "basis": "public",
+      "source_paths": []
+    }
+  },
+  {
+    "schema": "skills/portfolio-tracking/assets/company.schema.json",
+    "reason": "a company status invented from silence",
+    "record": {
+      "id": "bad-company",
+      "name": "Bad",
+      "status": "probably-dead",
+      "source_paths": []
+    }
+  },
+  {
+    "schema": "skills/portfolio-tracking/assets/update.schema.json",
+    "reason": "an update must say whether the company reported it or the fund wrote it",
+    "record": {
+      "id": "bad-update",
+      "company": "[[companies/ferncloud]]",
+      "date": "2026-11-04",
+      "kind": "investor-update",
+      "title": "Update",
+      "source_paths": []
+    }
+  },
+  {
+    "schema": "skills/portfolio-tracking/assets/signal.schema.json",
+    "reason": "a signal cannot skip review with an invented status",
+    "record": {
+      "id": "S-0009",
+      "kind": "new-round",
+      "summary": "x",
+      "status": "auto-applied",
+      "detected_at": "2026-11-25T09:00:00Z",
+      "source_paths": []
+    }
   }
 ]

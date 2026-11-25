@@ -1,0 +1,215 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Company update",
+  "type": "object",
+  "required": [
+    "id",
+    "company",
+    "date",
+    "origin",
+    "kind",
+    "title",
+    "source_paths"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Company, date and a short word, such as ferncloud-2026-10-update."
+    },
+    "company": {
+      "type": "string",
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "[[companies/<id>]]"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "When it was sent or happened."
+    },
+    "period": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}(-(0[1-9]|1[0-2])|-Q[1-4])?$",
+      "description": "The period it reports on: 2026-10, 2026-Q3 or 2026."
+    },
+    "origin": {
+      "type": "string",
+      "enum": [
+        "company-reported",
+        "fund-note"
+      ],
+      "description": "company-reported: what the company said, kept as its claims. fund-note: the fund's own call note or assessment."
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "investor-update",
+        "board-meeting",
+        "call",
+        "news",
+        "milestone",
+        "other"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Figures as the source states them. Missing means not stated; zero means stated as zero.",
+      "properties": {
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{3}$",
+          "description": "ISO 4217 code for every amount on this record, such as USD or EUR."
+        },
+        "revenue": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Revenue in the period."
+        },
+        "arr": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Annual recurring revenue at the end of the period."
+        },
+        "mrr": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "gross_burn": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Monthly gross burn."
+        },
+        "net_burn": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Monthly net burn."
+        },
+        "cash": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Cash at the end of the period."
+        },
+        "runway_months": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "headcount": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "customers": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "other": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "value"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "value": {
+                "type": "number"
+              },
+              "unit": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "highlights": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "lowlights": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "asks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "What the company asked the fund for, in its words."
+    },
+    "author": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Who wrote or sent it."
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where this came from: the web pages (https://…) or wiki paths it was read from. Evidence, not ownership."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
+    }
+  },
+  "additionalProperties": false
+}

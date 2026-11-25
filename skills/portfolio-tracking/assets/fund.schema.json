@@ -1,0 +1,191 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fund",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "website",
+    "source_paths"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "A stable slug for the fund, such as example-ventures."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The fund's name as it presents itself."
+    },
+    "website": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://",
+      "description": "The fund's own website; the import starts here."
+    },
+    "one_liner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "How the fund describes itself, in one line, from its own site."
+    },
+    "thesis": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The investment thesis in the fund's own words."
+    },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Stages it says it invests in."
+    },
+    "sectors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Sectors it says it invests in."
+    },
+    "geographies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Regions it says it invests in."
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where its offices are."
+    },
+    "check_size": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Check size as the site states it, kept as written (\"$250k–$1.5M\")."
+    },
+    "vehicles": {
+      "type": "array",
+      "description": "Funds or vehicles the site names, with what it says about each. Unstated values stay null.",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "vintage": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1900,
+            "maximum": 2200
+          },
+          "size": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "currency": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[A-Z]{3}$",
+            "description": "ISO 4217 code for every amount on this record, such as USD or EUR."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "logo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "The chosen logo: a link to its record in media ([[media/<id>]])."
+    },
+    "profiles": {
+      "type": "array",
+      "description": "Public profiles the fund's or company's own pages link to. Never searched for elsewhere.",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "url"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "website",
+              "linkedin",
+              "x",
+              "github",
+              "crunchbase",
+              "angellist",
+              "blog",
+              "other"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where this came from: the web pages (https://…) or wiki paths it was read from. Evidence, not ownership."
+    },
+    "checked_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?Z$",
+      "description": "When the sources were last read for this record, in UTC."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
+    }
+  },
+  "additionalProperties": false
+}

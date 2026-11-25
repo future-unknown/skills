@@ -1,0 +1,253 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Financing round",
+  "type": "object",
+  "required": [
+    "id",
+    "company",
+    "name",
+    "basis",
+    "source_paths"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Company and round, such as ferncloud-seed or ferncloud-series-a."
+    },
+    "company": {
+      "type": "string",
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "[[companies/<id>]]"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The round as named (\"Seed\", \"Series A\", \"Bridge\")."
+    },
+    "stage": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "pre-seed",
+        "seed",
+        "series-a",
+        "series-b",
+        "series-c",
+        "series-d-plus",
+        "growth",
+        "public",
+        "bridge",
+        "other"
+      ]
+    },
+    "instrument": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "safe",
+        "convertible-note",
+        "priced-equity",
+        "debt",
+        "grant",
+        "other"
+      ],
+      "description": "null when no source says. debt (a credit facility, loan or lending programme) and grant are recorded but never counted as equity raised."
+    },
+    "announced_on": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "closed_on": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "year": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1900,
+      "maximum": 2200,
+      "description": "The year of the round, when the source gives no exact date."
+    },
+    "amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Total raised in the round. null when not stated; never estimated."
+    },
+    "currency": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 code for every amount on this record, such as USD or EUR."
+    },
+    "pre_money": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "post_money": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "valuation_cap": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "For a SAFE or note."
+    },
+    "lead_investors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Leads as named by the source."
+    },
+    "investors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Other participants as named by the source."
+    },
+    "fund_participated": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "Whether the fund invested in this round; null when unknown."
+    },
+    "fund_amount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "What the fund put in, in currency. Confidential; null when unknown."
+    },
+    "basis": {
+      "type": "string",
+      "enum": [
+        "public",
+        "company-reported",
+        "confirmed"
+      ],
+      "description": "public: a press release or website. company-reported: the company told the fund. confirmed: the fund holds the closing documents."
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where this came from: the web pages (https://…) or wiki paths it was read from. Evidence, not ownership."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "anyOf": [
+          {
+            "properties": {
+              "amount": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "amount"
+            ]
+          },
+          {
+            "properties": {
+              "fund_amount": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "fund_amount"
+            ]
+          },
+          {
+            "properties": {
+              "pre_money": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "pre_money"
+            ]
+          },
+          {
+            "properties": {
+              "post_money": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "post_money"
+            ]
+          },
+          {
+            "properties": {
+              "valuation_cap": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "valuation_cap"
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "currency"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Company person",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "company",
+    "role",
+    "status",
+    "source_paths"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Company and name, such as ferncloud-ana-ruiz."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "company": {
+      "type": "string",
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "[[companies/<id>]]"
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Their title as the company's site writes it."
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "founder",
+        "executive",
+        "board",
+        "advisor",
+        "other"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "current",
+        "former"
+      ],
+      "description": "former when they left; the record stays."
+    },
+    "bio": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Their bio as the company's own pages state it. Work-related only."
+    },
+    "photo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "The chosen headshot: a link to its record in media ([[media/<id>]])."
+    },
+    "profiles": {
+      "type": "array",
+      "description": "Public profiles the fund's or company's own pages link to. Never searched for elsewhere.",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "url"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "website",
+              "linkedin",
+              "x",
+              "github",
+              "crunchbase",
+              "angellist",
+              "blog",
+              "other"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https?://"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "started_on": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "ended_on": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "contact": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "Their record in a contacts table, when relationship management is set up: [[contacts/<id>]]."
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where this came from: the web pages (https://…) or wiki paths it was read from. Evidence, not ownership."
+    },
+    "checked_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?Z$",
+      "description": "When the sources were last read for this record, in UTC."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
+    }
+  },
+  "additionalProperties": false
+}

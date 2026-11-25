@@ -17,6 +17,7 @@ Each skill is useful by itself. Install another when the business needs it: exis
 | 7 | [`fundraising`](skills/fundraising/) | Rounds, investor prospects, materials, and introductions |
 | 8 | [`hiring`](skills/hiring/) | Roles, candidates, interviews, and hiring decisions |
 | 9 | [`issue-tracking`](skills/issue-tracking/) | An issues table for people and agents, and a published issues site in Known |
+| 10 | [`portfolio-tracking`](skills/portfolio-tracking/) | A venture fund's portfolio companies, rounds, people and updates, imported from the fund's website, with agent monitoring and a portfolio site |
 
 This order is a recommendation, not a dependency graph. Start with any skill. Every cross-skill reference is optional and becomes available only when both concepts exist.
 

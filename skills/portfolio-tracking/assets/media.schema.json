@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Media reference",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "subject",
+    "url",
+    "status",
+    "source_paths"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Subject and kind, such as ferncloud-logo or team-mara-lind-headshot."
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "logo",
+        "logo-dark",
+        "icon",
+        "headshot",
+        "cover-image",
+        "screenshot",
+        "press-image",
+        "document"
+      ]
+    },
+    "subject": {
+      "type": "string",
+      "pattern": "^\\[\\[[^\\]]+\\]\\]$",
+      "description": "What it shows: [[fund/<id>]], [[team/<id>]], [[companies/<id>]] or [[people/<id>]]."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://",
+      "description": "The file's own address. Known stores the reference, not the file."
+    },
+    "source_page": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^https?://",
+      "description": "The page it was found on."
+    },
+    "alt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "What it shows, for people who cannot see it."
+    },
+    "mime_type": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z]+/[a-z0-9.+-]+$"
+    },
+    "width": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "height": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "bytes": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "sha256": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Fingerprint of the file when last fetched, so a changed file is noticed."
+    },
+    "fetched_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2}(\\.\\d+)?)?Z$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "current",
+        "broken",
+        "replaced"
+      ],
+      "description": "broken: the address no longer answers. replaced: a newer record took its place."
+    },
+    "usage_note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Any terms the source states (\"press kit; credit the photographer\")."
+    },
+    "source_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "description": "Where this came from: the web pages (https://…) or wiki paths it was read from. Evidence, not ownership."
+    },
+    "content": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional Markdown writing about this record. Use this before creating a separate detail page."
+    }
+  },
+  "additionalProperties": false
+}
