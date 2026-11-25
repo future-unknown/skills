@@ -30,7 +30,7 @@ The pages `portfolio` (the wiki's home, `assets/portfolio-page.md`) and `monitor
 Two different questions, two fields:
 
 - `status` is what is true of the **company**: `active`, `acquired`, `ipo`, `shut-down`, `dormant`, or null when no source says. Anything but `active` needs a source that says so, quoted in `exit_note`. Silence is not dormancy.
-- `fund_position` is whether the **fund** still holds a stake: `held`, `exited`, or null. A fund can exit a company that stays active (a secondary sale), and an acquisition doesn't by itself say the fund is out. "Exited in 2024" sets `fund_position: exited` and leaves `status` null.
+- `fund_position` is whether the **fund** still holds a stake: `held`, `exited`, or null. Many funds list every company on one page with no live or exited split; then it stays null, and monitoring treats a company that isn't exited, acquired, listed or shut down as one the fund may still hold. A fund can exit a company that stays active (a secondary sale), and an acquisition doesn't by itself say the fund is out. "Exited in 2024" sets `fund_position: exited` and leaves `status` null.
 
 When the fund's site disagrees with itself (a company filed under "live" whose card says "Acquired by X in 2025"), record what each says: the explicit outcome sets `status`, the filing sets `fund_position`, and `exit_note` quotes both. Raise it with the user rather than resolving it.
 

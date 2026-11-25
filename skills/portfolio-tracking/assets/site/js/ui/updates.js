@@ -79,7 +79,7 @@ export function UpdateItem ({ update, showCompany = false }) {
       ${list(update.lowlights).length > 0 && html`<div><h4>Lowlights</h4><ul>${list(update.lowlights).map((item) => html`<li>${item}</li>`)}</ul></div>`}
     </div>`}
     ${list(update.asks).length > 0 && html`<div class="asks"><h4>Asks</h4><ul>${list(update.asks).map((item) => html`<li>${item}</li>`)}</ul></div>`}
-    ${body && !(update.origin === 'press' && echoes(update.content, update.title)) && html`<div class="prose is-compact" dangerouslySetInnerHTML=${{ __html: body }}></div>`}
+    ${body && !(update.origin === 'press' && echoes(update.content, update.title, update.publisher)) && html`<div class="prose is-compact" dangerouslySetInnerHTML=${{ __html: body }}></div>`}
     ${update.origin === 'press' && sources[0]
       ? html`<p class="feed-source"><a href=${sources[0]} target="_blank" rel="noopener noreferrer">Read on ${update.publisher ?? 'the publisher'}<${Icon} name="external" size=${11} /></a></p>`
       : sources.length > 0 && html`<p class="feed-source">${sources.map((source, index) => html`${index ? ' · ' : ''}${/^https?:\/\//.test(source) ? html`<a href=${source} target="_blank" rel="noopener noreferrer" title=${source}>${shortUrl(source)}<${Icon} name="external" size=${11} /></a>` : source}`)}</p>`}
@@ -88,9 +88,10 @@ export function UpdateItem ({ update, showCompany = false }) {
 
 // Whether a summary only repeats its headline: most of its words are the
 // headline's, so showing both says the same thing twice.
-function echoes (summary, title) {
+function echoes (summary, title, publisher) {
   const words = (text) => String(text ?? '').toLowerCase().match(/[a-z0-9]+/g) ?? []
-  const said = new Set(words(title))
+  // "The Times reports: …" says nothing the badge and headline don't.
+  const said = new Set([...words(title), ...words(publisher), 'reports', 'reported', 'says'])
   const own = words(summary).filter((word) => word.length > 3)
   if (!own.length) return true
   return own.filter((word) => said.has(word)).length / own.length >= 0.7

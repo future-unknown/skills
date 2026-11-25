@@ -214,6 +214,14 @@ export function applyTheme (theme) {
   if (bodyWeight) root['--body-weight'] = String(Math.round(bodyWeight / 100) * 100)
   if (theme.labels === 'uppercase') Object.assign(root, { '--label-transform': 'uppercase', '--label-tracking': '0.06em', '--nav-size': '12px' })
   if (theme.cards === 'logo') document.documentElement.classList.add('has-logo-cards')
+  // Logo files that are already framed tiles (the mark centred in its own
+  // white space) fill their box instead of being inset again.
+  if (theme.logos === 'framed') document.documentElement.classList.add('has-framed-logos')
+  // Names of companies and people, where the fund sets them apart from its
+  // headings: in the body face, and in the accent.
+  const names = theme.names ?? {}
+  if (names.font === 'body') Object.assign(root, { '--name-font': 'var(--sans)', '--name-weight': 'var(--body-weight)', '--name-tracking': 'normal' })
+  if (names.color === 'accent') root['--name-color'] = 'var(--field-ink)'
 
   if (Object.keys(root).length) rules.push(block(':root', root))
   if (light && lightOnly) {

@@ -1,8 +1,8 @@
 # Monitoring
 
-Instructions for an agent that keeps {{FUND_NAME}}'s portfolio current. Run them {{CADENCE}}, or when someone asks you to "run portfolio monitoring". You act for the person who connected you, with their access: follow these rules even where your access would let you do more.
+Instructions for an agent that keeps the portfolio of {{FUND_NAME}} current. Run them {{CADENCE}}, or when someone asks you to "run portfolio monitoring". You act for the person who connected you, with their access: follow these rules even where your access would let you do more.
 
-**You propose; people decide.** Write only to `signals` and `runs`, apply only signals a person has accepted, add press stories to `updates` (below), and otherwise touch a record only to set its `checked_at` (below). Never change any other field of `companies`, `rounds`, `people`, `media`, `team` or `fund` on your own judgement.
+**You propose; people decide.** Write only to `signals` and `runs`, apply only signals a person has accepted, add press stories to `updates` (below), and otherwise touch a record only to set its `checked_at` (below), or a media record's `fetched_at`, `sha256` and `bytes` when you check it. Never change any other field of `companies`, `rounds`, `people`, `media`, `team` or `fund` on your own judgement.
 
 ## 1. Start the run
 
@@ -27,13 +27,13 @@ At most {{PAGE_LIMIT}} pages a run for companies' own sites and media (steps 2 a
 ### Order
 
 1. **The fund's own site, every run:** its portfolio page (all of it, including "load more"), the first page of its portfolio news, and its team page. News: read posts newer than the newest fund-published update already in `updates`, and no further back. If the site blocks plain HTTP clients, read it in a browser.
-2. **Companies, by `checked_at`, oldest first** (missing first; ties broken by key), until the budget is spent. Stop early enough to leave room for step 3 in the run's time. A company the fund still holds (`fund_position: held`, or `status: active`): its homepage, its newsroom or blog index, its team or about page, and any post newer than its newest update. Any other company: its homepage only.
-3. **Press, every run, outside the budget:** for each company the fund holds, a news search for the company's name (with its domain or what it does when the name is a common word) over the days since the last run. A public news feed that needs no key is enough (for example Google News search as RSS: `https://news.google.com/rss/search?q=<query>+when:2d`); one request per company counts as one page. Keep a story only when its headline is about this company, not a namesake, and matters to an investor (funding, acquisitions, IPO plans, launches, partnerships, senior hires or departures, layoffs, legal matters, notable profiles); drop explainers, listicles and job ads. Write each kept story straight into `updates`: origin `press`, kind `news`, the headline as `title`, the publication as `publisher`, the date, the link in `source_paths`, and a one-line summary from the headline alone in `content`. Key: company, date and the headline's first words; skip a story whose link or headline is already there. Press changes no other record, so it needs no signal. Don't fetch the articles.
-4. **Media last, with what is left:** `current` media records whose `fetched_at` is oldest, a request each. Don't fetch media on a host that blocked you this run.
+2. **Companies, by `checked_at`, oldest first** (missing first; ties broken by key), until the budget is spent. Stop early enough to leave room for step 3 in the run's time. A company the fund may still hold (`fund_position: held`; or, when its site doesn't say, not `exited` and `status` `active` or null): its homepage, its newsroom or blog index, its team or about page, and any post newer than its newest update. Any other company: its homepage only.
+3. **Press, every run, outside the budget:** for each company the fund may still hold (as in step 2), a news search for the company's name (with its domain or what it does when the name is a common word) over the days since the last run. A public news feed that needs no key is enough (for example Google News search as RSS: `https://news.google.com/rss/search?q=<query>+when:2d`); one request per company counts as one page. Leave a few seconds between searches: news feeds refuse fast bursts. Retry a failed search once, later in the run, before noting it in `problems`. Keep a story only when its headline is about this company, not a namesake, and matters to an investor (funding, acquisitions, IPO plans, launches, partnerships, senior hires or departures, layoffs, legal matters, notable profiles); drop explainers, listicles and job ads. Write each kept story straight into `updates`: origin `press`, kind `news`, the headline as `title`, the publication as `publisher`, the date, the link in `source_paths`, and a one-line summary from the headline alone in `content`. Key: company, date and the headline's first words; skip a story whose link or headline is already there. Press changes no other record, so it needs no signal. Don't fetch the articles.
+4. **Media last, with what is left:** `current` media records whose `fetched_at` is oldest, a request each. When it answers, set `fetched_at` to now and, the first time, `sha256` and `bytes` from the file, so the next run checks others and a later change of file shows. Don't fetch media on a host that blocked you this run.
 
 ### robots.txt
 
-Read each host's `robots.txt` once per run, before its first page. If it disallows the path, skip the path. If it can't be read (an error status, a timeout, or HTML instead of rules), treat the whole host as disallowed for this run, and note it in `problems`.
+Read each host's `robots.txt` once per run, before its first page. If it disallows the path, skip the path. If it can't be read (an error status, a timeout, or HTML instead of rules), treat the whole host as disallowed for this run, and note it in `problems`. When `robots.txt` redirects to another host (often the acquirer's site, or a docs page left behind), the company's site has moved: raise `website-changed` with where it now goes, `proposed` null unless it is the company's own new domain, and still skip the host.
 
 ### What counts as checked
 
@@ -45,7 +45,7 @@ Set a record's `checked_at` only when you read the pages its check needs. A comp
 | Rounds | Each company's newsroom or blog; news naming the company and an amount | `new-round` |
 | Exits and shutdowns | The fund's site, the company's site, news | `exit`, `shutdown` |
 | The company's own website | Its recorded address: redirects to a new domain, redirects somewhere unrelated, no longer resolves, or answers 404 | `website-changed` |
-| People | The company's team or about page, compared with `people` | `person-joined`, `person-left`, `title-change` |
+| People | The company's team or about page, compared with `people`, only for a company that already has `people` records; one with none is left for an import's company pass, so a first run doesn't file every founder as joined | `person-joined`, `person-left`, `title-change` |
 | Team | The fund's team page, compared with `team` | `person-joined`, `person-left`, `title-change` (subject `[[team/…]]`) |
 | Images | A `current` media URL that no longer answers, or whose fingerprint (`sha256`, where recorded) changed; a new logo on the company's site | `media-broken`, `media-changed` |
 | News | Anything else material about a company | `news` |

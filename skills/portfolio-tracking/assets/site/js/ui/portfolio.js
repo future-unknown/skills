@@ -20,6 +20,10 @@ export function PortfolioView () {
       .sort((a, b) => (positionRank(a.company) - positionRank(b.company)) || (STATUS_ORDER.indexOf(a.company.status) - STATUS_ORDER.indexOf(b.company.status)) || a.company.name.localeCompare(b.company.name))
   }, [tables, route])
   const table = route.layout === 'table'
+  // A fact the portfolio holds for no company is left off every card, so a
+  // fund whose site states no stages shows no rows of dashes; one that any
+  // company has shows on all of them, so the cards stay aligned.
+  const facts = cardFacts(rows)
   return html`<div class="page is-wide">
     <${PageBar} title="Portfolio" count=${rows.length}>
       <${Filters} />
@@ -32,7 +36,7 @@ export function PortfolioView () {
     </${PageBar}>
     ${rows.length === 0
       ? html`<${EmptyPortfolio} />`
-      : table ? html`<${CompanyTable} rows=${rows} />` : html`<ul class="cards" aria-label="Companies">${rows.map((row) => html`<${CompanyCard} key=${row.company.id} row=${row} />`)}</ul>`}
+      : table ? html`<${CompanyTable} rows=${rows} />` : html`<ul class="cards" aria-label="Companies">${rows.map((row) => html`<${CompanyCard} key=${row.company.id} row=${row} facts=${facts} />`)}</ul>`}
   </div>`
 }
 
@@ -112,7 +116,19 @@ function Reporting ({ report, company }) {
   return null
 }
 
-function CompanyCard ({ row }) {
+// The company's stage, or the stage its latest round names.
+const stageOf = ({ company, rounds = [] }) => company.stage ?? rounds[rounds.length - 1]?.stage ?? null
+
+function cardFacts (rows) {
+  return {
+    stage: rows.some((row) => stageOf(row)),
+    entry: rows.some(({ company }) => entryText(company)),
+    raised: rows.some(({ raised }) => raisedText(raised)),
+    board: rows.some(({ board }) => board?.length)
+  }
+}
+
+function CompanyCard ({ row, facts }) {
   const { company, raised, report, lead, board = [] } = row
   const fresh = useFresh('companies', company.id)
   const raisedLabel = raisedText(raised)
@@ -123,13 +139,13 @@ function CompanyCard ({ row }) {
     </div>
     <h2 class="card-name"><${CompanyLink} id=${company.id}>${company.name}</${CompanyLink}></h2>
     ${company.one_liner && html`<p class="card-line">${company.one_liner}</p>`}
-    <dl class="card-facts">
-      <div><dt>Stage</dt><dd>${stageName(company.stage) ?? html`<span class="muted">—</span>`}</dd></div>
-      <div><dt>Entry</dt><dd>${entryText(company) ?? html`<span class="muted">—</span>`}</dd></div>
-      <div><dt>Raised</dt><dd title="Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.">${raisedLabel ?? html`<span class="muted">—</span>`}</dd></div>
-      <div><dt>Board</dt><dd>${board.length ? board.map((member) => member.name).join(', ') : html`<span class="muted">—</span>`}</dd></div>
+    ${(facts.stage || facts.entry || facts.raised || facts.board || lead) && html`<dl class="card-facts">
+      ${facts.stage && html`<div><dt>Stage</dt><dd>${stageName(stageOf(row)) ?? html`<span class="muted">—</span>`}</dd></div>`}
+      ${facts.entry && html`<div><dt>Entry</dt><dd>${entryText(company) ?? html`<span class="muted">—</span>`}</dd></div>`}
+      ${facts.raised && html`<div><dt>Raised</dt><dd title="Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.">${raisedLabel ?? html`<span class="muted">—</span>`}</dd></div>`}
+      ${facts.board && html`<div><dt>Board</dt><dd>${board.length ? board.map((member) => member.name).join(', ') : html`<span class="muted">—</span>`}</dd></div>`}
       ${lead && html`<div><dt>Lead</dt><dd>${lead.name}</dd></div>`}
-    </dl>
+    </dl>`}
     <div class="card-foot"><${Reporting} report=${report} company=${company} />${!report.latest && !report.overdue && html`<span class="muted">No updates yet</span>`}</div>
   </li>`
 }

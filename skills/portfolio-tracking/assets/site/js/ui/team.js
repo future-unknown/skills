@@ -7,7 +7,7 @@ import { keyIn, list, humanize } from '../data.js'
 import { Icon } from '../icons.js'
 import { Picture, Empty, PageBar, CompanyLink, KnownLink } from './bits.js'
 
-const ROLES = ['partner', 'venture-partner', 'principal', 'associate', 'operator', 'advisor', 'scout', 'other']
+const ROLES = ['partner', 'venture-partner', 'principal', 'associate', 'analyst', 'operator', 'advisor', 'scout', 'other']
 // Seniority within a group: the role, then a few titles the role can't tell
 // apart (a managing partner before a partner, a managing director before a
 // principal).
@@ -54,13 +54,16 @@ export function TeamView () {
       .map(([name, members]) => ({ name, members: members.sort(bySeniority) }))
   }, [state.tables])
   const current = records(state, 'team').filter((member) => member.status === 'current').length
+  // A fund whose site files no one into groups has one list: the page's
+  // title already names it.
+  const untitled = groups.length === 1 && groups[0].name === 'Team'
   if (!current) {
     return html`<div class="page"><${PageBar} title="Team" /><${Empty} icon="team" title="No team yet">The import reads the fund's team page.</${Empty}></div>`
   }
   return html`<div class="page is-wide">
     <${PageBar} title="Team" count=${current} />
-    ${groups.map((group) => html`<section class="team-group" aria-labelledby=${'group-' + slug(group.name)}>
-      <h2 class="section-title" id=${'group-' + slug(group.name)}>${group.name}<span class="view-count">${group.members.length}</span></h2>
+    ${groups.map((group) => html`<section class="team-group" aria-labelledby=${untitled ? null : 'group-' + slug(group.name)} aria-label=${untitled ? 'Team' : null}>
+      ${!untitled && html`<h2 class="section-title" id=${'group-' + slug(group.name)}>${group.name}<span class="view-count">${group.members.length}</span></h2>`}
       <ul class="portraits">${group.members.map((member) => html`<li key=${member.id}><${Portrait} member=${member} leads=${leads[member.id]} /></li>`)}</ul>
     </section>`)}
   </div>`

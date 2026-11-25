@@ -1,6 +1,6 @@
 # Portfolio
 
-{{FUND_NAME}}'s portfolio: every company the fund has invested in, what each has raised, who runs it, what it reports, and what the fund owes it. People and agents both keep it current; the team works from {{SITE_URL}}.
+The portfolio of {{FUND_NAME}}: every company the fund has invested in, what each has raised, who runs it, what it reports, and what the fund owes it. People and agents both keep it current; the team works from {{SITE_URL}}.
 
 This wiki is restricted to the investment team. Don't share it, copy its records elsewhere, or add people who aren't on the team.
 

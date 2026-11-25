@@ -6,7 +6,7 @@ Keep `known-vision` (it replaced `wiki/session`) at 0.2.1 or later. Every page a
 
 ## What it does
 
-- **Portfolio:** every company as a card or a row in a table — logo, name, one-liner, status, stage, the fund's people on its board, the latest update, and what its rounds publicly report. Filter by status, the fund's position (held, exited), the vehicle that holds it (when companies name more than one), sector and person (anyone the fund's site ties to a company: lead, board seat or related investment), or search.
+- **Portfolio:** every company as a card or a row in a table (a fact no company has, such as stage when the fund's site states none, is left off every card) — logo, name, one-liner, status, stage, the fund's people on its board, the latest update, and what its rounds publicly report. Filter by status, the fund's position (held, exited), the vehicle that holds it (when companies name more than one), sector and person (anyone the fund's site ties to a company: lead, board seat or related investment), or search.
 - **Company:** at a glance, four figures (publicly reported raised, stage, the fund's entry round and year, its position) over a line of sectors, HQ and founding year and the fund's people on the board; then its funding timeline, its people, the fund's team on it (board seats and related investments, from `team`), open tasks, updates, the media it references, its own writing, and its history — who changed what, field by field, from the record's versions.
 - **Updates:** every update across the portfolio, newest first, filtered by company or by where it came from: Press (with the publication's name and a link to the story), From companies, or From the fund.
 - **Tasks:** open tasks by company.
@@ -96,6 +96,8 @@ The import reads the fund's own website and fills `theme` so the site feels like
 | `cardBorder` | `false` when the fund's cards have no outline | `--card-line` |
 | `labels` | `uppercase` for navigation and small labels in capitals | `--label-transform`, `--label-tracking`, `--nav-size` |
 | `cards` | `logo` for logo-first portfolio cards: the mark large and centred, details below | the `has-logo-cards` class |
+| `logos` | `framed` when logo files are tiles with the mark centred in white space: they fill a 3:2 tile instead of being inset | the `has-framed-logos` class |
+| `names` | `{ "font": "body" \| "heading", "color": "accent" \| "ink" }`: how names on cards and portraits are set, when the fund sets them apart from its headings | `--name-font`, `--name-weight`, `--name-color` |
 | `density` | `comfortable` (the default) or `compact` | tighter cards, rows and sections |
 | `logo` | `[[media/<id>]]` shown in the top bar | falls back to the fund record's `logo`, then the plain mark |
 

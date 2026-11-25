@@ -57,7 +57,7 @@ function Head ({ view }) {
       <h1 class="company-name" id="company-name">${company.name}</h1>
       ${company.one_liner && html`<p class="company-line">${company.one_liner}</p>`}
       <p class="company-sub">
-        <${StatusMark} status=${company.status} />
+        ${company.status && html`<${StatusMark} status=${company.status} />`}
         ${company.website && html`<a href=${company.website} target="_blank" rel="noopener noreferrer">${shortUrl(company.website)}<${Icon} name="external" size=${12} /></a>`}
         ${list(company.profiles).filter((item) => item.kind !== 'website').map((item) => html`<a href=${item.url} target="_blank" rel="noopener noreferrer">${humanize(item.kind)}</a>`)}
       </p>
@@ -77,7 +77,7 @@ function Facts ({ view }) {
     ['Raised', raisedValue ? html`<span class="stat-floor" aria-hidden="true">≥</span>${raisedValue}` : null, 'Publicly reported, at least', 'Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.'],
     // The stage as the latest round names it ("Series E"), where the stage
     // alone is a bucket ("Series D+").
-    ['Stage', (latest && /^series [d-z]\b/i.test(latest.name ?? '') && company.stage === 'series-d-plus') ? latest.name.match(/^series [d-z]/i)[0].replace(/^series/i, 'Series') : stageName(company.stage), latestWhen ? `Latest round ${String(latestWhen).slice(0, 4)}` : 'Latest known round'],
+    ['Stage', (latest && /^series [d-z]\b/i.test(latest.name ?? '') && company.stage === 'series-d-plus') ? latest.name.match(/^series [d-z]/i)[0].replace(/^series/i, 'Series') : stageName(company.stage ?? latest?.stage ?? null), latestWhen ? `Latest round ${String(latestWhen).slice(0, 4)}` : 'Latest known round'],
     ['Entry', company.entry_round ?? (company.first_invested_year ? String(company.first_invested_year) : null), company.entry_round && company.first_invested_year ? `Fund's first round, ${company.first_invested_year}` : "Fund's first round"],
     ['Position', company.fund_position ? (company.fund_position === 'held' ? 'Held' : 'Exited') : null, company.ownership_percent != null ? `${company.ownership_percent}% owned${company.ownership_as_of ? ', ' + day(company.ownership_as_of) : ''}` : list(company.vehicles).length ? `In ${list(company.vehicles).join(', ')}` : (company.status && company.status !== 'active' ? humanize(company.status) : 'Fund\'s stake')]
   ]
@@ -87,11 +87,11 @@ function Facts ({ view }) {
     ? html` · <span class="flag is-overdue"><${Icon} name="flag" size=${12} />${report.never ? 'no update yet' : `overdue, last ${ago(report.latest.date)}`}</span>`
     : report.latest ? html` · <span class="muted">last ${day(report.latest.date)}</span>` : ''}` : null
   return html`<section class="glance" aria-label="At a glance">
-    <dl class="stats">${stats.map(([label, value, caption, title]) => html`<div class="stat" title=${title ?? null}>
+    ${stats.some(([, value]) => value != null) && html`<dl class="stats">${stats.map(([label, value, caption, title]) => html`<div class="stat" title=${title ?? null}>
       <dt>${label}</dt>
       <dd class=${'stat-value' + (value == null ? ' is-empty' : '')}>${value ?? '—'}</dd>
       <dd class="stat-caption">${caption}</dd>
-    </div>`)}</dl>
+    </div>`)}</dl>`}
     ${(list(company.sectors).length || where.length || people.length || reportingLine) && html`<div class="glance-meta">
       ${list(company.sectors).length > 0 && html`<span class="glance-item"><span class="visually-hidden">Sectors: </span>${list(company.sectors).map((sector) => html`<span class="chip-tag">${sector}</span>`)}</span>`}
       ${where.length > 0 && html`<span class="glance-item"><${Icon} name="fund" size=${14} />${where.join(' · ')}</span>`}
