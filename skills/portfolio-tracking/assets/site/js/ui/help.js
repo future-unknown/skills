@@ -5,6 +5,7 @@ import { Icon } from '../icons.js'
 
 const KEYS = [
   ['Search or filter this view', ['/']],
+  ['Ask about the portfolio', ['a']],
   ['Back, or close', ['esc']],
   ...VIEWS.map((view) => [view.label, ['g', view.key]]),
   ['These shortcuts', ['?']]

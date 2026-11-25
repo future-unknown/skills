@@ -3,12 +3,12 @@
 import { useEffect, useMemo, useState } from 'preact/hooks'
 import { html } from '../html.js'
 import { fullPath } from '../known.js'
-import { store, useStore, companyView } from '../store.js'
+import { store, useStore, companyView, routeHash } from '../store.js'
 import { list, stageName, raisedText, money, humanize, roundDate, keyIn, forCompany, shortUrl, isUrl, GRACE_DAYS, todayUtc } from '../data.js'
 import { ago, day, full } from '../time.js'
 import { timeline, actorOf } from '../history.js'
 import { Icon, StatusMark } from '../icons.js'
-import { Picture, Empty, Badge, KnownLink, PageBar, useResult, useMarkdown } from './bits.js'
+import { Picture, Empty, Badge, KnownLink, PageBar, useResult, useMarkdown, useOpener } from './bits.js'
 import { UpdateItem } from './updates.js'
 import { TaskRow, NewTask } from './tasks.js'
 
@@ -23,20 +23,29 @@ export function CompanyView () {
         <button type="button" class="button" onClick=${() => store.getState().go('portfolio')}>Back to the portfolio</button>
       </${Empty}></div>`
   }
+  // The company's story on the left (what it is, how it was funded, what it
+  // says); who runs it and what the fund owes it on the right.
   return html`<article class="page company" aria-labelledby="company-name">
     <${PageBar} crumb=${{ label: 'Portfolio', view: 'portfolio' }}>
       <div class="toolbar-end"><${KnownLink} table="companies" recordKey=${company.id} /></div>
     </${PageBar}>
     <${Head} view=${view} />
     <${Facts} view=${view} />
-    <${Writing} text=${company.content} />
-    ${company.exit_note && html`<p class="note">${company.status && company.status !== 'active' ? html`<strong>${humanize(company.status)}.</strong> ` : ''}${company.exit_note}</p>`}
-    <${Rounds} view=${view} />
-    <${People} id=${company.id} />
-    <${Tasks} id=${company.id} />
-    <${Updates} view=${view} />
-    <${Media} id=${company.id} />
-    <${History} record=${company} />
+    <div class="company-body">
+      <div class="company-main">
+        <${Writing} text=${company.content} />
+        ${company.exit_note && html`<p class="note">${company.status && company.status !== 'active' ? html`<strong>${humanize(company.status)}.</strong> ` : ''}${company.exit_note}</p>`}
+        <${Rounds} view=${view} />
+        <${Updates} view=${view} />
+      </div>
+      <aside class="company-side" aria-label="People, tasks and records">
+        <${FundTeam} view=${view} />
+        <${People} id=${company.id} />
+        <${Tasks} id=${company.id} />
+        <${Media} id=${company.id} />
+        <${History} record=${company} />
+      </aside>
+    </div>
   </article>`
 }
 
@@ -56,26 +65,42 @@ function Head ({ view }) {
   </header>`
 }
 
+// The company at a glance: four headline figures, then the details in one
+// quiet line (sectors, where and when, and the fund's people on it).
 function Facts ({ view }) {
   const { company, raised, report, lead } = view
-  const rows = [
-    ['Our position', company.fund_position ? (company.fund_position === 'held' ? 'Held' : 'Exited') : null],
-    ['Entry', [company.entry_round, company.first_invested_year].filter(Boolean).join(', ') || null],
-    ['Stage', stageName(company.stage)],
-    ['Sectors', list(company.sectors).join(', ') || null],
-    ['HQ', company.hq],
-    ['Founded', company.founded_year],
-    ['Lead partner', lead?.name ?? null],
-    ['Board', company.board_role ? humanize(company.board_role) : null],
-    ['First invested', company.first_invested_on ? day(company.first_invested_on) : null],
-    ['Ownership', company.ownership_percent != null ? `${company.ownership_percent}%${company.ownership_as_of ? ` as of ${day(company.ownership_as_of)}` : ''}` : null],
-    ['Reported raised', raisedText(raised) ? html`<span title="Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.">${raisedText(raised)} <span class="muted">at least</span></span>` : null],
-    ['Reporting', company.reporting_cadence ? html`${humanize(company.reporting_cadence)}${report.overdue
-      ? html` · <span class="flag is-overdue"><${Icon} name="flag" size=${12} />${report.never ? 'no update yet' : `overdue, last ${ago(report.latest.date)}`}</span>`
-      : report.latest ? html` · <span class="muted">last ${day(report.latest.date)}</span>` : ''}` : null]
-  ].filter(([, value]) => value != null && value !== '')
-  if (!rows.length) return null
-  return html`<dl class="facts">${rows.map(([name, value]) => html`<div class="fact"><dt>${name}</dt><dd>${value}</dd></div>`)}</dl>`
+  const route = useStore((state) => state.route)
+  const raisedValue = raisedText(raised)?.replace(/^≥\s*/, '') ?? null
+  const latest = view.rounds?.length ? view.rounds[view.rounds.length - 1] : null
+  const latestWhen = latest ? (latest.announced_on ?? latest.closed_on ?? latest.year) : null
+  const stats = [
+    ['Raised', raisedValue ? html`<span class="stat-floor" aria-hidden="true">≥</span>${raisedValue}` : null, 'Publicly reported, at least', 'Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.'],
+    // The stage as the latest round names it ("Series E"), where the stage
+    // alone is a bucket ("Series D+").
+    ['Stage', (latest && /^series [d-z]\b/i.test(latest.name ?? '') && company.stage === 'series-d-plus') ? latest.name.match(/^series [d-z]/i)[0].replace(/^series/i, 'Series') : stageName(company.stage), latestWhen ? `Latest round ${String(latestWhen).slice(0, 4)}` : 'Latest known round'],
+    ['Entry', company.entry_round ?? (company.first_invested_year ? String(company.first_invested_year) : null), company.entry_round && company.first_invested_year ? `Fund's first round, ${company.first_invested_year}` : "Fund's first round"],
+    ['Position', company.fund_position ? (company.fund_position === 'held' ? 'Held' : 'Exited') : null, company.ownership_percent != null ? `${company.ownership_percent}% owned${company.ownership_as_of ? ', ' + day(company.ownership_as_of) : ''}` : (company.status && company.status !== 'active' ? humanize(company.status) : 'Fund\'s stake')]
+  ]
+  const people = [...(lead ? [[lead, 'Lead']] : []), ...(view.board ?? []).filter((member) => member.id !== lead?.id).map((member) => [member, 'Board'])]
+  const where = [company.hq, company.founded_year ? `Founded ${company.founded_year}` : null].filter(Boolean)
+  const reportingLine = company.reporting_cadence ? html`${humanize(company.reporting_cadence)} reporting${report.overdue
+    ? html` · <span class="flag is-overdue"><${Icon} name="flag" size=${12} />${report.never ? 'no update yet' : `overdue, last ${ago(report.latest.date)}`}</span>`
+    : report.latest ? html` · <span class="muted">last ${day(report.latest.date)}</span>` : ''}` : null
+  return html`<section class="glance" aria-label="At a glance">
+    <dl class="stats">${stats.map(([label, value, caption, title]) => html`<div class="stat" title=${title ?? null}>
+      <dt>${label}</dt>
+      <dd class=${'stat-value' + (value == null ? ' is-empty' : '')}>${value ?? '—'}</dd>
+      <dd class="stat-caption">${caption}</dd>
+    </div>`)}</dl>
+    ${(list(company.sectors).length || where.length || people.length || reportingLine) && html`<div class="glance-meta">
+      ${list(company.sectors).length > 0 && html`<span class="glance-item"><span class="visually-hidden">Sectors: </span>${list(company.sectors).map((sector) => html`<span class="chip-tag">${sector}</span>`)}</span>`}
+      ${where.length > 0 && html`<span class="glance-item"><${Icon} name="fund" size=${14} />${where.join(' · ')}</span>`}
+      ${reportingLine && html`<span class="glance-item">${reportingLine}</span>`}
+      ${people.length > 0 && html`<span class="glance-item glance-people"><span class="glance-label">Fund on the board</span>${people.map(([member, role]) => html`<a class="glance-person" href=${routeHash({ ...route, view: 'member', id: member.id })}
+          onClick=${(event) => { if (event.metaKey || event.ctrlKey) return; event.preventDefault(); store.getState().navigate({ view: 'member', id: member.id }) }} title=${role}>
+          <${Picture} value=${member.photo} name=${member.name} kind="headshot" size="s" />${member.name}</a>`)}</span>`}
+    </div>`}
+  </section>`
 }
 
 function Writing ({ text }) {
@@ -159,6 +184,28 @@ function People ({ id }) {
 
 const ROLE_ORDER = ['founder', 'executive', 'board', 'advisor', 'other']
 
+// The fund's people on this company, as the fund's own site lists them:
+// board seats first, then those who list it as a related investment.
+function FundTeam ({ view }) {
+  const route = useStore((state) => state.route)
+  const seen = new Set()
+  const rows = [
+    ...(view.lead ? [[view.lead, 'Lead partner']] : []),
+    ...(view.board ?? []).map((member) => [member, 'Board']),
+    ...(view.linked ?? []).map((member) => [member, 'Related investment'])
+  ].filter(([member]) => !seen.has(member.id) && seen.add(member.id))
+  if (!rows.length) return null
+  return html`<${Section} id="fund-team" title="Fund team" count=${rows.length}>
+    <ul class="people">${rows.map(([member, role]) => html`<li>
+      <a class="person-card is-link" href=${routeHash({ ...route, view: 'member', id: member.id })}
+        onClick=${(event) => { if (event.metaKey || event.ctrlKey) return; event.preventDefault(); store.getState().navigate({ view: 'member', id: member.id }) }}>
+        <${Picture} value=${member.photo} name=${member.name} kind="headshot" size="m" />
+        <span class="person-text"><span class="person-name">${member.name}</span><span class="person-title">${role} · ${member.title ?? humanize(member.role)}</span></span>
+      </a>
+    </li>`)}</ul>
+  </${Section}>`
+}
+
 function Tasks ({ id }) {
   const tables = useStore((state) => state.tables)
   const names = useStore((state) => state.names)
@@ -186,10 +233,10 @@ function Updates ({ view }) {
 
 // A fund note: the team's own call note or view, never the company's claim.
 function NewNote ({ company }) {
-  const [open, setOpen] = useState(false)
+  const { open, setOpen, trigger, field } = useOpener()
   const [busy, setBusy] = useState(false)
   const [error, show] = useResult()
-  if (!open) return html`<div class="form-open"><button type="button" class="button" onClick=${() => setOpen(true)}><${Icon} name="note" size=${14} />Add a fund note</button></div>`
+  if (!open) return html`<div class="form-open"><button type="button" class="button" ref=${trigger} onClick=${() => setOpen(true)}><${Icon} name="note" size=${14} />Add a fund note</button></div>`
   const submit = async (event) => {
     event.preventDefault()
     const form = new FormData(event.currentTarget)
@@ -202,7 +249,7 @@ function NewNote ({ company }) {
     if (result.ok) setOpen(false)
   }
   return html`<form class="form" onSubmit=${submit} aria-label="New fund note">
-    <label class="field is-wide"><span>Title</span><input name="title" required maxlength="200" autofocus placeholder="Call with the CEO" /></label>
+    <label class="field is-wide"><span>Title</span><input name="title" ref=${field} required maxlength="200" placeholder="Call with the CEO" /></label>
     <label class="field"><span>Date</span><input name="date" type="date" value=${todayUtc()} /></label>
     <label class="field is-wide"><span>Note</span><textarea name="content" rows="5" placeholder="What was said, and the fund's view. Markdown works."></textarea></label>
     <p class="hint-text is-wide">Saved as a fund note, kept apart from what the company reports.</p>

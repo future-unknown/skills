@@ -39,9 +39,17 @@
       "type": "string",
       "enum": [
         "company-reported",
-        "fund-note"
+        "fund-note",
+        "press"
       ],
-      "description": "company-reported: what the company said, kept as its claims. fund-note: the fund's own call note or assessment."
+      "description": "company-reported: what the company said, kept as its claims. fund-note: the fund's own call note, assessment or published news. press: coverage by an outside publication, as it reported it."
+    },
+    "publisher": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "For press: the publication, as named by its source (\"Sifted\", \"Financial Times\")."
     },
     "kind": {
       "type": "string",

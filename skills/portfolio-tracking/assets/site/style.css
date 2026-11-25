@@ -21,6 +21,13 @@
   --label-transform: none;
   --label-tracking: normal;
   --nav-size: 13.5px;
+  /* One grid for every page: the top bar, each page's bar and its content
+     share a left edge (the gutter, or the container's edge on wide screens).
+     Every block spans the container, so right edges agree too; only running
+     text keeps a readable measure (.prose, .lede). */
+  --gutter: 32px;
+  --container: 1360px;
+  --edge: max(var(--gutter), calc((100% - var(--container)) / 2));
   --field: #527D68;
   --field-ink: #3E6553;
   --field-wash: color-mix(in oklab, #7FA693 16%, var(--main));
@@ -47,7 +54,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.is-light-only) {
     --ink: #ECE8DA;
     --ink-soft: #B6B19D;
     --ink-faint: #9A9682;
@@ -120,9 +127,10 @@ code { font: 0.92em var(--mono); }
 .loader { position: relative; display: block; width: 120px; height: 2px; overflow: hidden; border-radius: 2px; background: var(--hair-soft); }
 .loader::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 36%; border-radius: 2px; background: var(--field); animation: sweep 1.15s var(--ease) infinite; }
 @keyframes sweep { from { transform: translateX(-100%); } to { transform: translateX(280%); } }
-.splash-loading { display: grid; justify-items: start; gap: 16px; }
+.splash-loading { gap: 16px; }
 .splash-loading .splash-title { margin: 0; }
-.splash-inner { width: min(420px, 100%); display: grid; justify-items: start; gap: 14px; }
+/* Before the portfolio shows, one centred block with everything in it centred. */
+.splash-inner { width: min(440px, 100%); display: grid; justify-items: center; gap: 14px; text-align: center; }
 .splash-title { margin: 6px 0 0; font-size: 34px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 600; text-wrap: balance; }
 .splash-title.is-small { font-size: 22px; letter-spacing: -0.015em; }
 .splash-text { margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.55; text-wrap: pretty; max-width: 46ch; }
@@ -166,7 +174,7 @@ code { font: 0.92em var(--mono); }
 /* main */
 .main { grid-column: 1; grid-row: 2; display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--main); }
 .toolbar {
-  display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 10px 14px 10px 18px;
+  display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 10px var(--edge);
   border-bottom: 1px solid var(--hair); flex-wrap: wrap;
 }
 .view-title { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
@@ -277,7 +285,7 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 
 /* ---- overlays -------------------------------------------------------------------- */
 
-.overlay { position: fixed; inset: 0; z-index: 40; display: grid; justify-items: center; align-items: start; padding: 12vh 16px 16px; background: var(--scrim); animation: fade 140ms ease-out both; }
+.overlay { position: fixed; inset: 0; z-index: 46; display: grid; justify-items: center; align-items: start; padding: 12vh 16px 16px; background: var(--scrim); animation: fade 140ms ease-out both; }
 @keyframes fade { from { opacity: 0; } }
 .palette, .sheet { width: min(620px, 100%); border: 1px solid var(--hair); border-radius: 6px; background: var(--pane); overflow: hidden; animation: rise 200ms var(--ease) both; }
 @keyframes rise { from { transform: translateY(6px) scale(0.99); opacity: 0.6; } }
@@ -306,10 +314,13 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 .frame { display: grid; height: 100dvh; overflow: hidden; grid-template-rows: auto minmax(0, 1fr); grid-template-columns: minmax(0, 1fr); }
 .frame > .topbar { grid-column: 1 / -1; }
 .frame.has-ask { grid-template-columns: minmax(0, 1fr) min(420px, 38vw); }
+/* With Ask open the page is narrower than the container: everything takes
+   the plain gutter, so the logo and the page still share an edge. */
+.frame.has-ask { --edge: var(--gutter); }
 
 /* The top bar: the fund's mark, the views in small capitals when the theme
    says so, and the account. The current view carries an accent dot. */
-.topbar { display: flex; align-items: center; gap: 28px; min-height: 60px; padding: 0 28px; background: var(--main); border-bottom: 1px solid var(--hair-soft); }
+.topbar { display: flex; align-items: center; gap: 28px; min-height: 60px; padding: 0 var(--edge); background: var(--main); border-bottom: 1px solid var(--hair-soft); }
 .topbar-brand { display: inline-flex; align-items: center; flex: none; color: var(--ink); text-decoration: none; border-radius: var(--r); }
 .topbar-logo { display: block; height: 22px; width: auto; max-width: 180px; }
 .topbar-name { font-family: var(--heading); font-weight: var(--heading-weight); font-size: 19px; letter-spacing: var(--heading-tracking); }
@@ -333,9 +344,8 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 .me-item kbd { margin-left: auto; }
 .main { overflow-y: auto; overscroll-behavior: contain; }
 .main:focus { outline: none; }
-.page { width: 100%; max-width: 1040px; margin: 0 auto; padding-bottom: 72px; }
-.page.is-wide { max-width: none; }
-.page > :not(.toolbar) { margin-left: 28px; margin-right: 28px; }
+.page { width: 100%; padding-bottom: 72px; }
+.page > :not(.toolbar) { margin-left: var(--edge); margin-right: var(--edge); }
 .toolbar { position: sticky; top: 0; z-index: 5; background: var(--main); }
 .view-title, .company-name, .section-title, .card-name, .member-name, .splash-title { font-family: var(--heading); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); line-height: var(--heading-leading); }
 .filters { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; flex: 1 1 auto; min-width: 0; }
@@ -378,6 +388,9 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 .badge.is-confirmed, .badge.is-accepted { border-color: color-mix(in oklab, var(--field) 55%, var(--hair)); color: var(--field-ink); }
 .badge.is-company-reported { border-style: dashed; }
 .badge.is-fund-note { background: var(--field-wash); border-color: transparent; color: var(--field-ink); }
+/* Outside coverage: the publisher's name, set firmly, so press reads apart
+   from what companies and the fund say. */
+.badge.is-press { border-color: var(--ink); color: var(--ink); font-weight: 500; }
 .badge.is-former, .badge.is-replaced { color: var(--ink-faint); }
 .badge.is-broken { color: var(--red); border-color: color-mix(in oklab, var(--red) 40%, var(--hair)); }
 .flag { display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 3px; font-size: 12px; white-space: nowrap; }
@@ -385,7 +398,7 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 
 /* ---- portfolio: cards and table -------------------------------------------------- */
 
-.cards { list-style: none; padding: 0; margin-top: 18px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.cards { list-style: none; padding: 0; margin-top: 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
 .card { display: flex; flex-direction: column; gap: 8px; padding: 14px 14px 12px; border: 1px solid var(--card-line); border-radius: var(--r); background: var(--surface); transition: border-color 120ms; position: relative; }
 .card:hover, .card:focus-within { border-color: color-mix(in oklab, var(--ink) 28%, var(--hair)); }
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
@@ -424,10 +437,14 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 .company-line { margin: 6px 0 0; font-size: 15px; color: var(--ink-soft); line-height: 1.5; max-width: 62ch; }
 .company-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 10px 0 0; font-size: 13px; }
 .company-sub a { display: inline-flex; align-items: center; gap: 4px; color: var(--field-ink); text-underline-offset: 3px; }
-.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin-top: 0; margin-bottom: 22px; padding: 4px 0; border-top: 1px solid var(--hair-soft); border-bottom: 1px solid var(--hair-soft); }
-.fact { display: grid; grid-template-columns: 124px minmax(0, 1fr); align-items: baseline; padding: 8px 0; gap: 8px; }
-.fact dt { color: var(--ink-faint); font-size: 12.5px; }
-.fact dd { margin: 0; font-size: 13.5px; font-variant-numeric: tabular-nums; min-width: 0; }
+/* Key facts as a row of tiles: the label small above, the value below, so a
+   full-width row reads at a glance instead of leaving label and value apart. */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(168px, 1fr)); gap: 0; margin-top: 0; margin-bottom: 32px; border: 1px solid var(--hair-soft); border-radius: var(--r); overflow: hidden; }
+/* Hairlines between tiles drawn on each tile, so a short last row leaves
+   plain page, not grey cells. */
+.fact { display: grid; align-content: start; gap: 4px; padding: 12px 14px; background: var(--main); box-shadow: 1px 0 0 var(--hair-soft), 0 1px 0 var(--hair-soft); }
+.fact dt { color: var(--ink-faint); font-size: 12px; text-transform: var(--label-transform); letter-spacing: var(--label-tracking); }
+.fact dd { margin: 0; font-size: 14.5px; font-variant-numeric: tabular-nums; min-width: 0; overflow-wrap: anywhere; }
 .thesis { margin: 0; font-size: 15px; line-height: 1.6; max-width: 66ch; }
 
 .section { margin-top: 30px; }
@@ -466,19 +483,31 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 
 /* ---- updates feed ---------------------------------------------------------------------- */
 
-.feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.page > .feed { margin-top: 18px; }
-.feed-item { padding: 14px 16px; border: 1px solid var(--hair); border-radius: var(--r); background: var(--pane); }
+.feed { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.page > .feed { margin-top: 24px; }
+.feed-item { display: grid; gap: 8px; padding: 18px 20px; border: 1px solid var(--card-line); border-radius: var(--r); background: var(--surface); }
+.feed-item > * { margin: 0; min-width: 0; }
+/* Long addresses and titles wrap inside the card instead of widening it. */
+.feed, .feed-item, .rounds, .round, .signal, .task { min-width: 0; }
+.feed-item, .feed-title, .feed-source, .sources { overflow-wrap: anywhere; }
 /* A fund note sits on the page's own paper, so the two kinds read apart
    even before the label is read. */
-.feed-item.is-fund-note { background: transparent; border-left: 3px solid var(--field); }
-.feed-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 12.5px; color: var(--ink-soft); }
-.feed-date { margin-left: auto; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
-.feed-title { margin: 8px 0 0; font-size: 15px; font-weight: 600; line-height: 1.35; }
+.feed-item.is-fund-note { background: var(--main); border: 1px solid var(--hair-soft); }
+.feed-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-size: 13px; color: var(--ink-soft); }
+.feed-company { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+.feed-company a { color: var(--ink); text-decoration: none; }
+.feed-company a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.feed-meta { color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+.feed-origin { margin-left: auto; }
+.feed-source { font-size: 12.5px; color: var(--ink-faint); }
+.feed-source a { color: var(--ink-soft); text-decoration: none; }
+.feed-source a .icon { display: inline-block; margin-left: 4px; vertical-align: -1px; }
+.feed-source a:hover { color: var(--field-ink); text-decoration: underline; text-underline-offset: 3px; }
+.feed-title { font-size: 16px; font-weight: 600; line-height: 1.35; letter-spacing: -0.005em; }
 .feed-title a { color: var(--ink); text-decoration: none; }
 .feed-title a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .feed-sep { color: var(--ink-faint); font-weight: 400; }
-.feed-by { margin: 2px 0 0; color: var(--ink-faint); font-size: 12.5px; }
+.feed-by { color: var(--ink-faint); font-size: 12.5px; }
 .metrics { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 1px; margin: 12px 0 0; border: 1px solid var(--hair-soft); border-radius: var(--r); background: var(--hair-soft); overflow: hidden; }
 .metric { padding: 8px 10px; background: var(--pane); }
 .metric dt { color: var(--ink-faint); font-size: 11.5px; }
@@ -562,19 +591,20 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 .only-narrow { display: none; }
 
 @media (max-width: 900px) {
-  .topbar { flex-wrap: wrap; gap: 0 16px; padding: 10px 16px 0; }
+  .topbar { flex-wrap: wrap; gap: 0 16px; padding: 10px var(--edge) 0; }
   .topbar-brand { min-height: 36px; }
-  .me { margin-left: auto; }
-  .topnav { order: 3; flex: 1 0 100%; margin: 4px -16px 0; overflow-x: auto; scrollbar-width: none; }
+  .ask-open { margin-left: auto; }
+  .topnav { order: 3; flex: 1 0 100%; margin: 4px calc(-1 * var(--edge)) 0; overflow-x: auto; scrollbar-width: none; }
   .topnav::-webkit-scrollbar { display: none; }
-  .topnav ul { padding: 0 6px 4px; }
-}
+  /* The first view's word lines up with the logo above it. */
+  .topnav ul { justify-content: flex-start; padding: 0 calc(var(--edge) - 10px) 4px; }
 }
 
 @media (max-width: 720px) {
-  .page > :not(.toolbar) { margin-left: 16px; margin-right: 16px; }
-  .toolbar { gap: 8px; padding: 8px 10px; }
+  :root { --gutter: 16px; }
+  .toolbar { gap: 8px; padding: 8px var(--edge); }
   .filters { order: 5; flex: 1 0 100%; }
+  .toolbar > .toolbar-end { order: 2; }
   .filter { max-width: none; flex: 1 0 100%; }
   .filter kbd { display: none; }
   .select { max-width: 46vw; }
@@ -582,10 +612,9 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
   .company-head { gap: 14px; }
   .company-name { font-size: 22px; }
   .picture.size-xl { width: 52px; height: 52px; font-size: 17px; }
-  .facts { grid-template-columns: minmax(0, 1fr); }
-  .fact { grid-template-columns: 112px minmax(0, 1fr); }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .proposal-fields div { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .feed-date, .signal-when { margin-left: 0; }
+  .signal-when { margin-left: 0; }
   .overlay { padding-top: 8vh; }
 }
 
@@ -599,7 +628,8 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
   .live.is-live .live-dot { animation: none; }
   .loader::after { animation: none !important; width: 100%; opacity: 0.55; }
 }
-.page > .empty { margin: 48px auto; }
+/* An empty page says so in the middle of the page, not of its column. */
+.page > .empty, .page:not(.is-wide) > .empty { max-width: 380px; margin: 72px auto 0; }
 
 /* Logo-first cards (theme "cards": "logo"): the company's mark leads, large
    and centred on the card's surface, as many fund sites show a portfolio. */
@@ -648,11 +678,11 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 .ask-open:hover { background: color-mix(in oklab, var(--ink) 86%, var(--field)); }
 .ask-open.is-open { background: transparent; color: var(--ink); }
 .ask { grid-row: 2; grid-column: 2; display: flex; flex-direction: column; min-height: 0; border-left: 1px solid var(--hair-soft); background: var(--main); animation: fade 160ms ease-out both; }
-.ask-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; padding: 16px 12px 12px 20px; border-bottom: 1px solid var(--hair-soft); }
+.ask-head { display: flex; align-items: baseline; gap: 10px; min-height: 56px; padding: 12px 12px 12px var(--gutter); border-bottom: 1px solid var(--hair-soft); }
 .ask-title { margin: 0; font-family: var(--heading); font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); font-size: 20px; }
-.ask-sub { font-size: 12.5px; color: var(--ink-faint); }
+.ask-sub { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12.5px; color: var(--ink-faint); }
 .ask-tools { margin-left: auto; display: flex; gap: 2px; align-self: center; }
-.ask-log { flex: 1; overflow-y: auto; padding: 18px 20px 8px; display: grid; align-content: start; gap: 16px; overscroll-behavior: contain; }
+.ask-log { flex: 1; overflow-y: auto; padding: 20px var(--gutter) 8px; display: grid; align-content: start; gap: 16px; overscroll-behavior: contain; }
 .ask-empty p { margin: 0 0 14px; color: var(--ink-soft); font-size: 14px; line-height: 1.55; }
 .ask-note { color: var(--ink) !important; padding: 10px 12px; border-radius: var(--r); background: var(--surface); }
 .ask-starters { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
@@ -666,7 +696,7 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
 .loader.is-small { width: 40px; }
 .turn-error { margin: 0; padding: 9px 12px; border-radius: var(--r); background: var(--red-wash); color: var(--red); font-size: 13.5px; }
 .turn-writes { display: flex; align-items: center; gap: 6px; margin: 8px 0 0; font-size: 12.5px; color: var(--ink-faint); }
-.ask-form { display: flex; align-items: flex-end; gap: 8px; margin: 8px 16px 16px; padding: 6px 6px 6px 14px; border: 1px solid var(--hair); border-radius: calc(var(--r) + 4px); background: var(--raised); }
+.ask-form { display: flex; align-items: flex-end; gap: 8px; margin: 8px var(--gutter) 16px; padding: 6px 6px 6px 14px; border: 1px solid var(--hair); border-radius: calc(var(--r) + 4px); background: var(--raised); }
 .ask-form:focus-within { border-color: var(--ink-faint); }
 .ask-form textarea { flex: 1; min-height: 24px; max-height: 160px; padding: 6px 0; border: 0; background: transparent; color: var(--ink); font: inherit; font-size: 14px; line-height: 1.45; resize: none; }
 .ask-form textarea:focus-visible { outline: none; }
@@ -676,4 +706,60 @@ li:has(> .check.is-done) { color: var(--ink-soft); }
   .frame.has-ask { grid-template-columns: minmax(0, 1fr); }
   .ask { position: fixed; inset: 0; z-index: 45; border-left: 0; }
   .ask-open { padding: 0 11px; }
+}
+
+/* The company page: its story in the wide column, people and records in
+   the narrow one; one column on smaller screens. */
+.company-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 340px); gap: 0 48px; align-items: start; }
+.company-side .people { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+.company-side .person-card { padding: 10px 12px; }
+.company-main > :first-child, .company-side > :first-child { margin-top: 0; }
+@media (max-width: 1080px) {
+  .company-body { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Dark mode, where a theme keeps it: logos are drawn for light pages, so
+   they sit on a light tile instead of vanishing into the dark. */
+@media (prefers-color-scheme: dark) {
+  :root:not(.is-light-only) .picture.is-logo,
+  :root:not(.is-light-only) .has-logo-cards .card-top .picture.is-logo { background: #F4F3EE; }
+}
+
+/* A group's heading sits clear of the list it heads. */
+.section > .section-title + .tasks, .section > .section-title + ul { margin-top: 10px; }
+
+/* A person card that opens their page. */
+a.person-card { color: inherit; text-decoration: none; }
+a.person-card .person-name, a.person-card .person-title { display: block; }
+a.person-card:hover { border-color: var(--ink-faint); }
+a.person-card:hover .person-name { color: var(--field-ink); }
+
+/* A company at a glance: four headline figures in one band, set large in
+   the heading face, each with a short caption; the details in one quiet
+   line beneath. */
+.glance { margin-bottom: 36px; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair-soft); }
+.stat { display: grid; align-content: start; gap: 6px; min-width: 0; padding: 18px 20px 18px 0; }
+.stat + .stat { padding-left: 20px; border-left: 1px solid var(--hair-soft); }
+.stat dt { margin: 0; font-size: 11.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+.stat dd { margin: 0; }
+.stat-value { font-family: var(--heading); font-weight: var(--heading-weight); font-size: 28px; line-height: 1.1; letter-spacing: var(--heading-tracking); color: var(--ink); font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-value.is-empty { color: var(--ink-faint); }
+.stat-floor { margin-right: 4px; font-family: var(--sans); font-weight: 400; font-size: 20px; color: var(--ink-faint); vertical-align: 3px; }
+.stat-caption { font-size: 12.5px; color: var(--ink-soft); }
+.glance-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 28px; padding-top: 16px; font-size: 13.5px; color: var(--ink-soft); }
+.glance-item { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
+.glance-item .icon { color: var(--ink-faint); }
+.chip-tag { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: var(--r-control); background: var(--surface); color: var(--ink); font-size: 12.5px; }
+.glance-label { font-size: 11.5px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 2px; }
+.glance-person { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px 0 4px; border: 1px solid var(--hair-soft); border-radius: var(--r-control); color: var(--ink); text-decoration: none; font-size: 13px; }
+.glance-person:hover { border-color: var(--ink-faint); color: var(--field-ink); }
+.glance-person .picture.size-s { width: 22px; height: 22px; border-radius: 50%; border: 0; }
+@media (max-width: 720px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat, .stat + .stat { padding: 14px 12px 14px 0; border-left: 0; }
+  .stat:nth-child(even) { padding-left: 14px; border-left: 1px solid var(--hair-soft); }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--hair-soft); }
+  .stat-value { font-size: 22px; }
+  .glance-meta { gap: 10px 16px; }
 }

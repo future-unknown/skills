@@ -1,12 +1,12 @@
 // Open work across the portfolio, by company. Closed tasks stay in the
 // table; Known keeps how each got there.
-import { useMemo, useState } from 'preact/hooks'
+import { useMemo, useRef, useState } from 'preact/hooks'
 import { html } from '../html.js'
 import { store, useStore, records } from '../store.js'
 import { keyIn, humanize, personNameOf, daysSince } from '../data.js'
 import { day } from '../time.js'
 import { Icon } from '../icons.js'
-import { Empty, PageBar, CompanyLink, useFresh, useResult } from './bits.js'
+import { Empty, PageBar, CompanyLink, useFresh, useResult, useOpener } from './bits.js'
 
 const KINDS = ['follow-up', 'intro', 'help-request', 'board-prep', 'reporting', 'other']
 
@@ -26,9 +26,15 @@ export function TasksView () {
       .sort((a, b) => (!a.id) - (!b.id) || a.name.localeCompare(b.name))
   }, [tables])
   const count = groups.reduce((sum, group) => sum + group.tasks.length, 0)
+  const [adding, setAdding] = useState(false)
+  const addButton = useRef(null)
+  // The page's action sits in its bar, as every page's does; the form opens
+  // under it.
   return html`<div class="page">
-    <${PageBar} title="Open tasks" count=${count} />
-    ${canWrite && html`<${NewTask} />`}
+    <${PageBar} title="Open tasks" count=${count}>
+      ${canWrite && html`<div class="toolbar-end"><button type="button" class="button" ref=${addButton} aria-expanded=${adding} onClick=${() => setAdding(!adding)}><${Icon} name="plus" size=${14} />New task</button></div>`}
+    </${PageBar}>
+    ${canWrite && adding && html`<${NewTask} startOpen=${true} onDone=${() => { setAdding(false); addButton.current?.focus() }} />`}
     ${groups.length
       ? groups.map((group) => html`<section class="section" aria-labelledby=${'tasks-' + (group.id || 'fund')}>
           <h2 class="section-title" id=${'tasks-' + (group.id || 'fund')}>${group.id ? html`<${CompanyLink} id=${group.id}>${group.name}</${CompanyLink}>` : group.name}</h2>
@@ -72,13 +78,16 @@ export function TaskRow ({ task }) {
   </li>`
 }
 
-// A new task: the next free T- number, open, created now.
-export function NewTask ({ company = null }) {
+// A new task: a button that opens the form (on a company), or the form
+// alone when the page's bar holds the button (startOpen, onDone).
+export function NewTask ({ company = null, startOpen = false, onDone = null }) {
   const tables = useStore((state) => state.tables)
-  const [open, setOpen] = useState(false)
+  const opener = useOpener(startOpen)
+  const { open, trigger, field } = opener
+  const setOpen = (value) => { opener.setOpen(value); if (!value && onDone) onDone() }
   const [busy, setBusy] = useState(false)
   const [error, show] = useResult()
-  if (!open) return html`<div class="form-open"><button type="button" class="button" onClick=${() => setOpen(true)}><${Icon} name="plus" size=${14} />New task</button></div>`
+  if (!open) return html`<div class="form-open"><button type="button" class="button" ref=${trigger} onClick=${() => setOpen(true)}><${Icon} name="plus" size=${14} />New task</button></div>`
   const submit = async (event) => {
     event.preventDefault()
     const form = new FormData(event.currentTarget)
@@ -98,7 +107,7 @@ export function NewTask ({ company = null }) {
   }
   const team = Object.values(tables.team ?? {}).filter((member) => member.status === 'current').sort((a, b) => a.name.localeCompare(b.name))
   return html`<form class="form" onSubmit=${submit} aria-label="New task">
-    <label class="field is-wide"><span>Task</span><input name="title" required maxlength="200" autofocus /></label>
+    <label class="field is-wide"><span>Task</span><input name="title" ref=${field} required maxlength="200" /></label>
     ${!company && html`<label class="field"><span>Company</span><select name="company"><option value="">Across the fund</option>
       ${Object.values(tables.companies ?? {}).sort((a, b) => a.name.localeCompare(b.name)).map((item) => html`<option value=${item.id}>${item.name}</option>`)}</select></label>`}
     <label class="field"><span>Kind</span><select name="kind">${KINDS.map((kind) => html`<option value=${kind}>${humanize(kind)}</option>`)}</select></label>

@@ -103,6 +103,26 @@ for (const [index, item] of invalidCases.entries()) {
   else if (validate(item.record)) errors.push(`tests/invalid-examples.json[${index}]: invalid fixture unexpectedly passed (${item.reason})`)
 }
 
+// Site stylesheets: an unbalanced brace makes browsers drop the rule after it
+// (a whole @media block), so check every .css a skill ships.
+function checkCss (dir) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const file = path.join(dir, entry.name)
+    if (entry.isDirectory()) { checkCss(file); continue }
+    if (!entry.name.endsWith('.css')) continue
+    const text = fs.readFileSync(file, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g, '""')
+    let depth = 0
+    let line = 1
+    for (const ch of text) {
+      if (ch === '\n') line++
+      if (ch === '{') depth++
+      if (ch === '}' && --depth < 0) { errors.push(`${path.relative(root, file)}:${line}: unmatched closing brace`); depth = 0 }
+    }
+    if (depth > 0) errors.push(`${path.relative(root, file)}: ${depth} unclosed brace(s)`)
+  }
+}
+checkCss(skillsRoot)
+
 const trackedTextExtensions = new Set(['.md', '.json', '.yml', '.yaml', '.mjs'])
 function scan(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {

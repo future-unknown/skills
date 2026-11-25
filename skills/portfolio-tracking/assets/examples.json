@@ -345,6 +345,25 @@
       "author": "Mara Lind",
       "source_paths": [],
       "content": "Board approved the 2027 hiring plan. Our view: pricing needs work before the next raise."
+    },
+    {
+      "id": "ferncloud-2026-11-18-ferncloud-opens-depot-network-in-austria",
+      "company": "[[companies/ferncloud]]",
+      "date": "2026-11-18",
+      "period": null,
+      "origin": "press",
+      "kind": "news",
+      "title": "Ferncloud opens depot network in Austria",
+      "metrics": {},
+      "highlights": [],
+      "lowlights": [],
+      "asks": [],
+      "author": null,
+      "source_paths": [
+        "https://news.example/ferncloud-austria"
+      ],
+      "content": "An outside report that Ferncloud has opened a depot network in Austria.",
+      "publisher": "Logistics Weekly Example"
     }
   ],
   "task.schema.json": [

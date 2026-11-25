@@ -40,7 +40,7 @@ All in one restricted wiki, `portfolio` by default:
 1. **The home page** `portfolio` from `assets/portfolio-page.md`: what is here and the rules every person and agent follows.
 2. **Ten tables**, each a page keyed by `id` with its schema from `assets/`: `fund`, `team`, `companies`, `rounds`, `people`, `media`, `updates`, `tasks`, `signals`, `runs`.
 3. **The import:** the fund, team, portfolio companies and their logos and headshots, from the fund's website, after approval.
-4. **The page** `monitoring` from `assets/monitoring-page.md`: what an agent does on each monitoring run.
+4. **The page** `monitoring` from `assets/monitoring-page.md`: what an agent does on each monitoring run, including filing the past days' press about each held company into `updates`.
 5. **The site:** the files in `assets/site/`, themed to mirror the fund's own website (its colours, fonts, corner radius and logo), written into a code tree, registered with `portfolio` as its home, allowed to read and write it, and published.
 
 ## Permissions
@@ -85,11 +85,11 @@ Present, and wait for approval:
 
 ### Apply
 
-1. **Wiki:** create it restricted, with the team's write grant and the admins. When the team does not exist, create it and add the named people first.
+1. **Wiki:** create it with only the approved grants (the team's write grant and each admin) and none for the organization's everyone team; that is what makes it restricted, as there is no separate switch. When the team does not exist, create it and add the named people first. Read the wiki's grants back before writing anything into it.
 2. **Tables:** for each of `fund`, `team`, `companies`, `rounds`, `people`, `media`, `updates`, `tasks`, `signals`, `runs`, in that order: write the page (`# Fund`, `# Team`… with one line on what it holds and a link to [[portfolio]]), then set its metadata to one object, `{"key": "id", "schema": <the schema asset without $schema and title>}`. Attach every schema before writing any record.
 3. **Home page:** fill in `assets/portfolio-page.md` (`{{FUND_NAME}}`, `{{SITE_URL}}` as "the portfolio site" for now) and write it as the wiki's page `portfolio`.
-4. **Import:** follow `references/import.md`. Propose in batches; write each approved batch.
-5. **Monitoring page:** fill in `assets/monitoring-page.md` (`{{FUND_NAME}}`, `{{CADENCE}}` as "every day" or the chosen cadence, `{{PAGE_LIMIT}}` as 150 unless the portfolio needs more) and write it as `monitoring`.
+4. **Import:** follow `references/import.md`. Propose in batches; write each approved batch. It ends with the last month's press about each held company, so the Updates view isn't empty on day one.
+5. **Monitoring page:** fill in `assets/monitoring-page.md` (`{{FUND_NAME}}`, `{{CADENCE}}` as "every day" or the chosen cadence, `{{PAGE_LIMIT}}` as 150: the budget for companies' own sites, about four pages a held company, so 150 covers some 35 companies a run and a portfolio of 130 in four days; raise it when the user wants each company checked more often. The fund's site and press run outside it) and write it as `monitoring`.
 6. **Site:** follow `references/site.md`: write the files into a new code tree, `site.json` last with the fund's name, the wiki and the approved `theme`; check the tree and stop on any problem; register the site with `portfolio` as its home and the tree as its source; let it read and write the wiki; publish.
 7. **Address:** on the home page, replace "the portfolio site" with the published address.
 8. **Examples (only on a yes):** adapt `assets/examples.json` to the chosen wiki, keep every name and domain obviously synthetic (`.example`), and list their keys so they can be removed.
@@ -116,6 +116,7 @@ The skill writes the instructions; it does not schedule them, because skills nam
 
 - **By hand:** ask an agent connected to Known to "run portfolio monitoring from portfolio:monitoring".
 - **On a schedule:** any scheduled agent with Known access and web access (a scheduled Claude task, a routine, or a job that runs an agent with the Known CLI) given the same instruction.
+- **When the fund's site blocks plain clients** (a bot check such as Cloudflare's, seen during the import): the run needs a real browser for the fund's pages. A scheduled cloud agent without one can still check companies and press; then read the fund's own site from a machine with a browser, weekly or when someone asks, and say so in the setup report. Never try to get past a bot check.
 
 Each run writes a `runs` record and `signals`; the team accepts or rejects signals in the site's Review view, and the next run applies what was accepted.
 

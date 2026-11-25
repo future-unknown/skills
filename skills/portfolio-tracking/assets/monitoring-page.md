@@ -2,7 +2,7 @@
 
 Instructions for an agent that keeps {{FUND_NAME}}'s portfolio current. Run them {{CADENCE}}, or when someone asks you to "run portfolio monitoring". You act for the person who connected you, with their access: follow these rules even where your access would let you do more.
 
-**You propose; people decide.** Write only to `signals` and `runs`, apply only signals a person has accepted, and otherwise touch a record only to set its `checked_at` (below). Never change any other field of `companies`, `rounds`, `people`, `media`, `team` or `fund` on your own judgement.
+**You propose; people decide.** Write only to `signals` and `runs`, apply only signals a person has accepted, add press stories to `updates` (below), and otherwise touch a record only to set its `checked_at` (below). Never change any other field of `companies`, `rounds`, `people`, `media`, `team` or `fund` on your own judgement.
 
 ## 1. Start the run
 
@@ -18,17 +18,18 @@ For each signal with status `accepted`, oldest first:
 
 ## 3. Look for changes
 
-Only public pages: the fund's own site, each company's own site, and news about a named company. One request at a time.
+Only public pages: the fund's own site, each company's own site, and a news search for a named company (never for a person). One request at a time.
 
 ### The page budget
 
-At most {{PAGE_LIMIT}} pages a run. A page is one request that returns content you read: a `robots.txt`, an HTML page, a feed. A redirect followed to its end is one page. Requests that fail before answering (no DNS, timeout) count as one page each, so a dead site can't eat the run.
+At most {{PAGE_LIMIT}} pages a run for companies' own sites and media (steps 2 and 4 below). The fund's own site and the press searches (steps 1 and 3) run in full every run and don't count against it, so a large portfolio never crowds them out; they are about one page per held company plus a few for the fund. A page is one request that returns content you read: a `robots.txt`, an HTML page, a feed. A redirect followed to its end is one page. Requests that fail before answering (no DNS, timeout) count as one page each, so a dead site can't eat the run. Record every page in the run's `pages_checked`, whichever step it served.
 
 ### Order
 
 1. **The fund's own site, every run:** its portfolio page (all of it, including "load more"), the first page of its portfolio news, and its team page. News: read posts newer than the newest fund-published update already in `updates`, and no further back. If the site blocks plain HTTP clients, read it in a browser.
-2. **Companies, by `checked_at`, oldest first** (missing first; ties broken by key), until the budget is spent. A company the fund still holds (`fund_position: held`, or `status: active`): its homepage, its newsroom or blog index, its team or about page, and any post newer than its newest update. Any other company: its homepage only.
-3. **Media last, with what is left:** `current` media records whose `fetched_at` is oldest, a request each. Don't fetch media on a host that blocked you this run.
+2. **Companies, by `checked_at`, oldest first** (missing first; ties broken by key), until the budget is spent. Stop early enough to leave room for step 3 in the run's time. A company the fund still holds (`fund_position: held`, or `status: active`): its homepage, its newsroom or blog index, its team or about page, and any post newer than its newest update. Any other company: its homepage only.
+3. **Press, every run, outside the budget:** for each company the fund holds, a news search for the company's name (with its domain or what it does when the name is a common word) over the days since the last run. A public news feed that needs no key is enough (for example Google News search as RSS: `https://news.google.com/rss/search?q=<query>+when:2d`); one request per company counts as one page. Keep a story only when its headline is about this company, not a namesake, and matters to an investor (funding, acquisitions, IPO plans, launches, partnerships, senior hires or departures, layoffs, legal matters, notable profiles); drop explainers, listicles and job ads. Write each kept story straight into `updates`: origin `press`, kind `news`, the headline as `title`, the publication as `publisher`, the date, the link in `source_paths`, and a one-line summary from the headline alone in `content`. Key: company, date and the headline's first words; skip a story whose link or headline is already there. Press changes no other record, so it needs no signal. Don't fetch the articles.
+4. **Media last, with what is left:** `current` media records whose `fetched_at` is oldest, a request each. Don't fetch media on a host that blocked you this run.
 
 ### robots.txt
 

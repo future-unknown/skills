@@ -39,11 +39,12 @@ export function PortfolioView () {
 // Held first, then exited, then unknown: what the fund still owns leads.
 const positionRank = (company) => ({ held: 0, exited: 1 }[company.fund_position] ?? 2)
 
-function matches ({ company, lead }, route, state) {
+function matches (row, route, state) {
+  const { company, lead } = row
   if (route.position && (company.fund_position ?? 'unknown') !== route.position) return false
   if (route.status && company.status !== route.status) return false
   if (route.sector && !list(company.sectors).includes(route.sector)) return false
-  if (route.partner && keyIn(company.lead_partner, 'team', state.names) !== route.partner) return false
+  if (route.partner && ![lead, ...(row.board ?? []), ...(row.linked ?? [])].some((member) => member?.id === route.partner)) return false
   if (route.q) {
     const hay = [company.name, company.one_liner, company.hq, company.domain, ...list(company.sectors), lead?.name].filter(Boolean).join(' ').toLowerCase()
     if (!route.q.toLowerCase().split(/\s+/).every((word) => hay.includes(word))) return false
@@ -59,7 +60,9 @@ function Filters () {
     const companies = records(state, 'companies')
     const statuses = STATUS_ORDER.filter((status) => companies.some((company) => company.status === status))
     const sectors = [...new Set(companies.flatMap((company) => list(company.sectors)))].sort()
-    const partners = records(state, 'team').filter((member) => companies.some((company) => keyIn(company.lead_partner, 'team', state.names) === member.id))
+    // Everyone the fund's site ties to a company: lead, board seat or related investment.
+    const tied = (member) => member.board_positions?.length || member.related_investments?.length || companies.some((company) => keyIn(company.lead_partner, 'team', state.names) === member.id)
+    const partners = records(state, 'team').filter((member) => member.status !== 'former' && tied(member)).sort((a, b) => a.name.localeCompare(b.name))
     const positions = ['held', 'exited', 'unknown'].filter((position) => companies.some((company) => (company.fund_position ?? 'unknown') === position))
     return { statuses, sectors, partners, positions }
   }, [tables])
@@ -74,7 +77,7 @@ function Filters () {
     ${options.positions.length > 1 && html`<${Select} label="Position" value=${route.position} onChange=${(position) => navigate({ position })} options=${options.positions.map((position) => [position, { held: 'Held', exited: 'Exited', unknown: 'Position unknown' }[position]])} all="Held and exited" />`}
     <${Select} label="Status" value=${route.status} onChange=${(status) => navigate({ status })} options=${options.statuses.map((status) => [status, status === 'ipo' ? 'IPO' : status.replace('-', ' ')])} all="All statuses" />
     ${options.sectors.length > 0 && html`<${Select} label="Sector" value=${route.sector} onChange=${(sector) => navigate({ sector })} options=${options.sectors.map((sector) => [sector, sector])} all="All sectors" />`}
-    ${options.partners.length > 0 && html`<${Select} label="Lead partner" value=${route.partner} onChange=${(partner) => navigate({ partner })} options=${options.partners.map((member) => [member.id, member.name])} all="All partners" />`}
+    ${options.partners.length > 0 && html`<${Select} label="Person" value=${route.partner} onChange=${(partner) => navigate({ partner })} options=${options.partners.map((member) => [member.id, member.name])} all="Anyone at the fund" />`}
   </div>`
 }
 
@@ -103,7 +106,7 @@ function Reporting ({ report, company }) {
 }
 
 function CompanyCard ({ row }) {
-  const { company, raised, report, lead } = row
+  const { company, raised, report, lead, board = [] } = row
   const fresh = useFresh('companies', company.id)
   const raisedLabel = raisedText(raised)
   return html`<li class=${'card' + fresh}>
@@ -114,12 +117,13 @@ function CompanyCard ({ row }) {
     <h2 class="card-name"><${CompanyLink} id=${company.id}>${company.name}</${CompanyLink}></h2>
     ${company.one_liner && html`<p class="card-line">${company.one_liner}</p>`}
     <dl class="card-facts">
-      ${company.stage && html`<div><dt>Stage</dt><dd>${stageName(company.stage)}</dd></div>`}
-      ${entryText(company) && html`<div><dt>Entry</dt><dd>${entryText(company)}</dd></div>`}
-      ${raisedLabel && html`<div><dt>Reported raised</dt><dd title="Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.">${raisedLabel}</dd></div>`}
+      <div><dt>Stage</dt><dd>${stageName(company.stage) ?? html`<span class="muted">—</span>`}</dd></div>
+      <div><dt>Entry</dt><dd>${entryText(company) ?? html`<span class="muted">—</span>`}</dd></div>
+      <div><dt>Raised</dt><dd title="Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.">${raisedLabel ?? html`<span class="muted">—</span>`}</dd></div>
+      <div><dt>Board</dt><dd>${board.length ? board.map((member) => member.name).join(', ') : html`<span class="muted">—</span>`}</dd></div>
       ${lead && html`<div><dt>Lead</dt><dd>${lead.name}</dd></div>`}
     </dl>
-    <div class="card-foot"><${Reporting} report=${report} company=${company} /></div>
+    <div class="card-foot"><${Reporting} report=${report} company=${company} />${!report.latest && !report.overdue && html`<span class="muted">No updates yet</span>`}</div>
   </li>`
 }
 
@@ -134,18 +138,18 @@ function CompanyTable ({ rows }) {
         <th scope="col">Entry</th>
         <th scope="col">Sectors</th>
         <th scope="col" class="is-num" title="Sum of rounds with a stated amount; a floor, not the total raised">Reported raised</th>
-        <th scope="col">Lead</th>
+        <th scope="col">Board</th>
         <th scope="col">Latest update</th>
       </tr></thead>
       <tbody>
-        ${rows.map(({ company, raised, report, lead }) => html`<tr key=${company.id}>
+        ${rows.map(({ company, raised, report, lead, board = [] }) => html`<tr key=${company.id}>
           <th scope="row"><span class="cell-company"><${Picture} value=${company.logo} name=${company.name} size="s" /><${CompanyLink} id=${company.id}>${company.name}</${CompanyLink}></span></th>
           <td><${StatusMark} status=${company.status} /></td>
           <td>${company.fund_position ? (company.fund_position === 'held' ? 'Held' : 'Exited') : html`<span class="muted">—</span>`}</td>
           <td>${entryText(company) ?? html`<span class="muted">—</span>`}</td>
           <td>${list(company.sectors).join(', ') || html`<span class="muted">—</span>`}</td>
           <td class="is-num">${raisedText(raised) ?? html`<span class="muted">—</span>`}</td>
-          <td>${lead?.name ?? html`<span class="muted">—</span>`}</td>
+          <td>${[lead, ...board.filter((member) => member.id !== lead?.id)].filter(Boolean).map((member) => member.name).join(', ') || html`<span class="muted">—</span>`}</td>
           <td><${Reporting} report=${report} company=${company} /></td>
         </tr>`)}
       </tbody>
@@ -155,7 +159,7 @@ function CompanyTable ({ rows }) {
 
 function EmptyPortfolio () {
   const route = useStore((state) => state.route)
-  const any = route.q || route.status || route.sector || route.partner
+  const any = route.q || route.status || route.sector || route.partner || route.position
   if (any) {
     return html`<${Empty} icon="search" title="No company matches these filters">
       <button type="button" class="button" onClick=${() => store.getState().go('portfolio')}>Clear filters</button>

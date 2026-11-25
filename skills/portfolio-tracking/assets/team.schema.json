@@ -64,6 +64,24 @@
       ],
       "description": "Their bio as the fund's site states it."
     },
+    "board_positions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+      },
+      "uniqueItems": true,
+      "description": "Companies whose board the fund's site says they sit on: [[companies/<id>]]."
+    },
+    "related_investments": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\[\\[[^\\]]+\\]\\]$"
+      },
+      "uniqueItems": true,
+      "description": "Other companies the fund's site lists against them (\"related investments\"): [[companies/<id>]]. Not a claim that they lead the investment."
+    },
     "photo": {
       "type": [
         "string",

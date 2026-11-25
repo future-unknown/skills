@@ -74,7 +74,7 @@ function Portrait ({ member, leads }) {
     <${Picture} value=${member.photo} name=${member.name} kind="portrait" size="portrait" />
     <span class="portrait-name">${member.name}</span>
     <span class="portrait-title">${member.title ?? humanize(member.role)}</span>
-    ${leads?.length > 0 && html`<span class="portrait-leads">Leads ${leads.length} ${leads.length === 1 ? 'company' : 'companies'}</span>`}
+    ${boards(member) > 0 && html`<span class="portrait-leads">On ${boards(member)} ${boards(member) === 1 ? 'board' : 'boards'}</span>`}
   </a>`
 }
 
@@ -83,6 +83,8 @@ export function MemberView () {
   const id = state.route.id
   const member = records(state, 'team').find((item) => item.id === id) ?? null
   const leads = useLeads()[id] ?? []
+  const boardCompanies = member ? companiesIn(state, member, 'board_positions') : []
+  const related = member ? companiesIn(state, member, 'related_investments') : []
   if (!member) {
     return html`<div class="page"><${PageBar} crumb=${{ label: 'Team', view: 'team' }} /><${Empty} icon="team" title="Not on the team">No team member has the key ${id}.</${Empty}></div>`
   }
@@ -105,13 +107,31 @@ export function MemberView () {
         </p>
       </div>
     </header>
-    <section class="section" aria-labelledby="member-leads">
-      <div class="section-head"><h2 class="section-title" id="member-leads">Companies${leads.length ? html`<span class="view-count">${leads.length}</span>` : ''}</h2></div>
-      ${leads.length
-        ? html`<ul class="lead-list">${leads.map((company) => html`<li><${Picture} value=${company.logo} name=${company.name} size="m" /><${CompanyLink} id=${company.id}>${company.name}</${CompanyLink}><span class="muted">${company.one_liner ?? ''}</span></li>`)}</ul>`
-        : html`<p class="muted">No company names ${member.name.split(' ')[0]} as its lead partner yet. The fund's site doesn't say who leads what; set a company's lead partner in Known, or ask an agent to.</p>`}
-    </section>
+    ${leads.length > 0 && html`<section class="section" aria-labelledby="member-leads">
+      <div class="section-head"><h2 class="section-title" id="member-leads">Lead partner on<span class="view-count">${leads.length}</span></h2></div>
+      <${CompanyList} companies=${leads} />
+    </section>`}
+    ${boardCompanies.length > 0 && html`<section class="section" aria-labelledby="member-boards">
+      <div class="section-head"><h2 class="section-title" id="member-boards">Board positions<span class="view-count">${boardCompanies.length}</span></h2></div>
+      <${CompanyList} companies=${boardCompanies} />
+    </section>`}
+    ${related.length > 0 && html`<section class="section" aria-labelledby="member-related">
+      <div class="section-head"><h2 class="section-title" id="member-related">Related investments<span class="view-count">${related.length}</span></h2></div>
+      <${CompanyList} companies=${related} />
+    </section>`}
+    ${!leads.length && !boardCompanies.length && !related.length && html`<p class="muted section">The fund's site lists no board positions or investments for ${member.name.split(' ')[0]}.</p>`}
   </article>`
 }
 
 const slug = (text) => String(text).toLowerCase().replace(/[^a-z0-9]+/g, '-')
+const boards = (member) => (member.board_positions ?? []).length
+
+// Companies a member's record links to, in a list field, as records.
+function companiesIn (state, member, field) {
+  const ids = list(member[field]).map((link) => keyIn(link, 'companies', state.names)).filter(Boolean)
+  return ids.map((id) => state.tables.companies?.[id]).filter(Boolean).sort((a, b) => a.name.localeCompare(b.name))
+}
+
+function CompanyList ({ companies }) {
+  return html`<ul class="lead-list">${companies.map((company) => html`<li><${Picture} value=${company.logo} name=${company.name} size="m" /><${CompanyLink} id=${company.id}>${company.name}</${CompanyLink}><span class="muted">${company.one_liner ?? ''}</span></li>`)}</ul>`
+}

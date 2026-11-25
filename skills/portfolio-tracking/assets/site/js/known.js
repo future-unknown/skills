@@ -1,7 +1,10 @@
 // The site's one connection to Known: sign-in, calls, the table's schema,
 // and live changes. Publishing the code tree in Known writes the site's
 // settings into the page (#known-site); site.json says which table to show.
-import { discoverHost, createSessionStore, createWatchStore, methodryAuth } from 'wiki/session'
+// known-vision: Known's package for sites — sign-in, and the live stream that
+// keeps what the site shows current (one connection per browser, polling
+// where the plan has no live updates).
+import { discoverHost, createSessionStore, createWatchStore, methodryAuth } from 'known-vision'
 import { createClient } from 'methodry'
 
 export function readSiteSettings () {

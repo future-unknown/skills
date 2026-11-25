@@ -7,14 +7,16 @@
 export const TABLES = ['fund', 'team', 'companies', 'rounds', 'people', 'media', 'updates', 'tasks', 'signals', 'runs']
 
 // [[table/key|label]] → { target, table, key, label }. A link may name its
-// wiki ([[portfolio:companies/ferncloud]]); the wiki part is dropped.
+// wiki ([[portfolio:companies/ferncloud]]), kept as `wiki`.
 const LINK = /^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]$/
 export function parseLink (value) {
   const match = LINK.exec(String(value ?? '').trim())
   if (!match) return null
-  const target = match[1].includes(':') ? match[1].split(':').slice(1).join(':') : match[1]
+  const colon = match[1].indexOf(':')
+  const target = colon === -1 ? match[1] : match[1].slice(colon + 1)
   const slash = target.lastIndexOf('/')
   return {
+    wiki: colon === -1 ? null : match[1].slice(0, colon),
     target,
     table: slash === -1 ? target : target.slice(0, slash),
     key: slash === -1 ? null : target.slice(slash + 1),

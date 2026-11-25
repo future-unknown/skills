@@ -9,18 +9,20 @@ A way to fetch web pages (a fetch or browser tool). If you have none, say so and
 ## Bounds
 
 - **Only the fund's own site** for the fund pass: same host, or its `www.` form. Follow links only to pages about the fund, team, portfolio, companies and news.
-- **At most 30 pages** for the fund pass. Read `robots.txt` first and skip what it disallows. One request at a time.
+- **At most 30 pages** for the fund pass, plus one page per team member for their profile and one per company for its detail page on the fund's site, when the site has them (below). Say the total in the proposal ("30 pages, 56 profiles, 212 company pages"). Read `robots.txt` first and skip what it disallows. One request at a time.
 - **The company pass is optional** and asked for (default no): the homepage, about/team page and newsroom of each company's own site, at most 5 pages each. Offer it with the count ("about 40 companies, up to 200 pages").
-- Never search engines, people-search, social networks or data vendors. A profile link shown on a page is stored as a link; its page is not fetched.
+- No search engines, people-search, social networks or data vendors, with one exception: the press pass (below) runs a news search for each held company by name. Never search for a person. A profile link shown on a page is stored as a link; its page is not fetched.
+- **A bot check** (Cloudflare's, for example) that blocks plain HTTP clients is read through in a real browser, as a person would see the page. Never solve or get past a challenge; if the browser is stopped too, ask the user to paste the pages.
 - Public pages only. Don't sign in, submit forms or get past a paywall.
 
 ## Order
 
 1. **Homepage**: the fund's name, one-liner, logo and links to the other pages.
 2. **About / thesis**: thesis, stages, sectors, geographies, check size, locations, named funds and vintages.
-3. **Team**: each person's name, title, the groups the page files them under (its filters, sections or CSS classes: "Investment team", "Founder Council"), bio, headshot and profile links, and the address of their own page on the fund's site.
+3. **Team**: each person's name, title, the groups the page files them under (its filters, sections or CSS classes: "Investment team", "Founder Council"), bio, headshot and profile links, and the address of their own page on the fund's site. Then read each person's own page: their bio, and any lists of companies tied to them, recorded in the fund's words (`board_positions` for "Board positions", `related_investments` for "Related investments" or "Investments"). These lists are how a fund says who works on what; don't turn them into `lead_partner` unless the page says "lead".
 4. **Portfolio**: each company's name, website, one-liner, sector, the status the page shows (active, exited, acquired), logo, and partner when stated. Open a company's detail page on the fund's site when there is one.
 5. **News** (optional, the latest page only): announced investments and exits, as round candidates.
+6. **Press**, after the companies are written: the last month's stories about each company the fund holds, as `monitoring-page.md` describes for a run (one news-feed request per company, the company's name with its domain or what it does when the name is a common word; keep only headlines about this company that matter to an investor; never fetch the articles). Propose them with the rest; each becomes an `updates` record with origin `press`. Say how many companies had none.
 
 ## Reading pages well
 
@@ -73,6 +75,8 @@ Then take a screenshot of the fund's portfolio page. It is the reference the sit
 ### Mirror the brand, keep the site
 
 The site keeps its own structure, keyboard use and contrast; the theme changes its colours, fonts, shapes and card style. Check every colour pair: ink on `paper` and on `surface`, and `accentInk` on `paper`, at least 4.5:1; `accent` as a mark at least 3:1. When the fund's own colour falls short, adjust it and say what you changed.
+
+If the fund's site has no dark mode, set `"dark": false` so the portfolio site stays light as the fund's does.
 
 Show the theme in the proposal as a table: each value, what it was measured from (page and element), and any adjustment.
 

@@ -67,7 +67,7 @@ function useKeys () {
         if (state.help) { state.toggle('help', false); return }
         if (state.chat.open && !typing) { state.toggleChat(false); return }
         if (typing) { target.blur(); return }
-        if (state.route.view === 'company' || state.route.view === 'member') { history.length > 1 ? history.back() : state.go('portfolio') }
+        if (state.route.view === 'company' || state.route.view === 'member') { history.state?.site ? history.back() : state.go('portfolio') }
         return
       }
       if (typing || event.metaKey || event.ctrlKey || event.altKey) return

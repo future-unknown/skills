@@ -1,22 +1,22 @@
 # The portfolio site
 
-`assets/site/` is a complete site with no build step: plain ES modules, Preact and htm for markup, zustand for state, the `wiki` package's `wiki/session` for signing in with Known, and `methodry` for Known's streams. `imports.json` pins every package at an exact version; publishing turns it into the page's import map.
+`assets/site/` is a complete site with no build step: plain ES modules, Preact and htm for markup, zustand for state, Known's [known-vision](https://github.com/future-unknown/known-vision) package for signing in and live updates, and `methodry` for Known's streams. `imports.json` pins every package at an exact version; publishing turns it into the page's import map.
 
-Keep `wiki` at v0.29.0 or later. From v0.28.0 every page address is `<wiki>:<page>`; from v0.29.0 a site Known shows inside its own app asks Known for a token and is signed in without a click (a site on an older version shows "Sign in with Known" even there). When Known can't answer, the site says so instead of offering a sign-in.
+Keep `known-vision` (it replaced `wiki/session`) at 0.2.1 or later. Every page address is `<wiki>:<page>`. A site Known shows inside its own app asks Known for a token and is signed in without a click. Live updates come from its watch: one `site.watch` stream per browser, shared between tabs, reloading only the table that changed; where the organization's plan has no live updates it checks once a minute instead (the account menu says which: Live, or Checking every minute). When Known can't answer, the site says so instead of offering a sign-in.
 
 ## What it does
 
-- **Portfolio:** every company as a card or a row in a table — logo, name, one-liner, status, stage, lead partner, the latest update, and what its rounds publicly report. Filter by status, sector and lead partner, or search.
-- **Company:** what it is now (status, stage, HQ, founded, lead partner, board seat, the fund's ownership with its date), its funding timeline, its people, open tasks, updates, the media it references, its own writing, and its history — who changed what, field by field, from the record's versions.
-- **Updates:** every update across the portfolio, newest first, filtered by company or by who it came from.
+- **Portfolio:** every company as a card or a row in a table — logo, name, one-liner, status, stage, the fund's people on its board, the latest update, and what its rounds publicly report. Filter by status, the fund's position (held, exited), sector and person (anyone the fund's site ties to a company: lead, board seat or related investment), or search.
+- **Company:** at a glance, four figures (publicly reported raised, stage, the fund's entry round and year, its position) over a line of sectors, HQ and founding year and the fund's people on the board; then its funding timeline, its people, the fund's team on it (board seats and related investments, from `team`), open tasks, updates, the media it references, its own writing, and its history — who changed what, field by field, from the record's versions.
+- **Updates:** every update across the portfolio, newest first, filtered by company or by where it came from: Press (with the publication's name and a link to the story), From companies, or From the fund.
 - **Tasks:** open tasks by company.
 - **Review:** what monitoring found, waiting for a decision, with the change each would make and its sources; the last run's time, status and pages it could not read.
-- **Team:** the fund's people as portraits, in the groups the fund's own team page uses (`groups` on each record), most senior first. Each opens a page with their portrait, title, groups, bio, links (their page on the fund's site, profiles) and the companies they lead.
+- **Team:** the fund's people as portraits, in the groups the fund's own team page uses (`groups` on each record), most senior first. Each opens a page with their portrait, title, groups, bio, links (their page on the fund's site, profiles) and their companies as the fund's site lists them: board positions and related investments, and any company naming them lead partner.
 - **Ask:** Known's assistant in a column beside the page (`a`, or Ask in the top bar). It answers from the same wiki, as the signed-in person, through `site.ask`: it can read and write exactly what the site can for that person, says what it is reading while it works, and lists any record it changed under its answer. Known keeps no conversation; the page sends the turns so far with each question. It needs the organization's plan to include Known's assistant (`site.whoami` says `assistant.available`); otherwise the panel says so.
 - **Fund:** the fund's own profile — thesis, stages, sectors, geographies, check size and vehicles — with its sources.
 - **Live:** changes made by anyone, people or agents, arrive while the site is open. A new record opens into its place; a changed one warms for a moment.
-- **Keyboard:** `/` searches, `a` asks, `g` then `p` `u` `t` `r` `m` `f` switches view (Portfolio, Updates, Tasks, Review, Team, Fund), `Esc` closes Ask or goes back, `?` lists them all.
-- **Everywhere:** a slim top bar with the fund's logo, the views and the account, as fund sites lead; light and dark follow the system; on a phone the views scroll sideways under the logo, Ask takes the screen and the cards one column. Reduced motion is respected.
+- **Keyboard:** `/` searches, `a` asks, `g` then `p` `u` `t` `r` `m` `f` switches view (Portfolio, Updates, Tasks, Review, Team, Fund), `Esc` closes a menu or Ask, or goes back within the site (never out of it), `?` lists them all. Opening a form puts focus in it; closing it puts focus back on the button that opened it.
+- **Everywhere:** a slim top bar with the fund's logo, the views and the account, as fund sites lead; light and dark follow the system, unless the theme is light-only (`"dark": false`); on a phone the views scroll sideways under the logo, Ask takes the screen and the cards one column. Reduced motion is respected.
 
 The address holds what is shown (`#/portfolio?status=active&layout=table`, `#/company/ferncloud`, `#/member/mara-lind`), so any view can be linked.
 
@@ -62,8 +62,8 @@ The import reads the fund's own website and fills `theme` so the site feels like
 
 ```json
 "theme": {
-  "light": { "paper": "#FFFFFF", "surface": "#F3F4EE", "ink": "#142328", "accent": "#F54A14", "accentInk": "#C2380C" },
-  "dark":  null,
+  "light": { "paper": "#FFFFFF", "surface": "#F2F1EC", "ink": "#1C2430", "accent": "#2F6FEB", "accentInk": "#1F55C4" },
+  "dark":  false,
   "fonts": {
     "heading": { "family": "Source Serif 4", "href": "https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap", "weight": 700, "leading": 1.05, "tracking": -0.01 },
     "body": { "family": "Inter", "href": "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap", "weight": 400 },
@@ -81,7 +81,7 @@ The import reads the fund's own website and fills `theme` so the site feels like
 
 | Field | Means | Becomes |
 |---|---|---|
-| `light`, `dark` | The colours for each scheme. Any key may be absent; that token keeps its default. | |
+| `light`, `dark` | The colours for each scheme. Any key may be absent; that token keeps its default. `"dark": false` keeps the light look in dark mode too: use it when the fund's own site has no dark mode, so the site never shows its logos dark-on-dark. | |
 | `paper` | The page background, as most of the viewport shows it | `--main`; `--pane` a step lighter and `--side` a step darker, mixed from it |
 | `surface` | Cards, tables and notes, when the fund sets them apart from the page | `--surface`; dropped if ink on it is under 4.5:1 |
 | `ink` | Body text | `--ink`; `--ink-soft` and `--ink-faint` mixed towards the paper |
@@ -153,11 +153,13 @@ After adapting: check the tree, publish, open the site, and look at each change 
 
 An address that answers proves nothing about the layout. Before publishing a change, run the site locally against the wiki's real records and look at every view at desktop and phone width: the portfolio grid, a company, the team, a person, Ask open and closed.
 
-Known's session and API can be stood in for, since the site reaches them only through `wiki/session`, `methodry` and `/rpc`:
+Known's session and API can be stood in for, since the site reaches them only through `known-vision`, `methodry` and `/rpc`:
 
-- an import map that points `wiki/session` at a module whose session is always signed in and whose live store is quiet, and `methodry` at one that streams a canned answer;
+- an import map that points `known-vision` at a module whose session is always signed in and whose live store is quiet, and `methodry` at one that streams a canned answer;
 - a `#known-site` element naming a local host;
 - a local server that serves the site's files and answers `/rpc/<wiki>` with the tables' keys and schemas, and `site.whoami`, `wiki.records`, `wiki.get`, `wiki.history` and `wiki.links` from records read out of the wiki.
+
+Look at every state, not only the happy path: loading, signed out, Known unreachable, each view empty and full, Ask open and closed, the shortcuts sheet; at desktop width and at phone width (a 390px frame around the page works when the window can't be narrowed); in light and dark mode. Measure edges rather than eyeballing them: the logo, each page's bar and its content should share a left and a right edge on every page.
 
 Keep these in a scratch folder, never in the code tree. After publishing, ask the person to look too: their browser is signed in, the stand-ins are not.
 

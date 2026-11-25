@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { html } from '../html.js'
 import { store, useStore, VIEWS, records, has, openTasks, pendingSignals } from '../store.js'
-import { imageOf } from '../data.js'
+import { imageOf, keyIn } from '../data.js'
 import { Icon } from '../icons.js'
 import { AskButton } from './ask.js'
 
@@ -23,7 +23,7 @@ export function TopBar () {
     <nav class="topnav" aria-label="Views">
       <ul>
         ${views.map((view) => html`<li><a href=${'#/' + view.id} class=${'topnav-item' + (current === view.id ? ' is-current' : '')} aria-current=${current === view.id ? 'page' : null}
-          onClick=${(event) => { event.preventDefault(); store.getState().go(view.id) }} title=${`${view.label} (g ${view.key})`}>
+          onClick=${(event) => { event.preventDefault(); if (event.detail) event.currentTarget.blur(); store.getState().go(view.id) }} title=${`${view.label} (g ${view.key})`}>
           ${view.label}${tally[view.id] ? html`<span class=${'topnav-count' + (view.id === 'review' ? ' is-attention' : '')} aria-label=${`, ${tally[view.id]} ${view.id === 'review' ? 'waiting' : 'open'}`}>${tally[view.id]}</span>` : null}
         </a></li>`)}
       </ul>
@@ -40,7 +40,15 @@ function Mark ({ fund, title }) {
   const logo = state.logo ?? fund?.logo ?? null
   const media = imageOf(state.tables, logo, state.names)
   const [failed, setFailed] = useState(false)
-  if (media && !failed) return html`<img class="topbar-logo" src=${media.url} alt="" referrerpolicy="no-referrer" onError=${() => setFailed(true)} />`
+  // The fund's mark for dark backgrounds, used when the page is dark.
+  const dark = fund ? Object.values(state.tables.media ?? {}).find((item) => item.kind === 'logo-dark' && item.status !== 'broken' && keyIn(item.subject, 'fund', state.names) === fund.id) : null
+  const lightOnly = document.documentElement.classList.contains('is-light-only')
+  if (media && !failed) {
+    return html`<picture>
+      ${dark && !lightOnly && html`<source srcset=${dark.url} media="(prefers-color-scheme: dark)" />`}
+      <img class="topbar-logo" src=${media.url} alt="" referrerpolicy="no-referrer" onError=${() => setFailed(true)} />
+    </picture>`
+  }
   return html`<span class="topbar-name">${fund?.name ?? title}</span>`
 }
 
@@ -53,20 +61,22 @@ function Me () {
   const live = useWatch(watch)
   const [open, setOpen] = useState(false)
   const box = useRef(null)
+  const button = useRef(null)
   useEffect(() => {
     if (!open) return
     const close = (event) => { if (!box.current?.contains(event.target)) setOpen(false) }
-    const key = (event) => { if (event.key === 'Escape') setOpen(false) }
+    // Captured first, so Esc closes the menu and nothing else.
+    const key = (event) => { if (event.key === 'Escape') { event.stopPropagation(); setOpen(false); button.current?.focus() } }
     addEventListener('pointerdown', close)
-    addEventListener('keydown', key)
-    return () => { removeEventListener('pointerdown', close); removeEventListener('keydown', key) }
+    addEventListener('keydown', key, true)
+    return () => { removeEventListener('pointerdown', close); removeEventListener('keydown', key, true) }
   }, [open])
   const label = live === 'live' ? 'Live' : live === 'polling' ? 'Checking every minute' : live === 'connecting' ? 'Connecting' : 'Offline'
   const name = me?.user?.name ?? ''
   const initials = name.split(/\s+/).filter(Boolean).map((part) => part[0]).slice(0, 2).join('').toUpperCase()
   return html`<div class="me" ref=${box}>
     <span class=${'live is-' + live} title=${label}><span class="live-dot" aria-hidden="true"></span><span class="visually-hidden">${label}</span></span>
-    <button type="button" class="me-button" aria-expanded=${open} aria-haspopup="true" aria-label=${'Account: ' + name} onClick=${() => setOpen(!open)}>${initials || html`<${Icon} name="user" size=${14} />`}</button>
+    <button type="button" class="me-button" ref=${button} aria-expanded=${open} aria-haspopup="true" aria-label=${'Account: ' + name} onClick=${() => setOpen(!open)}>${initials || html`<${Icon} name="team" size=${14} />`}</button>
     ${open && html`<div class="me-menu" role="menu">
       <p class="me-who">${name}<span>${label}${canWrite ? '' : ' · read only'}</span></p>
       <button type="button" role="menuitem" class="me-item" onClick=${() => { setOpen(false); store.getState().toggle('help', true) }}><${Icon} name="keyboard" size=${14} />Keyboard shortcuts<kbd>?</kbd></button>

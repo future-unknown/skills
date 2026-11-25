@@ -178,7 +178,12 @@ export function applyTheme (theme) {
   // the light accent carried over, only when it reads there; else the
   // defaults untouched.
   let dark = null
-  if (theme.dark && typeof theme.dark === 'object') {
+  // A fund whose own site is light only (dark: false) keeps the light look in
+  // dark mode too, as its site does.
+  const lightOnly = theme.dark === false
+  if (lightOnly) {
+    // nothing: the light colours apply whatever the system prefers
+  } else if (theme.dark && typeof theme.dark === 'object') {
     dark = tokens(settle(theme.dark, DEFAULTS.dark, 'dark'), true)
   } else if (parse(theme.light?.accent) && contrast(hex(parse(theme.light.accent)), DEFAULTS.dark.paper) >= MARK) {
     dark = tokens(settle({ accent: theme.light.accent }, DEFAULTS.dark, 'dark'), true)
@@ -211,7 +216,14 @@ export function applyTheme (theme) {
   if (theme.cards === 'logo') document.documentElement.classList.add('has-logo-cards')
 
   if (Object.keys(root).length) rules.push(block(':root', root))
-  if (light) rules.push(`@media not all and (prefers-color-scheme: dark) {\n${block(':root', light)}\n}`)
+  if (light && lightOnly) {
+    // After style.css, so these win over its dark defaults at equal weight.
+    rules.push(block(':root', { ...light, 'color-scheme': 'light' }))
+    rules.push(`@media (prefers-color-scheme: dark) {\n${block(':root', { ...light, 'color-scheme': 'light' })}\n}`)
+    document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', 'light')
+    setThemeColor('dark', light['--main'])
+    document.documentElement.classList.add('is-light-only')
+  } else if (light) rules.push(`@media not all and (prefers-color-scheme: dark) {\n${block(':root', light)}\n}`)
   if (dark) {
     rules.push(`@media (prefers-color-scheme: dark) {\n${block(':root', dark)}\n}`)
     setThemeColor('dark', dark['--main'])

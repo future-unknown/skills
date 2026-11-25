@@ -22,7 +22,14 @@ export function AskPanel () {
   const [draft, setDraft] = useState('')
   const input = useRef(null)
   const log = useRef(null)
-  useEffect(() => { if (chat.open) input.current?.focus() }, [chat.open])
+  // Opening puts focus in the question; closing hands it back to the Ask
+  // button, or the page when the button isn't shown.
+  const was = useRef(chat.open)
+  useEffect(() => {
+    if (chat.open) input.current?.focus()
+    else if (was.current) document.querySelector('.ask-open')?.focus()
+    was.current = chat.open
+  }, [chat.open])
   // Keep the newest words in view while an answer streams in.
   useEffect(() => { log.current?.scrollTo?.({ top: log.current.scrollHeight }) }, [chat.turns])
   if (!chat.open) return null

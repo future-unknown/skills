@@ -5,10 +5,9 @@
     "marked": "https://esm.sh/marked@18.1.2",
     "preact": "https://esm.sh/preact@11.1.0",
     "preact/": "https://esm.sh/preact@11.1.0/",
-    "wiki": "https://esm.sh/gh/future-unknown/wiki@v0.29.0",
-    "wiki/": "https://esm.sh/gh/future-unknown/wiki@v0.29.0/",
     "zustand": "https://esm.sh/zustand@5.0.16",
     "zustand/": "https://esm.sh/zustand@5.0.16/",
-    "methodry": "https://esm.sh/gh/future-unknown/methodry@v0.6.0/src/index.js"
+    "methodry": "https://esm.sh/gh/future-unknown/methodry@v0.6.0/src/index.js",
+    "known-vision": "https://esm.sh/@future-unknown/known-vision@0.2.1?external=zustand"
   }
 }

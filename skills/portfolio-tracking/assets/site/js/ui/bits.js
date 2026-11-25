@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'preact/hooks'
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks'
 import { html } from '../html.js'
 import { useStore, store } from '../store.js'
 import { initials, imageOf, humanize } from '../data.js'
@@ -43,7 +43,8 @@ const BASIS = {
   public: 'Public',
   'company-reported': 'Company-reported',
   confirmed: 'Confirmed',
-  'fund-note': 'Fund note'
+  'fund-note': 'Fund note',
+  press: 'Press'
 }
 export function Badge ({ kind, children }) {
   return html`<span class=${'badge is-' + kind}>${children ?? BASIS[kind] ?? humanize(kind)}</span>`
@@ -112,8 +113,24 @@ export function useMarkdown (text, deps) {
   const tables = useStore((state) => state.tables)
   return useMemo(() => (text
     ? renderMarkdown(text, {
-        siteHref: (link) => (link.table === names.companies && tables.companies?.[link.key] ? '#/company/' + encodeURIComponent(link.key) : null),
-        knownHref: (link) => appUrlFor(conn.host, orgSlug, fullPath(wiki, link.table), link.key)
+        siteHref: (link) => ((!link.wiki || link.wiki === wiki) && link.table === names.companies && tables.companies?.[link.key] ? '#/company/' + encodeURIComponent(link.key) : null),
+        knownHref: (link) => appUrlFor(conn.host, orgSlug, fullPath(link.wiki ?? wiki, link.table), link.key)
       })
     : null), deps)
+}
+
+// A button that opens a form in its place. Opening puts focus in the form's
+// first field; closing it (saved or cancelled) puts focus back on the button,
+// so the keyboard never falls back to the top of the page.
+export function useOpener (initial = false) {
+  const [open, setOpen] = useState(initial)
+  const trigger = useRef(null)
+  const field = useRef(null)
+  const was = useRef(open)
+  useEffect(() => {
+    if (open) field.current?.focus()
+    else if (was.current) trigger.current?.focus()
+    was.current = open
+  }, [open])
+  return { open, setOpen, trigger, field }
 }

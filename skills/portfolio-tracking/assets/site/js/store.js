@@ -62,8 +62,9 @@ export const store = createStore((set, get) => ({
     const route = { ...get().route, ...patch }
     const hash = routeHash(route)
     if (hash === location.hash) return
-    if (replace) history.replaceState(null, '', hash)
-    else history.pushState(null, '', hash)
+    // Entries the site made are marked, so going back never leaves the site.
+    if (replace) history.replaceState(history.state, '', hash)
+    else history.pushState({ site: true }, '', hash)
     set({ route })
   },
 
@@ -196,9 +197,12 @@ export const store = createStore((set, get) => ({
     const { conn } = get()
     const watch = conn.live()
     const pending = new Set()
+    const again = new Set()
     const latest = (table) => Math.max(0, ...Object.values(get().tables[table] ?? {}).map((record) => Date.parse(record._ts) || 0))
     const refresh = async (table, since) => {
-      if (pending.has(table)) return
+      // A change that lands while this table loads is not dropped: the
+      // load runs once more when it finishes.
+      if (pending.has(table)) { again.add(table); return }
       pending.add(table)
       try {
         const { wiki, names, keys } = get()
@@ -220,10 +224,12 @@ export const store = createStore((set, get) => ({
         // the next change or resync tries again
       } finally {
         pending.delete(table)
+        if (again.delete(table)) refresh(table, latest(table))
       }
     }
     watch.getState().onChange((change) => {
-      const { names, keys } = get()
+      const { names, keys, wiki } = get()
+      if (change.wiki && change.wiki !== wiki) return
       if (change.type === 'resync') {
         for (const table of Object.keys(keys)) refresh(table, null)
         return
@@ -265,7 +271,12 @@ export const store = createStore((set, get) => ({
     const key = value[keys[table] ?? 'id']
     try {
       // Writing a record replaces any record with the same key: check first.
-      if (await readOne(conn, path, key)) return { ok: false, error: { title: 'Taken', detail: `${key} already exists. Try again.` } }
+      const taken = await readOne(conn, path, key)
+      if (taken) {
+        // Keep what is there, so the next try picks the next free key.
+        put(set, table, key, taken)
+        return { ok: false, error: { title: 'Taken', detail: `${key} was just used by someone else. Try again.` } }
+      }
       await conn.call('wiki.set', { path, value })
       const saved = await readOne(conn, path, key)
       put(set, table, key, saved ?? value)
@@ -318,7 +329,9 @@ export const store = createStore((set, get) => ({
   },
 
   async decide (signal, status) {
-    return get().save('signals', signal, { status, decided_by: get().me?.user?.name ?? null, decided_at: nowUtc() })
+    // Undo puts a signal back as monitoring left it: undecided.
+    const decided = status === 'proposed' ? { decided_by: null, decided_at: null } : { decided_by: get().me?.user?.name ?? null, decided_at: nowUtc() }
+    return get().save('signals', signal, { status, ...decided })
   }
 }))
 
@@ -343,7 +356,14 @@ async function findWiki (conn, me, config, names) {
   if (!wikis.length) throw new KnownError('This site reads no wiki yet.', { code: 'no_wiki' })
   const candidates = config.wiki ? [config.wiki] : wikis
   for (const wiki of candidates) {
-    const description = await conn.describe(wiki)
+    let description
+    try {
+      description = await conn.describe(wiki)
+    } catch (error) {
+      // The named wiki must answer; while searching, try the next one.
+      if (config.wiki) throw error
+      continue
+    }
     const pages = {}
     for (const [address, page] of Object.entries(description?.pages ?? {})) pages[splitPath(address).page] = page
     const companies = pages[names.companies]
@@ -397,16 +417,27 @@ export function companyView (state, company) {
     raised: reportedRaised(rounds),
     updates,
     report: reporting(company, updates),
-    lead: company.lead_partner ? tables.team?.[keyIn(company.lead_partner, 'team', names)] ?? null : null
+    lead: company.lead_partner ? tables.team?.[keyIn(company.lead_partner, 'team', names)] ?? null : null,
+    ...fundPeople(state, id)
   }
+}
+
+// The fund's people on a company, as the fund's own site lists them: who
+// sits on its board, and who lists it among their related investments.
+export function fundPeople (state, id) {
+  const { tables, names } = state
+  const on = (member, field) => (member[field] ?? []).some((link) => keyIn(link, 'companies', names) === id)
+  const team = Object.values(tables.team ?? {}).filter((member) => member.status !== 'former')
+  return { board: team.filter((member) => on(member, 'board_positions')), linked: team.filter((member) => on(member, 'related_investments')) }
 }
 
 export function openTasks (state) {
   return records(state, 'tasks').filter((task) => task.status === 'open')
 }
 
+// Signals waiting for a person; accepted ones wait for the next run.
 export function pendingSignals (state) {
-  return records(state, 'signals').filter((signal) => signal.status === 'proposed' || signal.status === 'accepted')
+  return records(state, 'signals').filter((signal) => signal.status === 'proposed')
 }
 
 // What the assistant is doing, in words, from the method it is calling.

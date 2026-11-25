@@ -60,7 +60,9 @@ Public rounds are incomplete. Sums of `amount` are "at least this much publicly 
 
 ## People and team
 
-`team` is the fund's own people; `people` is the companies' people. Both keep `status` (`current` or `former`) and dates instead of deleting anyone: when someone leaves, set `former` and the end date. Known keeps every version.
+`team` is the fund's own people, with the companies the fund's site ties to each: `board_positions` and `related_investments`, as the site words them. Company pages and filters derive the fund's people on a company from these; `lead_partner` on a company is set only when a source names a lead.
+
+`people` is the companies' people. `team` and `people` both keep `status` (`current` or `former`) and dates instead of deleting anyone: when someone leaves, set `former` and the end date. Known keeps every version.
 
 Collect only work-related, public facts from the fund's or the company's own pages: name, title, role, bio as written, headshot, and profile links shown on those pages. Never personal email, phone, home location, age or family. Never search other sites to fill a gap, and never fetch a profile link's page.
 
@@ -78,6 +80,7 @@ Only collect images from the fund's and companies' own sites. Headshots are pers
 
 `origin`:
 
+- `press`: a story by an outside publication about the company, as it reported it: the headline, the `publisher`, the date and the link. Monitoring files these daily; a first import can file the last month. Never a claim the fund makes.
 - `company-reported`: an investor update, board pack or anything else the company sent. Metrics are its claims as stated. Missing means not stated; zero means stated as zero.
 - `fund-note`: the fund's call note, board notes or assessment.
 
