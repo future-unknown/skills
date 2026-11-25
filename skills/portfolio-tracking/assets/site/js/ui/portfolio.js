@@ -42,6 +42,7 @@ const positionRank = (company) => ({ held: 0, exited: 1 }[company.fund_position]
 function matches (row, route, state) {
   const { company, lead } = row
   if (route.position && (company.fund_position ?? 'unknown') !== route.position) return false
+  if (route.vehicle && !list(company.vehicles).includes(route.vehicle)) return false
   if (route.status && company.status !== route.status) return false
   if (route.sector && !list(company.sectors).includes(route.sector)) return false
   if (route.partner && ![lead, ...(row.board ?? []), ...(row.linked ?? [])].some((member) => member?.id === route.partner)) return false
@@ -64,7 +65,12 @@ function Filters () {
     const tied = (member) => member.board_positions?.length || member.related_investments?.length || companies.some((company) => keyIn(company.lead_partner, 'team', state.names) === member.id)
     const partners = records(state, 'team').filter((member) => member.status !== 'former' && tied(member)).sort((a, b) => a.name.localeCompare(b.name))
     const positions = ['held', 'exited', 'unknown'].filter((position) => companies.some((company) => (company.fund_position ?? 'unknown') === position))
-    return { statuses, sectors, partners, positions }
+    // The fund's vehicles, in the order its record lists them, then any
+    // other name a company carries.
+    const named = list(records(state, 'fund')[0]?.vehicles).map((vehicle) => vehicle.name)
+    const used = new Set(companies.flatMap((company) => list(company.vehicles)))
+    const vehicles = [...named.filter((name) => used.has(name)), ...[...used].filter((name) => !named.includes(name)).sort()]
+    return { statuses, sectors, partners, positions, vehicles }
   }, [tables])
   return html`<div class="filters">
     <label class="filter">
@@ -75,6 +81,7 @@ function Filters () {
       ${!route.q && html`<kbd>/</kbd>`}
     </label>
     ${options.positions.length > 1 && html`<${Select} label="Position" value=${route.position} onChange=${(position) => navigate({ position })} options=${options.positions.map((position) => [position, { held: 'Held', exited: 'Exited', unknown: 'Position unknown' }[position]])} all="Held and exited" />`}
+    ${options.vehicles.length > 1 && html`<${Select} label="Vehicle" value=${route.vehicle} onChange=${(vehicle) => navigate({ vehicle })} options=${options.vehicles.map((name) => [name, name])} all="All vehicles" />`}
     <${Select} label="Status" value=${route.status} onChange=${(status) => navigate({ status })} options=${options.statuses.map((status) => [status, status === 'ipo' ? 'IPO' : status.replace('-', ' ')])} all="All statuses" />
     ${options.sectors.length > 0 && html`<${Select} label="Sector" value=${route.sector} onChange=${(sector) => navigate({ sector })} options=${options.sectors.map((sector) => [sector, sector])} all="All sectors" />`}
     ${options.partners.length > 0 && html`<${Select} label="Person" value=${route.partner} onChange=${(partner) => navigate({ partner })} options=${options.partners.map((member) => [member.id, member.name])} all="Anyone at the fund" />`}
@@ -159,7 +166,7 @@ function CompanyTable ({ rows }) {
 
 function EmptyPortfolio () {
   const route = useStore((state) => state.route)
-  const any = route.q || route.status || route.sector || route.partner || route.position
+  const any = route.q || route.status || route.sector || route.partner || route.position || route.vehicle
   if (any) {
     return html`<${Empty} icon="search" title="No company matches these filters">
       <button type="button" class="button" onClick=${() => store.getState().go('portfolio')}>Clear filters</button>

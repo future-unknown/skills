@@ -6,7 +6,7 @@ Keep `known-vision` (it replaced `wiki/session`) at 0.2.1 or later. Every page a
 
 ## What it does
 
-- **Portfolio:** every company as a card or a row in a table — logo, name, one-liner, status, stage, the fund's people on its board, the latest update, and what its rounds publicly report. Filter by status, the fund's position (held, exited), sector and person (anyone the fund's site ties to a company: lead, board seat or related investment), or search.
+- **Portfolio:** every company as a card or a row in a table — logo, name, one-liner, status, stage, the fund's people on its board, the latest update, and what its rounds publicly report. Filter by status, the fund's position (held, exited), the vehicle that holds it (when companies name more than one), sector and person (anyone the fund's site ties to a company: lead, board seat or related investment), or search.
 - **Company:** at a glance, four figures (publicly reported raised, stage, the fund's entry round and year, its position) over a line of sectors, HQ and founding year and the fund's people on the board; then its funding timeline, its people, the fund's team on it (board seats and related investments, from `team`), open tasks, updates, the media it references, its own writing, and its history — who changed what, field by field, from the record's versions.
 - **Updates:** every update across the portfolio, newest first, filtered by company or by where it came from: Press (with the publication's name and a link to the story), From companies, or From the fund.
 - **Tasks:** open tasks by company.

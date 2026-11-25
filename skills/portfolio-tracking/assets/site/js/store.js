@@ -17,7 +17,7 @@ export const VIEWS = [
   { id: 'fund', label: 'Fund', icon: 'fund', key: 'f', table: 'fund' }
 ]
 
-const FILTERS = ['q', 'status', 'position', 'sector', 'partner', 'layout', 'company', 'origin']
+const FILTERS = ['q', 'status', 'position', 'vehicle', 'sector', 'partner', 'layout', 'company', 'origin']
 
 export function readRoute () {
   const raw = location.hash.replace(/^#\/?/, '')

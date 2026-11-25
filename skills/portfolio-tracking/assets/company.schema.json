@@ -186,6 +186,18 @@
       "maximum": 2200,
       "description": "The year the fund first invested, when only the year is known."
     },
+    "vehicles": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "description": "The fund's vehicles that hold this company, by name as in the fund record's vehicles (\"Fund VIII\", \"Opportunity Fund I\"). Confidential; null when unknown.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
     "entry_round": {
       "type": [
         "string",

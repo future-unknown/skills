@@ -38,13 +38,15 @@ When the fund's site disagrees with itself (a company filed under "live" whose c
 
 `domain` is the matching key across sources: the website's host without `www`. Two records with one domain are one company; merge them with the user's approval.
 
-The fund's relationship lives here: `lead_partner` (a `team` link), `board_role`, `first_invested_on`, `ownership_percent` with `ownership_as_of`, and `reporting_cadence`. These are confidential to the fund and stay null until someone on the team states them.
+The fund's relationship lives here: `lead_partner` (a `team` link), `board_role`, `first_invested_on`, `ownership_percent` with `ownership_as_of`, `vehicles`, and `reporting_cadence`.
+
+A firm with several funds says which holds the company in `vehicles` (a company can sit in more than one: a seed from Fund III, a follow-on from an opportunity fund), and which wrote each cheque in a round's `vehicle`. Both use the names in the `fund` record's `vehicles`, exactly as written there, so they can be matched; add the vehicle to the fund record first when it is missing. Set them only when the fund's site or the team says so: a company's investment year next to a fund's vintage is not evidence. These are confidential to the fund and stay null until someone on the team states them.
 
 `on_fund_site` says whether the fund's portfolio page lists the company now. A company that leaves the page is not thereby exited: monitoring raises a `removed-company` signal and a person decides.
 
 ## Rounds
 
-One record per round a company raised. `amount` is the whole round; `fund_amount` is the fund's part, when known. Every record with an amount, valuation or cap carries `currency` (the schema enforces it).
+One record per round a company raised. `amount` is the whole round; `fund_amount` is the fund's part, and `vehicle` the fund's vehicle that paid it, when known. Every record with an amount, valuation or cap carries `currency` (the schema enforces it).
 
 `basis`:
 

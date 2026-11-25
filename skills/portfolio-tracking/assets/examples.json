@@ -131,6 +131,9 @@
       "content": "Depot scheduling for mid-size freight operators. The fund led the seed and followed on in the Series A.",
       "fund_position": "held",
       "first_invested_year": 2023,
+      "vehicles": [
+        "Example Ventures I"
+      ],
       "entry_round": "Seed"
     },
     {
@@ -163,6 +166,9 @@
       "content": null,
       "fund_position": "exited",
       "first_invested_year": 2021,
+      "vehicles": [
+        "Example Ventures I"
+      ],
       "entry_round": "Seed"
     }
   ],
@@ -188,6 +194,7 @@
       ],
       "fund_participated": true,
       "fund_amount": 1200000,
+      "vehicle": "Example Ventures I",
       "basis": "confirmed",
       "source_paths": [
         "https://ferncloud.example/news/seed",
@@ -216,6 +223,7 @@
       ],
       "fund_participated": null,
       "fund_amount": null,
+      "vehicle": null,
       "basis": "public",
       "source_paths": [
         "https://ferncloud.example/news/series-a"

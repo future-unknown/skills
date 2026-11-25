@@ -154,6 +154,14 @@
       "minimum": 0,
       "description": "What the fund put in, in currency. Confidential; null when unknown."
     },
+    "vehicle": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "description": "The fund's vehicle that invested in this round, by name as in the fund record's vehicles. Confidential; null when unknown."
+    },
     "basis": {
       "type": "string",
       "enum": [
