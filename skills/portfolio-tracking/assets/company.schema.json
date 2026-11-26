@@ -66,6 +66,14 @@
       ],
       "description": "The latest stage known; null when unknown."
     },
+    "fund_stage": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "description": "The stage the fund's own site files the company under, in its words (\"Early\", \"Growth\"), when it doesn't map onto stage. Null otherwise."
+    },
     "status": {
       "type": [
         "string",

@@ -117,7 +117,8 @@ function Reporting ({ report, company }) {
 }
 
 // The company's stage, or the stage its latest round names.
-const stageOf = ({ company, rounds = [] }) => company.stage ?? rounds[rounds.length - 1]?.stage ?? null
+// …or, when neither says, the stage the fund's own site files it under, in its words.
+const stageOf = ({ company, rounds = [] }) => stageName(company.stage ?? rounds[rounds.length - 1]?.stage ?? null) ?? company.fund_stage ?? null
 
 function cardFacts (rows) {
   return {
@@ -140,7 +141,7 @@ function CompanyCard ({ row, facts }) {
     <h2 class="card-name"><${CompanyLink} id=${company.id}>${company.name}</${CompanyLink}></h2>
     ${company.one_liner && html`<p class="card-line">${company.one_liner}</p>`}
     ${(facts.stage || facts.entry || facts.raised || facts.board || lead) && html`<dl class="card-facts">
-      ${facts.stage && html`<div><dt>Stage</dt><dd>${stageName(stageOf(row)) ?? html`<span class="muted">—</span>`}</dd></div>`}
+      ${facts.stage && html`<div><dt>Stage</dt><dd>${stageOf(row) ?? html`<span class="muted">—</span>`}</dd></div>`}
       ${facts.entry && html`<div><dt>Entry</dt><dd>${entryText(company) ?? html`<span class="muted">—</span>`}</dd></div>`}
       ${facts.raised && html`<div><dt>Raised</dt><dd title="Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.">${raisedLabel ?? html`<span class="muted">—</span>`}</dd></div>`}
       ${facts.board && html`<div><dt>Board</dt><dd>${board.length ? board.map((member) => member.name).join(', ') : html`<span class="muted">—</span>`}</dd></div>`}

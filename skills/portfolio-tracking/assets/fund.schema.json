@@ -122,6 +122,38 @@
         "additionalProperties": false
       }
     },
+    "fund_investments": {
+      "type": "array",
+      "description": "Other funds this fund has invested in (a fund-of-funds position), as its site lists them. They are not portfolio companies.",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "website": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri",
+            "pattern": "^https?://"
+          },
+          "note": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "What the site says about it, in a line."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
     "logo": {
       "type": [
         "string",

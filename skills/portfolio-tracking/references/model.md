@@ -34,6 +34,8 @@ Two different questions, two fields:
 
 When the fund's site disagrees with itself (a company filed under "live" whose card says "Acquired by X in 2025"), record what each says: the explicit outcome sets `status`, the filing sets `fund_position`, and `exit_note` quotes both. Raise it with the user rather than resolving it.
 
+`fund_stage` keeps the fund's own stage label ("Early", "Growth") when it doesn't map onto `stage`; the site shows it where `stage` and the rounds say nothing. A stage filter value that names an outcome ("Acquired", "Exited") isn't a stage: it is `status` or `fund_position`, as below.
+
 `entry_round` and `first_invested_year` hold what a portfolio page usually states ("Seed in 2015"): the fund's entry, not the company's current stage. Keep `stage` for the company's latest known round and `first_invested_on` for an exact date.
 
 `domain` is the matching key across sources: the website's host without `www`. Two records with one domain are one company; merge them with the user's approval.
@@ -43,6 +45,8 @@ The fund's relationship lives here: `lead_partner` (a `team` link), `board_role`
 A firm with several funds says which holds the company in `vehicles` (a company can sit in more than one: a seed from Fund III, a follow-on from an opportunity fund), and which wrote each cheque in a round's `vehicle`. Both use the names in the `fund` record's `vehicles`, exactly as written there, so they can be matched; add the vehicle to the fund record first when it is missing. Set them only when the fund's site or the team says so: a company's investment year next to a fund's vintage is not evidence. These are confidential to the fund and stay null until someone on the team states them.
 
 `on_fund_site` says whether the fund's portfolio page lists the company now. A company that leaves the page is not thereby exited: monitoring raises a `removed-company` signal and a person decides.
+
+Funds the fund invested in (a fund-of-funds position: "Portfolio Fund" on some sites) are not companies. List them in the fund record's `fund_investments`, not in `companies`.
 
 ## Rounds
 

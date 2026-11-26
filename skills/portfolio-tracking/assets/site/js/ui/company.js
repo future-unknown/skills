@@ -77,7 +77,7 @@ function Facts ({ view }) {
     ['Raised', raisedValue ? html`<span class="stat-floor" aria-hidden="true">≥</span>${raisedValue}` : null, 'Publicly reported, at least', 'Sum of rounds with a stated amount. Rounds may be missing, so this is a floor, not the total raised.'],
     // The stage as the latest round names it ("Series E"), where the stage
     // alone is a bucket ("Series D+").
-    ['Stage', (latest && /^series [d-z]\b/i.test(latest.name ?? '') && company.stage === 'series-d-plus') ? latest.name.match(/^series [d-z]/i)[0].replace(/^series/i, 'Series') : stageName(company.stage ?? latest?.stage ?? null), latestWhen ? `Latest round ${String(latestWhen).slice(0, 4)}` : 'Latest known round'],
+    ['Stage', (latest && /^series [d-z]\b/i.test(latest.name ?? '') && company.stage === 'series-d-plus') ? latest.name.match(/^series [d-z]/i)[0].replace(/^series/i, 'Series') : (stageName(company.stage ?? latest?.stage ?? null) ?? company.fund_stage ?? null), latestWhen ? `Latest round ${String(latestWhen).slice(0, 4)}` : 'Latest known round'],
     ['Entry', company.entry_round ?? (company.first_invested_year ? String(company.first_invested_year) : null), company.entry_round && company.first_invested_year ? `Fund's first round, ${company.first_invested_year}` : "Fund's first round"],
     ['Position', company.fund_position ? (company.fund_position === 'held' ? 'Held' : 'Exited') : null, company.ownership_percent != null ? `${company.ownership_percent}% owned${company.ownership_as_of ? ', ' + day(company.ownership_as_of) : ''}` : list(company.vehicles).length ? `In ${list(company.vehicles).join(', ')}` : (company.status && company.status !== 'active' ? humanize(company.status) : 'Fund\'s stake')]
   ]

@@ -18,6 +18,7 @@ export function FundView () {
     ['Check size', fund.check_size]
   ].filter(([, value]) => value)
   const vehicles = list(fund.vehicles)
+  const others = list(fund.fund_investments)
   return html`<article class="page" aria-labelledby="fund-name">
     <${PageBar} title="Fund"><div class="toolbar-end"><${KnownLink} table="fund" recordKey=${fund.id} /></div></${PageBar}>
     <header class="company-head">
@@ -43,6 +44,10 @@ export function FundView () {
           <td class="is-num">${vehicle.size != null ? money(vehicle.size, vehicle.currency) : html`<span class="muted">not stated</span>`}</td>
         </tr>`)}</tbody>
       </table></div>
+    </section>`}
+    ${others.length > 0 && html`<section class="section" aria-labelledby="fund-investments">
+      <h3 class="section-title" id="fund-investments">Investments in other funds<span class="view-count">${others.length}</span></h3>
+      <ul class="lead-list">${others.map((item) => html`<li>${item.website ? html`<a href=${item.website} target="_blank" rel="noopener noreferrer">${item.name}</a>` : html`<span>${item.name}</span>`}<span class="muted">${item.note ?? ''}</span></li>`)}</ul>
     </section>`}
     ${body && html`<div class="prose" dangerouslySetInnerHTML=${{ __html: body }}></div>`}
     <p class="sources">Source: ${list(fund.source_paths).map((source, index) => html`${index ? ', ' : ''}${isUrl(source) ? html`<a href=${source} target="_blank" rel="noopener noreferrer">${shortUrl(source)}</a>` : source}`)}${fund.checked_at && html` · read <time datetime=${fund.checked_at} title=${full(fund.checked_at)}>${ago(fund.checked_at)}</time>`}</p>
